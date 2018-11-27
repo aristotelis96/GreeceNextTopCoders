@@ -7,4 +7,4 @@
 
 Στάμου Φιλομένα         3114110 fistamou@gmail.com
 
-Λούζου Χριστίνα         3114611 xristinalouzo@gmail.com
+Λούζο Χριστίνα         3114611 xristinalouzo@gmail.com
