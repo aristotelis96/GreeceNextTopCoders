@@ -1,0 +1,69 @@
+<% include ./partials/header.ejs %>
+    <link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+    <% include ./partials/navbar.ejs %>
+    <div id="login_div" class="my-auto mx-auto">
+        <div class="container">
+            <div class="row pt-sm-5">
+                <div class="col-12 mx-auto">
+                    <form action="" method="POST">
+                        <div class="form-group">
+                            <h5>Email:</h5>
+                            <input type="email" name="emailInput" id="emailInput" placeholder="Email" class="form-control form-control-lg"
+                                required="">
+                        </div>
+                        <div class="form-group">
+                            <h5 class="sm">Κωδικός:</h5>
+                            <input type="password" name="passwordInput" id="passwordInput" placeholder="Κωδικός" class="form-control form-control-lg"
+                                required="">
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-block">Είσοδος</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!--This is an error area-->
+            <% if (message != "") { %>
+            <div class="alert alert-danger">
+                <%= message %>
+            </div>
+            <% } %>
+            <div class="row py-sm-3">
+                <div class="col-12">
+                    <div class="form-group text-center">
+                        <h3><a href="/login/signup">Νέος χρήστης!</a></h3>
+                    </div>
+                </div>
+            </div>
+            <div class="row py-sm-5">
+                <div class="col-12">
+                    <div class="form-group text-center">
+                        <h4><a href="#" data-toggle="modal" data-target="#modalPassword">Ξέχασες τον
+                                κωδικό σου;</a></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="modalPassword" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Forgot password</h3>
+                    <button type="button" class="close font-weight-light" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    <p>Reset your password..</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                    <button class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

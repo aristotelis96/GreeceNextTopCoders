@@ -1,0 +1,88 @@
+<% include ./partials/header.ejs %>
+</head>
+<body>
+<% include partials/navbar.ejs %>
+    <div class="container">        
+        <div class="row" style="height: 25%;">
+            <div class="col-sm-12 my-auto">
+            <form class="form-inline row" action="/search" method="post">
+
+                <div class="col-sm-10 text-center">
+                <div class="form-group" >
+                    <input type="text" class="form-control-lg w-75 ml-sm-auto" id="search">
+                </div>
+                </div>
+                <div class="col-sm-2 text-center">
+                <button type="submit" class="btn btn-primary">Submit</button>       </div>
+            </form>
+            </div>
+        </div>
+    <div class="row" style="height: 75%;">
+    <div class="col-sm-12 mt-5">
+    <h4 class="text-center">Εγγεγραμμένοι χρήστες</h4>
+    <div class="table-wrapper">
+        <% if (users.length > 0) {%>
+            <div class="table-responsive">
+            <table class="table table-hovered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Φωτογραφία</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Επιλογές</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% users.forEach((user, index) => { %>
+                        <tr data-toggle="modal" data-target="#Modal<%= user.email%>">
+                            <td><img src="/assets/profileImg/<%= user.image %>" class="rounded-circle user-img" alt="" ></td>
+                            <td ><%= user.email %></td>
+                            <td>
+                                <div ng-controller="Delete">
+                                <% if (user.email == name) { %>
+                                <a href="/userPage" rel="noopener" class="btn btn-sm btn-success">Edit</a>
+                                <a href="/delete/?user=<%= user.email %>" class="btn btn-sm btn-danger">Delete</a>
+                                <% } %>
+                                </div>
+                            </div>
+                            </td>
+                            
+                        </tr>
+                    <% }) %>
+                    <% if (!login) { %>
+                    <tr>
+                        <td>
+                            <a href='/login/signup'><button type="button" class="btn btn-primary">Πρόσθεσε!</button></a>
+                        </td>
+                    </tr>
+                    <% } %>
+                </tbody>
+            </table>
+            </div>
+        <% } else { %>
+            <p class="text-center">Δεν βρέθηκε κανένας χρήστης πάτα <a href="/login/signup" >εδώ</a> για να προσθέσεις.</p>
+        <% } %>
+    </div>
+
+    </div>
+
+    <!-- profile Image modal -->
+  <% users.forEach((user, index) => { %>
+  <div class="modal fade" id="Modal<%= user.email%>" tabindex="-1"  role="dialog">
+        <div class="modal-dialog">
+        
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Εικόνα προφίλ</h3>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <img id="profilModal" class="modal-body modal-content" src="/assets/profileImg/<%= user.image %>">
+            </img>
+          </div>
+          
+        </div>
+      </div>
+    <% }) %>
+</div>
+</body>
+</html>

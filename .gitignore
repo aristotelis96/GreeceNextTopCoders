@@ -59,3 +59,11 @@ typings/
 
 # next.js build output
 .next
+
+# visual studio and visual studio code
+*.sln
+.vs
+.vscode
+bin
+*.njsproj
+Website/obj

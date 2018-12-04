@@ -1,0 +1,35 @@
+<% include ./partials/header.ejs %>
+</head>
+
+<body style='background-color:blanchedalmond'>
+    <% include ./partials/navbar.ejs %>
+    <div class="container mt-5">
+        <div class='jumbotron'>
+            <div class='container'>
+                <div class='row p-5'>
+                    <div class='col-md-4 text-center'>
+                        <img src="/assets/profileImg/<%= user.image %>" style="max-width: 100%; max-height: 100%;">
+                    </div>
+                    <div class='col-md-8 pt-1'>
+                        <div class='row pt-4 alert alert-info'>
+                            <div class='col-md-6'>
+                                User email:
+                            </div>
+                            <div class='col-md-6'>
+                                <%= user.email %>
+                            </div>
+                        </div>
+                        <div class='row'>
+                            <div class="col-lg-12">
+                                <button class='btn btn-primary'>Αλλαγή φωτογραφίας</button>
+                                <button class='btn btn-warning '>Αλλαγή κωδικού</button>
+                                <button class='btn btn-danger'>Διαγραφή λογαριασμού</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
