@@ -43,15 +43,16 @@ app.use(function (req, res, next) {
 var router = require('./routing.js');
 app.use('/', router);
 
-
-//uncomment this section for HTTP
-app.listen(app.get('port'), () => {
-    console.log(`Server running on port: ${config.app.port}`);
-});
-
-/*uncomment this section for HTTPS
+// HTTPS
 https.createServer({
-    key: fs.readFileSync('../../ssl/server.key'),
-    cert: fs.readFileSync('../../ssl/server.cert')},
+    key: fs.readFileSync('./../ssl/server.key'),
+    cert: fs.readFileSync('./../ssl/server.crt')},
     app).listen(app.get('port'), () => {
-    console.log(`Server running on port: ${config.app.port}`);});*/
+    console.log(`Server running on port: ${config.app.port}`);});
+
+/* Redirect http requests to https */
+const http = require('http');
+http.createServer(function (req, res) {
+    res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url});
+    res.end();
+}).listen(80);

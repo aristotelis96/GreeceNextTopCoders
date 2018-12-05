@@ -6,7 +6,7 @@ var appDir = path.dirname(__dirname);
 
 const config = {
     app: {
-        port: process.env.port || 8080,
+        port: process.env.port || 443,
         views: './views',
         viewEngine: 'ejs',
         appDir: appDir

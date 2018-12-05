@@ -1,0 +1,14 @@
+[req]
+default_bits = 2048
+prompt = no
+default_md = sha256
+distinguished_name = dn
+
+[dn]
+C=GR
+ST=Attolo
+L=Athens
+O=GreeceNextTopCoders
+OU=GNTC
+emailAddress=admin@gntc.com
+CN = localhost
