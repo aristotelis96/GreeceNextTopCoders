@@ -40,7 +40,7 @@ app.use(function (req, res, next) {
 });*/
 
 // routes for the app. Check routing.js for routes
-var router = require('./routing.js');
+var router = require('./routing/routing.js');
 app.use('/', router);
 
 // HTTPS
@@ -56,3 +56,12 @@ http.createServer(function (req, res) {
     res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url});
     res.end();
 }).listen(80);
+
+var api = express();
+var apiRouter = require('./routing/apiRouting.js');
+api.use('/observatory/api', apiRouter);
+https.createServer({
+    key: fs.readFileSync('./../ssl/server.key'),
+    cert: fs.readFileSync('./../ssl/server.crt')},
+    api).listen(config.app.apiPort, () => {
+    console.log(`API running on port: ` + config.app.apiPort);});

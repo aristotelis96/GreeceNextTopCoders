@@ -9,7 +9,8 @@ const config = {
         port: process.env.port || 443,
         views: './views',
         viewEngine: 'ejs',
-        appDir: appDir
+        appDir: appDir,
+        apiPort: 8765
     },
     db: {
         host: 'localhost',
@@ -19,7 +20,7 @@ const config = {
     },
     session: {
         //cookie: { path: '/', httpOnly: true, secure: false, maxAge: null},
-        secret: 'a',
+        secret: 'VgenapxmsTP7kHPJrHbweo1QaXPe2KfP',
         saveUninitialized: false,
         resave: false
     }

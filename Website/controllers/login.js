@@ -63,7 +63,7 @@ module.exports = {
         var uploadedFile;
         var image_name;
         var fileExtension;
-        if (req.files.image != null) {
+        if (req.files != undefined && req.files.image != null) {
             uploadedFile = req.files.image;
             image_name = uploadedFile.name;
             // check type. should be png or jpeg
