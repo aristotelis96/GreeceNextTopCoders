@@ -16,7 +16,7 @@ const config = {
     db: {
         host: 'localhost',
         user: 'root',
-        password: password,
+        password: password, // lu
         database: 'website'
     },
     session: {
