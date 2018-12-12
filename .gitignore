@@ -67,3 +67,4 @@ typings/
 bin
 *.njsproj
 Website/obj
+Website/config/password.js

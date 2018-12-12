@@ -2,6 +2,7 @@
 // this should be checked in the future
 var path = require('path'); 
 var appDir = path.dirname(__dirname);
+var password = require('./password.js');
 // end of critical area
 
 const config = {
@@ -15,7 +16,7 @@ const config = {
     db: {
         host: 'localhost',
         user: 'root',
-        password: '8elopass',
+        password: password,
         database: 'website'
     },
     session: {
