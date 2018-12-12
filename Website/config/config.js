@@ -6,6 +6,7 @@ var password = require('./password.js');
 // end of critical area
 
 const config = {
+    
     app: {
         port: process.env.port || 443,
         views: './views',
