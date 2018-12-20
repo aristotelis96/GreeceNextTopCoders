@@ -52,8 +52,7 @@ module.exports = {
     signupGET: function (req, res) {
         return res.render('signup.ejs', {
             login: false,
-            title: "Εγγραφή",
-            message: ""
+            title: "Εγγραφή"
         })
     },
     signupPOST: function (req, res) {
@@ -71,8 +70,7 @@ module.exports = {
             if (!(uploadedFile.mimetype === 'image/png' || uploadedFile.mimetype === 'image/jpeg')) {
                 return res.render('signup.ejs', {
                     title: "GNTC",
-                    login: false,
-                    message: "Η εικόνα προφίλ πρέπει να είναι τύπου jpeg ή png!"
+                    login: false
                 })
             }
             // how the file will be stored
@@ -104,8 +102,7 @@ module.exports = {
         if (password != passwordconfirm && password.length > 8) {
             return res.render("signup.ejs", {
                 login: false,
-                title: "Εγγραφή",
-                message: "Server replied: Passwords do not match or password too short!"
+                title: "Εγγραφή"
             });
         }
         // check if email exists
@@ -120,8 +117,7 @@ module.exports = {
                 if (results.length > 0) {
                     return res.render("signup.ejs", {
                         login: false,
-                        title: "Εγγραφή",
-                        message: "Το email που έδωσες υπάρχει ήδη!"
+                        title: "Εγγραφή"
                     });
                 }
                 // else create new user

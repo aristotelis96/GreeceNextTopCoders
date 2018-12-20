@@ -13,5 +13,17 @@ getAllShops = function (callback) {
     })
 }
 
+returnShop = function (name, callback) {
+    let query = "SELECT * FROM shops WHERE name LIKE CONCAT('%'," + pool.escape(name) + ",'%');";
+    pool.query(query, (err, results) => {
+        if(err){
+            return callback(err);
+        }
+        else {
+            return callback(null, results);
+        }
+    })
+}
 
-module.exports = {getAllShops};
+
+module.exports = {getAllShops, returnShop};

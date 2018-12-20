@@ -1,6 +1,8 @@
 <% include ./partials/header.ejs %>
-    <link rel="stylesheet" href="/css/login.css">
+<link rel="stylesheet" href="/css/login.css">
+<script src="/js/signup.js"></script>>
 </head>
+
 <body ng-app="Signup">
     <% include ./partials/navbar.ejs %>
     <div id="login_div" class="my-auto mx-auto">
@@ -25,24 +27,25 @@
                 <div class="row">
                     <div class="col-12 mx-auto">
                         <form action="" method="POST" enctype="multipart/form-data">
+                            <input type="hidden" name="shop_or_user" ng-model="shop_or_user">
                             <div class="form-row">
                                 <div class="form-group col-md-12">
                                     <h5>Email:</h5>
-                                    <input type="email" name="emailInput" id="emailInput" placeholder="Email" class="form-control form-control"
-                                        required="" ng-model="email" ng-change="checkUser()">
+                                    <input type="email" name="emailInput"  placeholder="Email" class="form-control form-control"
+                                        required="" ng-model="email" ng-change="checkUser(this)">
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <h5 class="sm">Κωδικός:</h5>
-                                    <input type="password" name="passwordInput" id="passwordInput" placeholder="Password"
-                                        class="form-control form-control" required="" ng-model="password" ng-change="checkUser()">
+                                    <input type="password" name="passwordInput"  placeholder="Password"
+                                        class="form-control form-control" required="" ng-model="password" ng-change="checkUser(this)">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <h5 class="sm">Επιβεβαίωση κωδικού:</h5>
-                                    <input type="password" name="confirmPasswordInput" id="confirmPasswordInput"
+                                    <input type="password" name="confirmPasswordInput" 
                                         placeholder="Password" class="form-control form-control" required="" ng-model="confirmation"
-                                        ng-change="checkUser()">
+                                        ng-change="checkUser(this)">
                                 </div>
                             </div>
                             <!-- USER FORM -->
@@ -54,13 +57,13 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <h5 class="sm">Επώνυμο:</h5>
-                                    <input type="text" name="surname" id="surname" placeholder="Προαιρετικά" class="form-control form-control">
+                                    <input type="text" name="surname"  placeholder="Προαιρετικά" class="form-control form-control">
                                 </div>
                             </div>
                             <div class="form-row">
-                            <div class="form-group col-md-12">
+                                <div class="form-group col-md-12">
                                     <h5>Είκονα χρήστη (προαιρετικό)</h5>
-                                    <input type="file" name="image" id="user-img" class="" accept="image/*">
+                                    <input type="file" name="image"  class="" accept="image/*">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -69,87 +72,105 @@
                         </form>
                     </div>
                 </div>
-        <!--This is an error area-->
-        <div ng-show="alertFlag" class="alert alert-danger">
-            <ul>
-                <li ng-repeat="msg in messages">
-                    {{msg}}
-                </li>
-            </ul>
+                <!--This is an error area-->
+                <div ng-show="alertFlag" class="alert alert-danger">
+                    <ul>
+                        <li ng-repeat="msg in messages">
+                            {{msg}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- SHOP FORM -->
+            <div class="container" ng-show="ShopForm">
+                <div class="row">
+                    <div class="col-12 mx-auto">
+                        <form action="" method="POST" enctype="multipart/form-data">
+                            <input type="hidden" name="shop_or_user" ng-model="shop_or_user">
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <h5>Email:</h5>
+                                    <input type="email" name="emailInput"  placeholder="Email" class="form-control form-control"
+                                        required="" ng-model="email" ng-change="checkUser(this)">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <h5 class="sm">Κωδικός:</h5>
+                                    <input type="password" name="passwordInput"  placeholder="Password"
+                                        class="form-control form-control" required="" ng-model="password" ng-change="checkUser(this)">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <h5 class="sm">Επιβεβαίωση κωδικού:</h5>
+                                    <input type="password" name="confirmPasswordInput" 
+                                        placeholder="Password" class="form-control form-control" required="" ng-model="confirmation"
+                                        ng-change="checkUser(this)">
+                                </div>
+                            </div>
+                            <!-- SHOP FORM -->
+                            <h4>Στοιχεία καταστήματος</h4>
+                            <input type="hidden" name="new_existing" ng-model="new_existing">
+                            <!-- EXISTING SHOP -->
+                            <div class="row pt-sm-5">
+                                <div class="col-sm-6 mx-auto my-1 text-center">
+                                    <button id="user" type="button" class="btn btn-primary" ng-click="searchShopFunc()">Αναζήτηση
+                                        υπάρχων καταστήματος</button>
+                                </div>
+                                <div class="col-sm-6 mx-auto my-1 text-center">
+                                    <button id="shop" type="button" class="btn btn-success" ng-click="newShopFunc()">Νέο
+                                        κατάστημα</button>
+                                </div>
+                            </div>
+                            <div class="container" ng-show="searchShop">
+                                <div class="form-row">
+                                    <div class="form-group col-md-12">
+                                        <h5 class="sm">Αναζήτηση καταστήματος:</h5>
+                                        <input type="text" name="shopName" placeholder="Υποχρεωτικα" required="" class="form-control form-control"
+                                            ng-model="searchShopName" ng-change="findShop()">
+                                    </div>
+                                    <ul class="list-group">
+                                            <li class="list-group-item" ng-repeat="shop in shops" ng-click="selectedShop(shop)">{{shop.name}}</li>
+                                    </ul>
+                                </div>                        
+                                <div class="form-row">
+                                    <div class="form-group col-md-12">
+                                        <button type="submit" class="btn btn-primary btn-block" ng-disabled="SubmitButton">Εγγραφή</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- NEW SHOP -->
+                            <div class="container" ng-show="newShop">
+                                <div class="form-row">
+                                    <div class="form-group col-md-12">
+                                        <h5 class="sm">Όνομα καταστήματος:</h5>
+                                        <input type="text" name="shopName" ng-model="shopName" placeholder="Υποχρεωτικα"
+                                            required="" class="form-control form-control" ng-change="checkUser(this)">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-12">
+                                        <h5>Είκονα χρήστη (προαιρετικό)</h5>
+                                        <input type="file" name="image" class="" accept="image/*">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary btn-block" ng-disabled="SubmitButton">Εγγραφή</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!--This is an error area-->
+                <div ng-show="alertFlag" class="alert alert-danger">
+                    <ul>
+                        <li ng-repeat="msg in messages">
+                            {{msg}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
         </div>
-        </div>
-        <!-- SHOP FORM -->
-        <div class="container" ng-show="ShopForm">
-            TO DO
-            <!-- TO DO -->
-        
-        </div>
-
-    </div>
-    <script>
-        var app = angular.module('Signup', []);
-
-        app.controller('signup', function ($scope, $http) {
-
-            formSelectionUser = function () {
-                $scope.UserForm = true;
-                $scope.ShopForm = false;
-            }
-            formSelectionShop = function () {
-                $scope.UserForm = false;
-                $scope.ShopForm = true;
-            }
-
-            $scope.formSelectionUser = formSelectionUser;
-            $scope.formSelectionShop = formSelectionShop;
-            $scope.UserForm = false;
-            $scope.ShopForm = false;
-
-            checkUser = function () {
-                $scope.SubmitButton = false;
-                var serverMSG = "<%= message %>";
-                $scope.messages = [];
-                // add server message
-                if (serverMSG != "") {
-                    $scope.messages.push(serverMSG);
-                }
-                //search if email exists
-                if ($scope.email != undefined) {
-                    $http.get("/check_user?email=" + $scope.email).then(function (response) {
-                        if (response.data.exists) {
-                            let msg = "Το email αυτό υπάρχει ήδη!";
-                            if ($scope.messages.indexOf(msg) == -1) { //make sure the message is not twice in messages array
-                                $scope.messages.push(msg);
-                            }
-                            $scope.SubmitButton = true;
-                            $scope.alertFlag = true; // because http.get is done ASync flag is set BEFORE we have the results
-                        }
-                    });
-                }
-                // if passwords do not match add this message
-                if (!angular.equals($scope.password, $scope.confirmation)) {
-                    $scope.messages.push("Οι κωδικοί δεν ταιρίαζουν!");
-                    $scope.SubmitButton = true;
-                }
-                if ($scope.password && $scope.password.length < 8) {
-                    $scope.messages.push("Ο κωδικός πρέπει να είναι τουλάχιστον 8 χαρακτήρες!");
-                    $scope.SubmitButton = true;
-                }
-                // if there are no messages to display hide the alert <div>
-                if ($scope.messages.length == 0)
-                    $scope.alertFlag = false;
-                else
-                    $scope.alertFlag = true;
-
-            };
-            $scope.checkUser = checkUser;
-            //$scope.password = "";
-            //$scope.confirmation = "";
-            checkUser();
-        });
-
-
-    </script>
 </body>
 
 </html>

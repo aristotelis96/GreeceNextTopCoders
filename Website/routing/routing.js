@@ -9,11 +9,12 @@ const { deleteUser, userPage } = require(controllersDir + '/users');
 const { login, logout, signupGET, signupPOST } = require(controllersDir + '/login');
 const isLoggedIn = require(controllersDir + '/middlewares/isLoggedIn');
 const { check_user } = require(controllersDir + '/check_user.js');
-
+const {searchShop} = require(controllersDir + '/searchShop.js');
 //routing
 router.get('/', getHomePage);
 
 router.get('/check_user/', check_user);
+router.get('/searchShop', searchShop);
 
 router.get('/delete/', deleteUser);
 router.get('/userPage', userPage);
