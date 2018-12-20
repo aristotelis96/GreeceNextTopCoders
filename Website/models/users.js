@@ -3,7 +3,7 @@ const pool = require('./index').getPool();
 
 // get All users from database
 getAllUsers = function (callback) {
-    let query = "SELECT * FROM `users` ORDER BY email ASC"; // query database to get all the players
+    let query = "SELECT * FROM `users` ORDER BY email ASC"; // query database to get all the users
     pool.query(query, (err, result) => {
         if(err){
             return callback(err);

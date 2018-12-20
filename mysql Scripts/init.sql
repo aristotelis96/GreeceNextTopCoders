@@ -64,3 +64,11 @@ CREATE TABLE prices (
     FOREIGN KEY (productID) REFERENCES products(id),
     FOREIGN KEY (shopID) REFERENCES shops(id)
 );
+
+CREATE TABLE addresses (
+	`id` BIGINT,
+    `city` varchar(255),
+    `periferia` varchar(255),
+    `diamerisma` varchar(255),
+    PRIMARY KEY(id)
+);

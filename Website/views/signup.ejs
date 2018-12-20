@@ -4,61 +4,108 @@
 <body ng-app="Signup">
     <% include ./partials/navbar.ejs %>
     <div id="login_div" class="my-auto mx-auto">
-        <div class="container" ng-controller="validation">
+        <div class="container" ng-controller="signup">
             <div class="row pt-sm-5">
                 <div class="col-12 mx-auto text-center">
                     <h3>
-                        Εγγραφή νέου χρήστη
+                        Εγγραφή νέου χρήστη ή καταστήματος
                     </h3>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-12 mx-auto">
-                    <form action="" method="POST" enctype="multipart/form-data">
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <h5>Email:</h5>
-                                <input type="email" name="emailInput" id="emailInput" placeholder="Email" class="form-control form-control"
-                                    required="" ng-model="email" ng-change="onChange()">
-                            </div>
-                            <div class="form-group col-md-6">
-                                <h5>Είκονα χρήστη (προαιρετικό)</h5>
-                                <input type="file" name="image" id="player-img" class="" accept="image/*">
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <h5 class="sm">Κωδικός:</h5>
-                                <input type="password" name="passwordInput" id="passwordInput" placeholder="Password"
-                                    class="form-control form-control" required="" ng-model="password" ng-change="onChange()">
-                            </div>
-                            <div class="form-group col-md-6">
-                                <h5 class="sm">Επιβεβαίωση κωδικού:</h5>
-                                <input type="password" name="confirmPasswordInput" id="confirmPasswordInput"
-                                    placeholder="Password" class="form-control form-control" required="" ng-model="confirmation"
-                                    ng-change="onChange()">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary btn-block" ng-disabled="SubmitButton">Εγγραφή</button>
-                        </div>
-                    </form>
+            <div class="row pt-sm-5">
+                <div class="col-sm-6 my-1 mx-auto text-center">
+                    <button id="user" type="button" class="btn btn-success" ng-click="formSelectionUser()">Εθελοντής
+                        χρήστης</button>
+                </div>
+                <div class="col-sm-6 mx-auto my-1 text-center">
+                    <button id="shop" type="button" class="btn btn-info" ng-click="formSelectionShop()">Κατάστημα</button>
                 </div>
             </div>
-            <!--This is an error area-->
-            <div ng-show="alertFlag" class="alert alert-danger">
-                <ul>
-                    <li ng-repeat="msg in messages">
-                        {{msg}}
-                    </li>
-                </ul>
-            </div>
+            <div class="container" ng-show="UserForm">
+                <div class="row">
+                    <div class="col-12 mx-auto">
+                        <form action="" method="POST" enctype="multipart/form-data">
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <h5>Email:</h5>
+                                    <input type="email" name="emailInput" id="emailInput" placeholder="Email" class="form-control form-control"
+                                        required="" ng-model="email" ng-change="checkUser()">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <h5 class="sm">Κωδικός:</h5>
+                                    <input type="password" name="passwordInput" id="passwordInput" placeholder="Password"
+                                        class="form-control form-control" required="" ng-model="password" ng-change="checkUser()">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <h5 class="sm">Επιβεβαίωση κωδικού:</h5>
+                                    <input type="password" name="confirmPasswordInput" id="confirmPasswordInput"
+                                        placeholder="Password" class="form-control form-control" required="" ng-model="confirmation"
+                                        ng-change="checkUser()">
+                                </div>
+                            </div>
+                            <!-- USER FORM -->
+                            <h4>Προσωπικά στοιχεία</h4>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <h5 class="sm">Όνομα:</h5>
+                                    <input type="text" name="name" id="name" placeholder="Προαιρετικά" class="form-control form-control">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <h5 class="sm">Επώνυμο:</h5>
+                                    <input type="text" name="surname" id="surname" placeholder="Προαιρετικά" class="form-control form-control">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                            <div class="form-group col-md-12">
+                                    <h5>Είκονα χρήστη (προαιρετικό)</h5>
+                                    <input type="file" name="image" id="user-img" class="" accept="image/*">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary btn-block" ng-disabled="SubmitButton">Εγγραφή</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+        <!--This is an error area-->
+        <div ng-show="alertFlag" class="alert alert-danger">
+            <ul>
+                <li ng-repeat="msg in messages">
+                    {{msg}}
+                </li>
+            </ul>
         </div>
+        </div>
+        <!-- SHOP FORM -->
+        <div class="container" ng-show="ShopForm">
+            TO DO
+            <!-- TO DO -->
+        
+        </div>
+
     </div>
     <script>
         var app = angular.module('Signup', []);
-        app.controller('validation', function ($scope, $http) {
-            onChange = function () {
+
+        app.controller('signup', function ($scope, $http) {
+
+            formSelectionUser = function () {
+                $scope.UserForm = true;
+                $scope.ShopForm = false;
+            }
+            formSelectionShop = function () {
+                $scope.UserForm = false;
+                $scope.ShopForm = true;
+            }
+
+            $scope.formSelectionUser = formSelectionUser;
+            $scope.formSelectionShop = formSelectionShop;
+            $scope.UserForm = false;
+            $scope.ShopForm = false;
+
+            checkUser = function () {
                 $scope.SubmitButton = false;
                 var serverMSG = "<%= message %>";
                 $scope.messages = [];
@@ -95,13 +142,14 @@
                     $scope.alertFlag = true;
 
             };
-            $scope.onChange = onChange;
+            $scope.checkUser = checkUser;
             //$scope.password = "";
             //$scope.confirmation = "";
-            onChange();
+            checkUser();
         });
 
 
     </script>
 </body>
+
 </html>
