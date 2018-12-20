@@ -15,9 +15,10 @@ const config = {
         apiPort: 8765
     },
     db: {
-        host: 'localhost',
-        user: 'root',
-        password: password, // lu
+        /****** MySQL Server is hosted @ Okeanos VM. Change to 'root'@'localhost' for local mysql server ******/
+        host: 'snf-854220.vm.okeanos.grnet.gr', //change to 'localhost'
+        user: 'admin', //change to 'root'
+        password: 'password', // password // from require('./password.js');
         database: 'website'
     },
     session: {
