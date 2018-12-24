@@ -49,7 +49,7 @@ insertShop = function (fields, callback) {
     let query_vals = "VALUES(" + pool.escape(fields.name);
     if(fields.periferia != null && fields.poli!=null){
         query_sets += ", addressID";
-        query_vals += "(SELECT id FROM addresses WHERE periferia=" +pool.escape(fields.periferia)+"&& poli="+pool.escape(fields.poli)+")"
+        query_vals += ", (SELECT id FROM addresses WHERE periferia=" +pool.escape(fields.periferia)+"&& city="+pool.escape(fields.poli)+")"
     }
     if(fields.phone!=''){
         query_sets += ", phone";
@@ -62,6 +62,7 @@ insertShop = function (fields, callback) {
     query_sets += ")";
     query_vals += ");";
     let query = query_sets+query_vals;
+    console.log(query);
     pool.query(query, (err, result)=>{
         if(err){
             return callback(err);
