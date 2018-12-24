@@ -1,20 +1,20 @@
 <% include ./partials/header.ejs %>
 <link rel="stylesheet" href="/css/login.css">
-<script src="/js/signup.js"></script>>
+<script src="/js/signup.js"></script>
 </head>
 
 <body ng-app="Signup">
     <% include ./partials/navbar.ejs %>
     <div id="login_div" class="my-auto mx-auto">
         <div class="container" ng-controller="signup">
-            <div class="row pt-sm-5">
+            <div class="row pt-xl-5">
                 <div class="col-12 mx-auto text-center">
                     <h3>
                         Εγγραφή νέου χρήστη ή καταστήματος
                     </h3>
                 </div>
             </div>
-            <div class="row pt-sm-5">
+            <div class="row pt-lg-5" ng-show="formSelectionButtons">
                 <div class="col-sm-6 my-1 mx-auto text-center">
                     <button id="user" type="button" class="btn btn-success" ng-click="formSelectionUser()">Εθελοντής
                         χρήστης</button>
@@ -27,25 +27,24 @@
                 <div class="row">
                     <div class="col-12 mx-auto">
                         <form action="" method="POST" enctype="multipart/form-data">
-                            <input type="hidden" name="shop_or_user" ng-model="shop_or_user">
+                            <input type="hidden" name="shop_or_user" ng-model="shop_or_user" ng-value="shop_or_user">
                             <div class="form-row">
                                 <div class="form-group col-md-12">
                                     <h5>Email:</h5>
-                                    <input type="email" name="emailInput"  placeholder="Email" class="form-control form-control"
+                                    <input type="email" name="emailInput" placeholder="Email" class="form-control form-control"
                                         required="" ng-model="email" ng-change="checkUser(this)">
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <h5 class="sm">Κωδικός:</h5>
-                                    <input type="password" name="passwordInput"  placeholder="Password"
-                                        class="form-control form-control" required="" ng-model="password" ng-change="checkUser(this)">
+                                    <input type="password" name="passwordInput" placeholder="Password" class="form-control form-control"
+                                        required="" ng-model="password" ng-change="checkUser(this)">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <h5 class="sm">Επιβεβαίωση κωδικού:</h5>
-                                    <input type="password" name="confirmPasswordInput" 
-                                        placeholder="Password" class="form-control form-control" required="" ng-model="confirmation"
-                                        ng-change="checkUser(this)">
+                                    <input type="password" name="confirmPasswordInput" placeholder="Password" class="form-control form-control"
+                                        required="" ng-model="confirmation" ng-change="checkUser(this)">
                                 </div>
                             </div>
                             <!-- USER FORM -->
@@ -57,13 +56,13 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <h5 class="sm">Επώνυμο:</h5>
-                                    <input type="text" name="surname"  placeholder="Προαιρετικά" class="form-control form-control">
+                                    <input type="text" name="surname" placeholder="Προαιρετικά" class="form-control form-control">
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-12">
                                     <h5>Είκονα χρήστη (προαιρετικό)</h5>
-                                    <input type="file" name="image"  class="" accept="image/*">
+                                    <input type="file" name="image" class="" accept="image/*">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -86,32 +85,31 @@
                 <div class="row">
                     <div class="col-12 mx-auto">
                         <form action="" method="POST" enctype="multipart/form-data">
-                            <input type="hidden" name="shop_or_user" ng-model="shop_or_user">
+                            <input type="hidden" name="shop_or_user" ng-model="shop_or_user" ng-value="shop_or_user">
                             <div class="form-row">
                                 <div class="form-group col-md-12">
                                     <h5>Email:</h5>
-                                    <input type="email" name="emailInput"  placeholder="Email" class="form-control form-control"
+                                    <input type="email" name="emailInput" placeholder="Email" class="form-control form-control"
                                         required="" ng-model="email" ng-change="checkUser(this)">
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <h5 class="sm">Κωδικός:</h5>
-                                    <input type="password" name="passwordInput"  placeholder="Password"
-                                        class="form-control form-control" required="" ng-model="password" ng-change="checkUser(this)">
+                                    <input type="password" name="passwordInput" placeholder="Password" class="form-control form-control"
+                                        required="" ng-model="password" ng-change="checkUser(this)">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <h5 class="sm">Επιβεβαίωση κωδικού:</h5>
-                                    <input type="password" name="confirmPasswordInput" 
-                                        placeholder="Password" class="form-control form-control" required="" ng-model="confirmation"
-                                        ng-change="checkUser(this)">
+                                    <input type="password" name="confirmPasswordInput" placeholder="Password" class="form-control form-control"
+                                        required="" ng-model="confirmation" ng-change="checkUser(this)">
                                 </div>
                             </div>
                             <!-- SHOP FORM -->
                             <h4>Στοιχεία καταστήματος</h4>
-                            <input type="hidden" name="new_existing" ng-model="new_existing">
+                            <input type="hidden" name="new_existing" ng-model="new_existing" ng-value="new_existing">
                             <!-- EXISTING SHOP -->
-                            <div class="row pt-sm-5">
+                            <div class="row pt-sm-5" ng-show="shopSelectionButtons">
                                 <div class="col-sm-6 mx-auto my-1 text-center">
                                     <button id="user" type="button" class="btn btn-primary" ng-click="searchShopFunc()">Αναζήτηση
                                         υπάρχων καταστήματος</button>
@@ -125,13 +123,13 @@
                                 <div class="form-row">
                                     <div class="form-group col-md-12">
                                         <h5 class="sm">Αναζήτηση καταστήματος:</h5>
-                                        <input type="text" name="shopName" placeholder="Υποχρεωτικα" required="" class="form-control form-control"
+                                        <input type="text" name="searchShopName" placeholder="Υποχρεωτικα" ng-required="searchShopNameRequired" class="form-control form-control"
                                             ng-model="searchShopName" ng-change="findShop()">
                                     </div>
                                     <ul class="list-group">
-                                            <li class="list-group-item" ng-repeat="shop in shops" ng-click="selectedShop(shop)">{{shop.name}}</li>
+                                        <button type="button" class="list-group-item list-group-item-action" ng-repeat="shop in shops" ng-click="selectedShop(shop)">{{shop.name}}</button>
                                     </ul>
-                                </div>                        
+                                </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-12">
                                         <button type="submit" class="btn btn-primary btn-block" ng-disabled="SubmitButton">Εγγραφή</button>
@@ -142,15 +140,35 @@
                             <div class="container" ng-show="newShop">
                                 <div class="form-row">
                                     <div class="form-group col-md-12">
-                                        <h5 class="sm">Όνομα καταστήματος:</h5>
+                                        <label>Όνομα καταστήματος:</label>
                                         <input type="text" name="shopName" ng-model="shopName" placeholder="Υποχρεωτικα"
-                                            required="" class="form-control form-control" ng-change="checkUser(this)">
+                                            ng-required="shopNameRequired" class="form-control form-control" ng-change="checkUser(this)">
                                     </div>
                                 </div>
                                 <div class="form-row">
-                                    <div class="form-group col-md-12">
-                                        <h5>Είκονα χρήστη (προαιρετικό)</h5>
-                                        <input type="file" name="image" class="" accept="image/*">
+                                    <div class="form-group col-md-4">
+                                        <label>Περιφέρια</label>
+                                        <select class="form-control" name="periferia" ng-model="periferia" ng-options="periferia.periferia as periferia.periferia for periferia in periferies" ng-change="periferiaSelected()">
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label>Πόλη</label>
+                                        <select class="form-control" name="poli" ng-model="poli" ng-options="poli.city as poli.city for (x, poli) in poleis" ng-disabled="poleisDis">
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label>Τηλέφωνο</label>
+                                        <input type="tel" name="phone" class="form-control" ng-model="phone">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label>Γεωγραφικό πλάτος (longditude)</label>
+                                        <input type="number" step="0.000001" min="-180" max="180" name="lng" class="form-control" ng-model="lng">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>Γεωγραφικό μήκος (latidude)</label>
+                                        <input type="number" step="0.000001" min="-90" max="90" name="lat" class="form-control" ng-model="lat">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -169,8 +187,16 @@
                     </ul>
                 </div>
             </div>
-
+            <div class="row">
+                <div class="col-12 text-center">
+                    <a href="./signup" ng-show="resetButton">
+                        <button class="btn btn-secondary">Επαναφορά
+                        </button>
+                    </a>
+                </div>
+            </div>
         </div>
+    </div>
 </body>
 
 </html>

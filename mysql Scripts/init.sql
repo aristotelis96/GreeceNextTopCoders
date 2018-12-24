@@ -2,26 +2,35 @@ DROP DATABASE website;
 CREATE DATABASE website CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE website;
 
+CREATE TABLE addresses (
+	`id` BIGINT,
+    `city` varchar(255),
+    `periferia` varchar(255),
+    PRIMARY KEY(id)
+);
+
 CREATE TABLE shops (
 	`id` BIGINT not null auto_increment,
     `name` varchar(255),
-    `address` varchar(255),
+    `addressID` BIGINT,
     `phone` int,
     `lng` double,
     `lat` double,
     `withdrawn` boolean DEFAULT false,
-    PRIMARY KEY(`id`)
+    PRIMARY KEY(`id`),
+    FOREIGN KEY (`addressID`) REFERENCES addresses(id)
 );
 
 CREATE TABLE users (
-    `email` varchar(255) NOT NULL,
+    `email` varchar(100) NOT NULL,
     `password` varchar(255) NOT NULL,
 	`image` varchar(255),
     `user_or_shop` varchar(255) NOT NULL,
     `name` varchar(255) DEFAULT 'anonymous',
     `surname` varchar(255) DEFAULT 'anonymous',
     `shopID` BIGINT,
-	FOREIGN KEY (`shopID`)  REFERENCES shops(id)
+	FOREIGN KEY (`shopID`)  REFERENCES shops(id) ON DELETE CASCADE,
+    PRIMARY KEY (`email`)
 );
 
 -- tags: katigories twn shops i twn products
@@ -65,10 +74,3 @@ CREATE TABLE prices (
     FOREIGN KEY (shopID) REFERENCES shops(id)
 );
 
-CREATE TABLE addresses (
-	`id` BIGINT,
-    `city` varchar(255),
-    `periferia` varchar(255),
-    `diamerisma` varchar(255),
-    PRIMARY KEY(id)
-);

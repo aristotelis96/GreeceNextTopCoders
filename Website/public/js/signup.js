@@ -1,21 +1,28 @@
 var app = angular.module('Signup', []);
 
 app.controller('signup', function ($scope, $http) {
+    $scope.UserForm = false;
+    $scope.ShopForm = false;
 
+    $scope.resetButton = false;
+    $scope.formSelectionButtons = true;
     formSelectionUser = function () {
         $scope.UserForm = true;
         $scope.ShopForm = false;
         $scope.shop_or_user = "user";
+        $scope.resetButton = true;
+        $scope.formSelectionButtons = false;
     }
     formSelectionShop = function () {
         $scope.UserForm = false;
         $scope.ShopForm = true;
         $scope.shop_or_user = "shop";
+        $scope.resetButton = true;
+        $scope.formSelectionButtons = false;
+        $scope.shopSelectionButtons = true;
     }
     $scope.formSelectionUser = formSelectionUser;
     $scope.formSelectionShop = formSelectionShop;
-    $scope.UserForm = false;
-    $scope.ShopForm = false;
 
     checkUser = function ($scope) {
         $scope.SubmitButton = false;        
@@ -60,19 +67,25 @@ app.controller('signup', function ($scope, $http) {
     searchShopFunc = function () {
         $scope.searchShop = true;
         $scope.newShop = false;
-        $scope.new_existing = "new";
+        $scope.new_existing = "existing";
+        $scope.shopSelectionButtons = false;
+        $scope.nameShopRequired = false;
     }
     newShopFunc = function () {
         $scope.searchShop = false;
         $scope.newShop = true;
-        $scope.new_existing = "existing";
+        $scope.new_existing = "new";
+        $scope.shopSelectionButtons = false;
+        $scope.searchShopNameRequired = false;
     }
     $scope.searchShop = false;
     $scope.newShop = false;
     $scope.searchShopFunc = searchShopFunc;
     $scope.newShopFunc = newShopFunc;
-
+    $scope.nameShopRequired = true;
+    $scope.searchShopNameRequired = true;
     findShop = function() {
+        $scope.SubmitButton = true;
         if($scope.searchShopName!= undefined && $scope.searchShopName.length >= 3){
             $scope.shops = [];
             $http.get("/searchShop?name=" + $scope.searchShopName)
@@ -93,8 +106,30 @@ app.controller('signup', function ($scope, $http) {
     selectedShop = function(shop){
         $scope.searchShopName = shop.name;
         $scope.shopName = shop.name;
+        $scope.phone = shop.phone;
+        $scope.lng = shop.lng;
+        $scope.lat = shop.lat;
+        $scope.SubmitButton = false;
     }
     $scope.selectedShop = selectedShop
 
+    //load periferies and poleis
+    $http.get('/addresses/periferies')
+        .then( (response) => {
+            $scope.periferies = response.data;
+    });
+
+    $scope.poleisDis = true;
+    //periferia and poleis functions
+    periferiaSelected = function () {
+        let periferia = $scope.periferia;
+        $http.get('/addresses/poleis?periferia=' + periferia)
+        .then( (response) => {
+            console.log(response.data);
+            $scope.poleis = response.data;
+            $scope.poleisDis = false;
+        });
+    }
+    $scope.periferiaSelected = periferiaSelected;
 });
 

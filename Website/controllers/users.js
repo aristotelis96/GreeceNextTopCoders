@@ -1,5 +1,6 @@
 const fs = require('fs');
 const db = require(appDir + '/models/users');
+const dbShop = require(appDir + '/models/shops');
 module.exports = {
     deleteUser: (req, res) => {
         let email = req.query.user;
@@ -7,28 +8,27 @@ module.exports = {
         if(email != req.session.email || email== undefined){
             return res.redirect('/');
         }
-        
-
-        db.returnUser(email, (err, result) => {
-            if (err) {
-                return res.status(500).send(err);
+        async function deleteAll(){
+            const util = require('util');
+            let user = await (util.promisify(db.returnUser))(email);
+            user = user[0];
+            try{
+                if(user.image != 'anonymous.png')
+                    await (util.promisify(fs.unlink))(`public/assets/profileImg/` + user.image)
+            } 
+            catch(e){
+                console.log(e);
             }
-            let image = result[0].image;
-            if (image != 'anonymous.png') {
-                fs.unlink(`public/assets/profileImg/` + image, (err) => {
-                    if (err) {
-                        return console.error(err, 'could not delete profile Image');
-                    }
-                });
+            try{
+                await (util.promisify(db.deleteUser))(email);
+                await (util.promisify(dbShop.deleteShop))(user.shopID)
             }
-            db.deleteUser(email, (err, result) => {
-                if (err) {
-                    console.error(err, 'delete user database query error');
-                    return res.status(500).send(err);
-                }
-                return res.redirect('/logout');
-            });
-        });
+            catch(e){
+                res.send(e.toString());
+            }
+            return res.redirect('/logout');
+        }
+        deleteAll();
     },
     userPage: (req, res) => {
         if(!req.session.email){

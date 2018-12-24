@@ -8,8 +8,11 @@ const {getHomePage} = require(controllersDir + '/index.js');
 const { deleteUser, userPage } = require(controllersDir + '/users');
 const { login, logout, signupGET, signupPOST } = require(controllersDir + '/login');
 const isLoggedIn = require(controllersDir + '/middlewares/isLoggedIn');
-const { check_user } = require(controllersDir + '/check_user.js');
+const { check_user } = require(controllersDir + '/AJAXrelated/check_user.js');
 const {searchShop} = require(controllersDir + '/searchShop.js');
+//addresses
+const addresses = require(controllersDir + '/AJAXrelated/addresses');
+
 //routing
 router.get('/', getHomePage);
 
@@ -27,7 +30,9 @@ router.post('/login', login);
 router.get('/login/signup', signupGET);
 router.post('/login/signup', signupPOST);
 router.get('/logout', logout);
-
+//addresses points
+router.get('/addresses/periferies', addresses.periferies);
+router.get('/addresses/poleis', addresses.poleis);
 //testing section
 //router.get('/test', testModule);
 
