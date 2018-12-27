@@ -9,6 +9,17 @@ CREATE TABLE addresses (
     PRIMARY KEY(id)
 );
 
+CREATE TABLE users (
+	`id` BIGINT not null auto_increment,
+    `email` varchar(255) NOT NULL,
+    `password` varchar(255) NOT NULL,
+	`image` varchar(255),
+    `user_or_shop` varchar(255) NOT NULL,
+    `name` varchar(255) DEFAULT 'anonymous',
+    `surname` varchar(255) DEFAULT 'anonymous',
+    PRIMARY KEY (`id`)
+);
+
 CREATE TABLE shops (
 	`id` BIGINT not null auto_increment,
     `name` varchar(255),
@@ -17,20 +28,10 @@ CREATE TABLE shops (
     `lng` double,
     `lat` double,
     `withdrawn` boolean DEFAULT false,
+    `userID` BIGINT,
     PRIMARY KEY(`id`),
-    FOREIGN KEY (`addressID`) REFERENCES addresses(id)
-);
-
-CREATE TABLE users (
-    `email` varchar(100) NOT NULL,
-    `password` varchar(255) NOT NULL,
-	`image` varchar(255),
-    `user_or_shop` varchar(255) NOT NULL,
-    `name` varchar(255) DEFAULT 'anonymous',
-    `surname` varchar(255) DEFAULT 'anonymous',
-    `shopID` BIGINT,
-	FOREIGN KEY (`shopID`)  REFERENCES shops(id) ON DELETE CASCADE,
-    PRIMARY KEY (`email`)
+    FOREIGN KEY (`addressID`) REFERENCES addresses(id),
+    FOREIGN KEY (`userID`) REFERENCES users(id) ON DELETE CASCADE
 );
 
 -- tags: katigories twn shops i twn products

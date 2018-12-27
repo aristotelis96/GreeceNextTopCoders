@@ -8,3 +8,9 @@
     min-height: 400px;
     overflow: scroll;
 }
+
+.list-group-item:hover{
+    color: #337ab7;
+    text-shadow:  0 0 1em #337ab7;
+    cursor: pointer;
+}

@@ -36,10 +36,6 @@ insertUser = function (fields, callback) {
         query_sets += ", surname";
         query_vals += "," + pool.escape(fields.surname);
     }
-    if(fields.shopID != null){
-        query_sets += ", shopID";
-        query_vals += "," + pool.escape(fields.shopID);
-    }
     query_sets += ")";
     query_vals += ");";
     let query = query_sets+query_vals;

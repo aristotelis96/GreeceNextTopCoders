@@ -26,14 +26,14 @@ returnShop = function (name, callback) {
 }
 returnExactShop = function (fields, callback) {
     let query = "SELECT * FROM shops WHERE name = " + pool.escape(fields.name);
-    if(fields.phone!=null)
+    if(fields.phone!='')
         query += " && phone=" + pool.escape(fields.phone);
     
-    if(fields.lng != null)
+    if(fields.lng != '')
         query += " && lng=" + pool.escape(fields.lng);
-    if(fields.lat != null)
+    if(fields.lat != '')
         query += " && lat=" + pool.escape(fields.lat);
-    if(fields.periferia != null && fields.city != null)
+    if(fields.periferia != '' && fields.city != '')
         query += " && addressID= (SELECT id FROM addresses WHERE periferia=" + pool.escape(fields.periferia) + " && city=" + pool.escape(fields.city) + ")";
     pool.query(query, (err, results) => {
         if (err) {
@@ -59,10 +59,17 @@ insertShop = function (fields, callback) {
         query_sets += ",lng,lat";
         query_vals += ","+ pool.escape(fields.lng) + "," +pool.escape(fields.lat);
     }
+    if(fields.userID != null){
+        query_sets += ", userID";
+        query_vals += "," + pool.escape(fields.userID);
+    }
     query_sets += ")";
     query_vals += ");";
     let query = query_sets+query_vals;
-    console.log(query);
+    let tags = fields.tags;
+    if(tags!=null && tags.length>0){
+        //toDo
+    }
     pool.query(query, (err, result)=>{
         if(err){
             return callback(err);

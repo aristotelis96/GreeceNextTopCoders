@@ -21,7 +21,6 @@ module.exports = {
             }
             try{
                 await (util.promisify(db.deleteUser))(email);
-                await (util.promisify(dbShop.deleteShop))(user.shopID)
             }
             catch(e){
                 res.send(e.toString());
