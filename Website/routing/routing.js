@@ -11,8 +11,10 @@ const isLoggedIn = require(controllersDir + '/middlewares/isLoggedIn');
 const { check_user } = require(controllersDir + '/AJAXrelated/check_user.js');
 const {searchShop} = require(controllersDir + '/searchShop.js');
 const {addProduct} = require(controllersDir + '/products.js')
+const {newShopGET, newShopPOST} = require(controllersDir + '/addNewShop');
 //addresses
 const addresses = require(controllersDir + '/AJAXrelated/addresses');
+
 
 //routing
 router.get('/', getHomePage);
@@ -37,6 +39,10 @@ router.get('/logout', logout);
 //addresses points
 router.get('/addresses/periferies', addresses.periferies);
 router.get('/addresses/poleis', addresses.poleis);
+
+//add Shop Page
+router.get('/addNewShop', addNewShopGET);
+router.post('/addNewShop', addNewShopPOST);
 //testing section
 //router.get('/test', testModule);
 
