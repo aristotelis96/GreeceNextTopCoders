@@ -10,6 +10,7 @@ const { login, logout, signupGET, signupPOST } = require(controllersDir + '/logi
 const isLoggedIn = require(controllersDir + '/middlewares/isLoggedIn');
 const { check_user } = require(controllersDir + '/AJAXrelated/check_user.js');
 const {searchShop} = require(controllersDir + '/searchShop.js');
+const {addProduct} = require(controllersDir + '/products.js')
 //addresses
 const addresses = require(controllersDir + '/AJAXrelated/addresses');
 
@@ -24,6 +25,9 @@ router.get('/userPage', userPage);
 
 //check if user is logged middleware
 router.all('/login*', isLoggedIn);
+//Products 
+router.get('/addproduct', addProduct);
+router.post('/addproduct', addProduct);
 //login pages
 router.get('/login', login);
 router.post('/login', login);

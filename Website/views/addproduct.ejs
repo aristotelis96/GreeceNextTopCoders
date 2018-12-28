@@ -1,0 +1,74 @@
+<% include ./partials/header.ejs %>
+</head>
+<body>
+<% include partials/navbar.ejs %>
+<% if (!login) { %>
+<EasterEgg class="text-center">
+<h3> Μπορείς να προσθέσεις προϊόντα μόνο αν είσαι εγκεγραμμένος χρήστης.</h3>
+<p>Πάτα <a href= "/login" >εδώ </a> για να συνδεθείς ή <a href= "/login/signup" >εδώ </a> για εγγραφή </p>
+</EasterEgg>
+<% } else { %>
+    <div class="my-auto mx-auto">
+        <div class="container">
+            <div class="row pt-xl-5">
+                <div class="col-12 mx-auto text-center">
+                    <h3>
+                        Προσθήκη νέου προϊόντος
+                    </h3>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 mx-auto">
+                        <form action="" method="POST" enctype="multipart/form-data">
+                            <div class="form-row">
+                                <h5 class="sm">Κατηγορία</h5>
+                                <select list="category" name="categoryInput" placeholder="Διάλεξε μια κατηγορία" class = "form-control form-control" required="">
+                                    <option value = "1h kathgoria">1h kathgoria</option>
+                                    <option value = "2h kathgotia">2h kathgoria</option>
+                                </select>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <h5>προϊόντα:</h5>
+                                    <input list="product" name="productInput" placeholder="προϊόν" class="form-control form-control"
+                                        required="as"  >
+                                    <datalist id="product">
+                                            <!-- LIST WITH AVAILABLE PRODUCTS ?-->
+                                            <option value="1o proion">
+                                            <option value="2o proion">
+                                            <option value="3o proion">
+                                            <option value="4o proion">
+                                            <option value="5o proion">
+                                    </datalist>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <h5 class="sm">Τιμή</h5>
+                                    <input type="number" step =0.01 name="priceInput" placeholder="Τιμή" class="form-control form-control"
+                                        required=""  >
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <h5 class="sm">Περιγραφη:</h5>
+                                    <input type="description" name="decriptionInput" placeholder="Περιγραφη" class="form-control form-control"
+                                        required=""  >
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <h5 class="sm">Εταιρία</h5>
+                                    <input type="company" name="companyInput" placeholder="Εταιρία" class="form-control form-control"
+                                        required="" >
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary btn-block" ng-disabled="SubmitButton">Προσθήκη</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+<% } %>
+</body>
+    
+</html>
