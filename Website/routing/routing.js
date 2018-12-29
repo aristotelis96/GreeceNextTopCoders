@@ -11,7 +11,7 @@ const isLoggedIn = require(controllersDir + '/middlewares/isLoggedIn');
 const { check_user } = require(controllersDir + '/AJAXrelated/check_user.js');
 const {searchShop} = require(controllersDir + '/searchShop.js');
 const {addProduct} = require(controllersDir + '/products.js')
-const {newShopGET, newShopPOST} = require(controllersDir + '/addNewShop');
+const {addNewShopGET, addNewShopPOST} = require(controllersDir + '/addNewShop');
 //addresses
 const addresses = require(controllersDir + '/AJAXrelated/addresses');
 

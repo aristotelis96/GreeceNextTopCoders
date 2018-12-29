@@ -29,6 +29,8 @@ addNewShopPOST = function (req, res) {
     let lng = req.body.lng;
     let lat = req.body.lat;
     let tags = req.body.tags;
+    if(!Array.isArray(tags) && tags!=undefined)
+        tags = [tags]; // if only 1 tag is inserted, req.body.tags returns a string
     // make sure shop doesnt exist
     const util = require('util'); //use of util.promisify();
     async function checkAndInsert() {
@@ -51,7 +53,6 @@ addNewShopPOST = function (req, res) {
             //check user
             let user = await (util.promisify(dbUser.returnUser))(emailInput);  
             user = user[0];
-            console.log(user);
             await (util.promisify(dbShop.insertShop))({
                 name: shopName,
                 periferia: periferia,
@@ -70,3 +71,4 @@ addNewShopPOST = function (req, res) {
     }
     checkAndInsert();
 }
+module.exports = {addNewShopGET, addNewShopPOST}

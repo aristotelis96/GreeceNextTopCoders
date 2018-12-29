@@ -44,6 +44,7 @@ CREATE TABLE tags (
 CREATE TABLE categorized_shop (
 	`shopID` BIGINT NOT NULL,
     `tagID` BIGINT NOT NULL,
+    PRIMARY KEY (`shopID`, `tagID`),
     FOREIGN KEY (shopID) REFERENCES shops(id),
     FOREIGN KEY (tagID) REFERENCES tags(id)
 );
@@ -61,6 +62,7 @@ CREATE TABLE products (
 CREATE TABLE categorized_product (
 	`productID` BIGINT NOT NULL,
     `tagID` BIGINT NOT NULL,
+    PRIMARY KEY (`productID`, `tagID`),
     FOREIGN KEY (productID) REFERENCES products(id),
     FOREIGN KEY (tagID) REFERENCES tags(id)
 );
