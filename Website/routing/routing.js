@@ -12,6 +12,8 @@ const { check_user } = require(controllersDir + '/AJAXrelated/check_user.js');
 const {searchShop} = require(controllersDir + '/searchShop.js');
 const {addProduct} = require(controllersDir + '/products.js')
 const {addNewShopGET, addNewShopPOST} = require(controllersDir + '/addNewShop');
+//get tags json for ajax request
+const {getTags} = require(controllersDir + '/AJAXrelated/getTags.js');
 //addresses
 const addresses = require(controllersDir + '/AJAXrelated/addresses');
 
@@ -43,6 +45,7 @@ router.get('/addresses/poleis', addresses.poleis);
 //add Shop Page
 router.get('/addNewShop', addNewShopGET);
 router.post('/addNewShop', addNewShopPOST);
+router.get('/getTags', getTags);
 //testing section
 //router.get('/test', testModule);
 

@@ -64,9 +64,12 @@
                                                     <div class="modal-body">
                                                         <div ng-repeat="tag in tags">
                                                             <div class="input-group mb-3">
-                                                                <input required=""name="tags" class="form-control" type="text" ng-model="tag.value"><button
-                                                                    type="button" class="btn btn-danger" ng-click="deleteTag(this)">Διαγραφή</button>
+                                                                <input required=""name="tags" class="form-control" type="text" ng-model="tag.value" ng-change="loadTags(this)"><button
+                                                                    type="button" class="btn btn-danger" ng-click="deleteTag(this)">Διαγραφή</button>  
                                                             </div>
+                                                            <ul class="list-group">
+                                                                <li class="list-group-item" ng-repeat="existingTag in tag.existingTags" ng-click="fillTextbox(existingTag, tag)">{{existingTag.name}}</li>
+                                                            </ul>
                                                         </div>
                                                         <button type="button" class="btn btn-primary" ng-click="addTag()">Πρόσθεσε</button>
                                                     </div>

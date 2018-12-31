@@ -20,7 +20,7 @@ getID = function (tag, callback) {
     })
 }
 insertShopTagRelation = function (shopID, tagID, callback) {
-    let query = "INSERT INTO categorized_shop (shopID, tagID) VALUES (" + pool.escape(shopID) + "," + pool.escape(tagID) + ");";
+    let query = "INSERT IGNORE INTO categorized_shop (shopID, tagID) VALUES (" + pool.escape(shopID) + "," + pool.escape(tagID) + ");";
     pool.query(query, (err, result) => {
         if(err)
             return callback(err);

@@ -14,7 +14,6 @@ app.controller('signup', function ($scope, $http) {
         let periferia = $scope.periferia;
         $http.get('/addresses/poleis?periferia=' + periferia)
         .then( (response) => {
-            console.log(response.data);
             $scope.poleis = response.data;
             $scope.poleisDis = false;
         });
@@ -24,12 +23,24 @@ app.controller('signup', function ($scope, $http) {
     //modal tags
     $scope.tags=[];
     addTag = function(){
-        $scope.tags.push({});
+        $scope.tags.push({existingTags: []});
     }
     deleteTag = function(field){
         $scope.tags.splice(field.$index,1);
     }
+    loadTags = function(field){
+        field.tag.existingTags = [];
+        $http.get('/getTags?name='+field.tag.value).then((response)=>{
+            field.tag.existingTags = response.data;
+        })
+    }
+    fillTextbox = function(selectedTag, input){
+        input.value = selectedTag.name;
+        input.existingTags = [];
+    }
+    $scope.fillTextbox = fillTextbox;
+    $scope.loadTags = loadTags;
     $scope.deleteTag = deleteTag;
-    $scope.addTag = addTag;
+    $scope.addTag = addTag;    
 });
 
