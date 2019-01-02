@@ -24,7 +24,8 @@ module.exports = {
             let decriptionInput = req.body.decriptionInput;
             let priceInput= req.body.priceInput;
             let categoryInput= req.body.categoryInput;
-            
+            let startdate= req.dody.startdateInput;
+            let enddate= req.dody.enddateInput;
         }
 
     }

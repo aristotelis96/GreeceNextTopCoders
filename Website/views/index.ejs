@@ -64,10 +64,11 @@
     </div>
 
     </div>
+    <% if (login) { %>
     <div>
         <a href='/addproduct'><button type="button" class="btn btn-primary">Πρόσθεσε ένα προϊόν!</button></a>
     </div>
-
+    <% } %>
     <!-- profile Image modal -->
   <% users.forEach((user, index) => { %>
   <div class="modal fade" id="Modal<%= user.email%>" tabindex="-1"  role="dialog">

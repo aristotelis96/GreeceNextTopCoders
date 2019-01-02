@@ -33,7 +33,7 @@
                                     <h5>προϊόντα:</h5>
                                     <input list="product" name="productInput" placeholder="προϊόν" class="form-control form-control"
                                         required="as"  >
-                                    <datalist id="product">
+                                    <datalist id="product"> <!-- bale correct analoga ti einai sto db-->
                                             <!-- LIST WITH AVAILABLE PRODUCTS ?-->
                                             <option value="1o proion">
                                             <option value="2o proion">
@@ -46,6 +46,18 @@
                                     <h5 class="sm">Τιμή</h5>
                                     <input type="number" step =0.01 name="priceInput" placeholder="Τιμή" class="form-control form-control"
                                         required=""  >
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <input type = "checkbox" id= "startcheck" onclick="startfunc()" > <b>Ημερομηνία Έναρξης Προσφοράς</b> <br >
+                                    <input type= "date" id = "displaystart" style="display:none" name="startdateInput"   class="form-control form-control"  >
+                                </div> 
+                                <div class="form-group col-md-6">
+                                    <input type = "checkbox" id= "endcheck" onclick="endfunc()" > <b>Ημερομηνία Λήξης Προσφοράς</b> <br >
+                                    
+                                    <input type= "date" id = "displayend" style="display:none" name="enddateInput" class="form-control form-control">
+                                    
                                 </div>
                             </div>
                             <div class="form-row">
@@ -70,5 +82,24 @@
                 </div>
 <% } %>
 </body>
-    
+<script>
+    function endfunc() {
+      var checkBox = document.getElementById("endcheck");
+      var text = document.getElementById("displayend");
+      if (checkBox.checked == true){
+        text.style.display = "block";
+      } else {
+         text.style.display = "none";
+      }
+    }
+    function startfunc() {
+      var checkBox = document.getElementById("startcheck");
+      var text = document.getElementById("displaystart");
+      if (checkBox.checked == true){
+        text.style.display = "block";
+      } else {
+         text.style.display = "none";
+      }
+    }
+</script>
 </html>
