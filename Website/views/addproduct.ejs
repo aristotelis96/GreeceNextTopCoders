@@ -31,15 +31,22 @@
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <h5>προϊόντα:</h5>
-                                    <input list="product" name="productInput" placeholder="προϊόν" class="form-control form-control"
+                                    <input list="product" id="productid" name="productInput" placeholder="προϊόν" class="form-control form-control"
                                         required="as"  >
                                     <datalist id="product"> <!-- bale correct analoga ti einai sto db-->
                                             <!-- LIST WITH AVAILABLE PRODUCTS ?-->
-                                            <option value="1o proion">
+                                            <% if (products.length > 0) { %>
+                                            <% products.forEach((product, index) => { %> <!---->
+                                            <option value="<%= product.name %>">
+                                            <% } ) }else { %>
+                                            <option>Nothing in db!</option>
+                                            <% } %>
+                                            <!--
                                             <option value="2o proion">
                                             <option value="3o proion">
                                             <option value="4o proion">
                                             <option value="5o proion">
+                                            -->
                                     </datalist>
                                 </div>
                                 <div class="form-group col-md-6">
@@ -70,8 +77,16 @@
                             <div class="form-row">
                                 <div class="form-group col-md-12">
                                     <h5 class="sm">Εταιρία</h5>
-                                    <input type="company" name="companyInput" placeholder="Εταιρία" class="form-control form-control"
+                                    <select list="company" name="companyInput" placeholder="Εταιρία" class="form-control form-control"
                                         required="" >
+                                        <% if (shops.length >0) {%>
+                                            <% shops.forEach((shop, index) => { %> <!---->
+                                                <option value="<%= shop.name %>"><%= shop.name %></option>
+                                                <% } ) %>
+                                        <% }else{ %>    
+                                            
+                                        <% } %>
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group">
