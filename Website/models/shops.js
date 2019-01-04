@@ -26,12 +26,12 @@ returnShop = function (name, callback) {
 }
 returnExactShop = function (fields, callback) {
     let query = "SELECT * FROM shops WHERE name = " + pool.escape(fields.name);
-    if (fields.phone != '')
+    if (fields.phone != '' && fields.phone != null)
         query += " && phone=" + pool.escape(fields.phone);
 
-    if (fields.lng != '')
+    if (fields.lng != '' && fields.lng != null)
         query += " && lng=" + pool.escape(fields.lng);
-    if (fields.lat != '')
+    if (fields.lat != '' && fields.lat != null)
         query += " && lat=" + pool.escape(fields.lat);
     if (fields.periferia != '' && fields.city != '' && fields.periferia != null && fields.city != null)
         query += " && addressID= (SELECT id FROM addresses WHERE periferia=" + pool.escape(fields.periferia) + " && city=" + pool.escape(fields.city) + ")";
