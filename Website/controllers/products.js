@@ -86,7 +86,7 @@ module.exports = {
                                 price: priceInput,
                                 dateFrom: startdateInput,
                                 dateTo: enddateInput,
-                                productID: resultProduct[0].id,              // edw paraponietai,"a foreign key constraint fails"
+                                productID: resultProduct[0].id,             //#fixed // edw paraponietai,"a foreign key constraint fails"
                                 shopID: resultShop[0].id
                             },(insertError,InsertResult) =>{
                                 if(insertError)                // pray for no errors....
