@@ -24,6 +24,7 @@ CREATE TABLE shops (
 	`id` BIGINT not null auto_increment,
     `name` varchar(255),
     `addressID` BIGINT,
+    `address` varchar(255) DEFAULT '',
     `phone` int,
     `lng` double,
     `lat` double,
@@ -74,6 +75,7 @@ CREATE TABLE prices (
     `productID` BIGINT NOT NULL,
     `shopID` BIGINT NOT NULL,
     FOREIGN KEY (productID) REFERENCES products(id),
-    FOREIGN KEY (shopID) REFERENCES shops(id)
+    FOREIGN KEY (shopID) REFERENCES shops(id),
+    PRIMARY KEY (`price`, `productID`, `shopID`)
 );
 
