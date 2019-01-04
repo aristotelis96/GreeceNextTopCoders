@@ -35,6 +35,9 @@ module.exports = {
             let enddateInput = req.body.enddate;
             let checkstartInput = req.body.start;    // check if date is given 
             let checkendInput = req.body.end;
+            let tags = req.body.tags;
+            if(!Array.isArray(tags) && tags != undefined)
+                tags = [tags];  // if only 1 tag is inserted, req.body.tags returns a string
 
             if (checkendInput == "on" && checkstartInput == "on") {
                 //do nothing ? 
@@ -59,7 +62,8 @@ module.exports = {
                         productInput = await (util.promisify(dbProducts.InsertInProducts))({
                             name: productInput,
                             description: decriptionInput,
-                            category: categoryInput
+                            category: categoryInput,
+                            tags: tags
                         })
                         //get id of new added product
                         productInput = productInput.insertId;
@@ -84,6 +88,8 @@ module.exports = {
                 }
                 catch (e) {
                     //in case of an error
+                    console.log(e);
+
                     return res.send(e.toString());
                 }
                 return res.redirect('/');

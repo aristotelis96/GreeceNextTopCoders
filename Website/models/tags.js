@@ -28,7 +28,15 @@ insertShopTagRelation = function (shopID, tagID, callback) {
             return callback(null, result);
     })
 }
-
+insertProductTagRelation = function (productID, tagID, callback) {
+    let query = "INSERT IGNORE INTO categorized_product (productID, tagID) VALUES (" + pool.escape(productID) + "," + pool.escape(tagID) + ");";
+    pool.query(query, (err, result) => {
+        if(err)
+            return callback(err);
+        else
+            return callback(null, result);
+    })
+}
 getTagNames = function (name, callback){
     let query = "SELECT name FROM tags WHERE name LIKE (CONCAT("+pool.escape(name)+",'%'))";
     pool.query(query, (err, result)=>{
@@ -38,4 +46,4 @@ getTagNames = function (name, callback){
             return callback (err, result);
     })
 }
-module.exports = { insertTag, getID, insertShopTagRelation, getTagNames}
+module.exports = { insertTag, getID, insertShopTagRelation, getTagNames, insertProductTagRelation}
