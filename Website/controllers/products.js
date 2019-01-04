@@ -81,19 +81,19 @@ module.exports = {
                                 "failed": "error while accesing db for product id"
                             });
                         }else { // now we got the id in result(???), inster in table prices
-                            console.log(resultProduct);
+                            //console.log(resultProduct);
                             dbProducts.InsertInPrices({
                                 price: priceInput,
                                 dateFrom: startdateInput,
                                 dateTo: enddateInput,
-                                productID: resultProduct,              // edw paraponietai,"a foreign key constraint fails"
-                                shopID: resultShop
+                                productID: resultProduct[0].id,              // edw paraponietai,"a foreign key constraint fails"
+                                shopID: resultShop[0].id
                             },(insertError,InsertResult) =>{
                                 if(insertError)                // pray for no errors....
                                     return res.send(insertError);
                                 else{
                                     var sess = req.session; // if all is good, go to home page
-                                    sess.email = emailInput;
+                                    //sess.email = emailInput;
                                     return res.redirect('/');
                                 }
                             })

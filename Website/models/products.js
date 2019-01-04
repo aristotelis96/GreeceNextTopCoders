@@ -24,7 +24,7 @@ const pool = require('./index').getPool();
     }
     InsertInProducts = function (fields, callback){
         let vals = " VALUES(" + pool.escape(fields.name) + "," + pool.escape(fields.description) + "," + pool.escape(fields.category) + ");" ;
-        let query = "INSERT INTO products (name, description, category)" + vals;
+        let query = "INSERT IGNORE INTO products (name, description, category)" + vals;
         pool.query(query, (err,result)=>{
             if(err) {
                 return callback(err);
@@ -45,7 +45,7 @@ const pool = require('./index').getPool();
     }
     InsertInPrices = function (fields, callback){
         let vals = " VALUES(" + pool.escape(fields.price) + "," + pool.escape(fields.dateFrom) + "," + pool.escape(fields.dateTo) +"," + pool.escape(fields.productID)+"," + pool.escape(fields.shopID) + ");" ;
-        let query = "INSERT INTO prices (price, dateFrom, dateTo, productID, shopID)" + vals;
+        let query = "INSERT IGNORE INTO prices (price, dateFrom, dateTo, productID, shopID)" + vals;
         pool.query(query, (err,result)=>{
             if(err) {
                 return callback(err);
