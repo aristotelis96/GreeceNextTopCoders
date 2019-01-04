@@ -31,8 +31,20 @@ module.exports = {
             let decriptionInput = req.body.decriptionInput;
             let priceInput= req.body.priceInput;
             let categoryInput= req.body.categoryInput;
-            let startdate= req.dody.startdateInput;
-            let enddate= req.dody.enddateInput;
+            let startdateInput= req.body.startdate;
+            let enddateInput= req.body.enddate;
+            let checkstartInput = req.body.start;
+            let checkendInput = req.body.end;
+
+            if (checkendInput == "on" && checkstartInput == "on"){
+
+            }else if (checkstartInput == "on"){
+                
+            }else if (checkendInput == "on"){
+
+            }else { 
+
+            }
         }
 
     }

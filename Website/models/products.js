@@ -12,4 +12,5 @@ const pool = require('./index').getPool();
             }
         });
     }
+    
     module.exports = {getAllProducts}

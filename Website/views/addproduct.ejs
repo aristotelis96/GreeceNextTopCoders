@@ -57,13 +57,13 @@
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
-                                    <input type = "checkbox" id= "startcheck" onclick="startfunc()" > <b>Ημερομηνία Έναρξης Προσφοράς</b> <br >
-                                    <input type= "date" id = "displaystart" style="display:none" name="startdateInput"   class="form-control form-control"  >
+                                    <input type = "checkbox" id= "startcheck" name = "start" onclick="startfunc()" > <b>Ημερομηνία Έναρξης Προσφοράς</b> <br >
+                                    <input type= "date" id = "displaystart" name = "startdate" value ="1453-05-29" style="display:none"    class="form-control form-control"  >
                                 </div> 
                                 <div class="form-group col-md-6">
-                                    <input type = "checkbox" id= "endcheck" onclick="endfunc()" > <b>Ημερομηνία Λήξης Προσφοράς</b> <br >
+                                    <input type = "checkbox" id= "endcheck" name= "end" onclick="endfunc()" > <b>Ημερομηνία Λήξης Προσφοράς</b> <br >
                                     
-                                    <input type= "date" id = "displayend" style="display:none" name="enddateInput" class="form-control form-control">
+                                    <input type= "date" id = "displayend" name ="enddate" value ="1453-05-29" style="display:none"  class="form-control form-control">
                                     
                                 </div>
                             </div>
@@ -71,7 +71,7 @@
                                 <div class="form-group col-md-12">
                                     <h5 class="sm">Περιγραφη:</h5>
                                     <input type="description" name="decriptionInput" placeholder="Περιγραφη" class="form-control form-control"
-                                        required=""  >
+                                          >
                                 </div>
                             </div>
                             <div class="form-row">
