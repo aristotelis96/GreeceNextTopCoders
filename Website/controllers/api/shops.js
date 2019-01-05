@@ -11,6 +11,8 @@ getShops =  function (req, res) {
     let status = req.query.status;
     if (status != 'ALL' && status != 'WITHDRAWN')
         status = 'ACTIVE';
+    if(req.params.id!=null)
+        status = 'ALL'; // if user requested specific shop we need to search for everything
     let sort = req.query.sort;
     if (sort != 'id|ASC' && sort != 'name|ASC' && sort != 'name|DESC')
         sort = 'id|DESC';
