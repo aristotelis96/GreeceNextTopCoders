@@ -43,7 +43,16 @@ getTagNames = function (name, callback){
         if(err)
             return callback(err);
         else
-            return callback (err, result);
+            return callback (null, result);
     })
 }
-module.exports = { insertTag, getID, insertShopTagRelation, getTagNames, insertProductTagRelation}
+getProductsTags = function (id, callback){
+    let query = "SELECT tags.name FROM (tags INNER JOIN categorized_product ON categorized_product.tagID = tags.id) WHERE categorized_product.productID =" + pool.escape(id) +";";
+    pool.query(query, (err, result)=>{
+        if(err)
+            return callback(err);
+        else
+            return callback(null, result);
+    })
+}
+module.exports = { insertTag, getID, insertShopTagRelation, getTagNames, insertProductTagRelation, getProductsTags}
