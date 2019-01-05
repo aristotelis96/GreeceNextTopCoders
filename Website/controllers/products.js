@@ -15,7 +15,7 @@ module.exports = {
             else
                 req.session.login = false;
             dbProducts.getAllProducts((err, result) => {
-                dbShops.getAllShops((err1, result1) => {
+                dbShops.getAllShops(null, (err1, result1) => {
                     res.render("addproduct.ejs", {
                         login: req.session.login,
                         title: "Πρόσθεσε προϊόν",
