@@ -67,18 +67,13 @@
                                     
                                 </div>
                             </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-12">
-                                    <h5 class="sm">Περιγραφη:</h5>
-                                    <input type="description" name="decriptionInput" placeholder="Περιγραφη" class="form-control form-control"
-                                          >
-                                </div>
-                            </div>
+                            
                             <div class="form-row">
                                 <div class="form-group col-md-12">
                                     <h5 class="sm">Εταιρία</h5>
-                                    <select list="company" name="companyInput" placeholder="Εταιρία" class="form-control form-control"
+                                    <input list="company" name="companyInput" placeholder="Εταιρία" class="form-control form-control"
                                         required="" >
+                                        <datalist id= "company">
                                         <% if (shops.length >0) {%>
                                             <% shops.forEach((shop, index) => { %> <!---->
                                                 <option value="<%= shop.name %>"><%= shop.name %></option>
@@ -86,11 +81,23 @@
                                         <% }else{ %>    
                                             
                                         <% } %>
-                                    </select>
+                                        </datalist>
+                                        <div>
+                                            <a class="btn btn-primary btn-block" href="/addnewshop">Προσθεστε μια εταιρία</a>
+                                        </div>
+                                </div>
+                                
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <h5 class="sm">Περιγραφη:</h5>
+                                    <input type="description" name="decriptionInput" placeholder="Περιγραφη" class="form-control form-control"
+                                          >
                                 </div>
                             </div>
+                            
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary btn-block" ng-disabled="SubmitButton">Προσθήκη</button>
+                                <button type="submit" class="btn btn-primary btn-block" ng-disabled="SubmitButton">Προσθήκη προϊόντος</button>
                             </div>
                         </form>
                     </div>
