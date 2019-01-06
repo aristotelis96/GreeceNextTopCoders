@@ -63,14 +63,14 @@
                                 <div class="form-group col-md-6">
                                     <input type="checkbox" id="startcheck" name="start" onclick="startfunc()"> <b>Ημερομηνία
                                         Έναρξης Προσφοράς</b> <br>
-                                    <input type="date" id="displaystart" name="startdate" value="1453-05-29" style="display:none"
+                                    <input type="date" id="displaystart" name="startdate" value="2019-05-29" style="display:none"
                                         class="form-control form-control">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <input type="checkbox" id="endcheck" name="end" onclick="endfunc()"> <b>Ημερομηνία
                                         Λήξης Προσφοράς</b> <br>
 
-                                    <input type="date" id="displayend" name="enddate" value="1453-05-29" style="display:none"
+                                    <input type="date" id="displayend" name="enddate" value="2019-05-29" style="display:none"
                                         class="form-control form-control">
 
                                 </div>
@@ -121,10 +121,11 @@
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="form-group col-md-12">
+                                <div class="form-group col-md-10">
                                     <h5 class="sm">Εταιρία</h5>
-                                    <select list="company" name="companyInput" placeholder="Εταιρία" class="form-control form-control"
+                                    <input list="company" name="companyInput" placeholder="Εταιρία" class="form-control form-control"
                                         required="">
+                                        <datalist id="company">
                                         <% if (shops.length >0) {%>
                                         <% shops.forEach((shop, index) => { %>
                                         <!---->
@@ -136,19 +137,14 @@
 
                                         <% } %>
                                         </datalist>
-                                        <div>
-                                            <a class="btn btn-primary btn-block" href="/addnewshop">Προσθεστε μια εταιρία</a>
-                                        </div>
+                                        
                                 </div>
-                                
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-12">
-                                    <h5 class="sm">Περιγραφη:</h5>
-                                    <input type="description" name="decriptionInput" placeholder="Περιγραφη" class="form-control form-control"
-                                          >
+                                <div class="form-group col-md-2">
+                                    <label>Δεν υπάρχει η εταιρία;</label>
+                                    <a class="btn btn-primary btn-block" href="/addnewshop">Πρόσθεσε μια εταιρία</a>
                                 </div>
                             </div>
+                            
                             
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary btn-block" ng-disabled="SubmitButton">Προσθήκη προϊόντος</button>
