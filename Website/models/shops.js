@@ -1,7 +1,20 @@
 const pool = require('./index').getPool();
 
-getAllShops = function (callback) {
-    let query = "SELECT * FROM `shops`;";
+getAllShops = function (fields, callback) {
+    let query = "SELECT * FROM `shops`";    
+    if (fields != null) {
+        if (fields.status == 'ACTIVE' || fields.status == 'WITHDRAWN') {
+            query += " WHERE withdrawn=";
+            if (fields.status == 'ACTIVE')
+                query += "0";
+            if (fields.status == 'WITHDRAWN')
+                query += '1';
+        }        
+        if (fields.sort != null) {
+            query += " ORDER BY " + fields.sort.column + " " + fields.sort.AscDesc;
+        }
+    }
+    query += ";";    
     pool.query(query, (err, result) => {
         if (err) {
             console.log('model error');
@@ -26,12 +39,12 @@ returnShop = function (name, callback) {
 }
 returnExactShop = function (fields, callback) {
     let query = "SELECT * FROM shops WHERE name = " + pool.escape(fields.name);
-    if (fields.phone != '')
+    if (fields.phone != '' && fields.phone != null)
         query += " && phone=" + pool.escape(fields.phone);
 
-    if (fields.lng != '')
+    if (fields.lng != '' && fields.lng != null)
         query += " && lng=" + pool.escape(fields.lng);
-    if (fields.lat != '')
+    if (fields.lat != '' && fields.lat != null)
         query += " && lat=" + pool.escape(fields.lat);
     if (fields.periferia != '' && fields.city != '' && fields.periferia != null && fields.city != null)
         query += " && addressID= (SELECT id FROM addresses WHERE periferia=" + pool.escape(fields.periferia) + " && city=" + pool.escape(fields.city) + ")";
@@ -76,18 +89,18 @@ insertShop = function (fields, callback) {
                 //insert all tags
                 let tagsIDs = [];
                 for (i = 0; i < tags.length; ++i) {
-                    if(tags[i]!=''){
+                    if (tags[i] != '') {
                         await (util.promisify(dbTag.insertTag))(tags[i]);
                         res = await (util.promisify(dbTag.getID))(tags[i]);
                         tagsIDs.push(res[0].id);
                     }
                 }
                 //insertShop
-                shop = await (async () =>{
+                shop = await (async () => {
                     // need promises, util.promisify doesnt work with pool.qeury
-                    return new Promise((resolve, reject)=>{
-                        pool.query(query, (err, result)=>{
-                            if(err)
+                    return new Promise((resolve, reject) => {
+                        pool.query(query, (err, result) => {
+                            if (err)
                                 reject(err);
                             else
                                 resolve(result);
@@ -95,7 +108,7 @@ insertShop = function (fields, callback) {
                     })
                 })();
                 //last insert tag-shop relation
-                for(i=0; i<tagsIDs.length; ++i)
+                for (i = 0; i < tagsIDs.length; ++i)
                     await (util.promisify(dbTag.insertShopTagRelation))(shop.insertId, tagsIDs[i]);
                 //return shop result
                 return callback(null, shop);
@@ -105,9 +118,9 @@ insertShop = function (fields, callback) {
             }
         }
         //else if no tags are provided just insert shop
-        else{
-            pool.query(query, (err, result)=>{
-                if(err)
+        else {
+            pool.query(query, (err, result) => {
+                if (err)
                     return callback(err);
                 else
                     return callback(null, result);

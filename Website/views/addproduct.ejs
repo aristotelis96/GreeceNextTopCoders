@@ -1,13 +1,14 @@
 <% include ./partials/header.ejs %>
 </head>
-<body>
-<% include partials/navbar.ejs %>
-<% if (!login) { %>
-<EasterEgg class="text-center">
-<h3> Μπορείς να προσθέσεις προϊόντα μόνο αν είσαι εγκεγραμμένος χρήστης.</h3>
-<p>Πάτα <a href= "/login" >εδώ </a> για να συνδεθείς ή <a href= "/login/signup" >εδώ </a> για εγγραφή </p>
-</EasterEgg>
-<% } else { %>
+
+<body ng-app="addProduct">
+    <% include partials/navbar.ejs %>
+    <% if (!login) { %>
+    <EasterEgg class="text-center">
+        <h3> Μπορείς να προσθέσεις προϊόντα μόνο αν είσαι εγκεγραμμένος χρήστης.</h3>
+        <p>Πάτα <a href="/login">εδώ </a> για να συνδεθείς ή <a href="/login/signup">εδώ </a> για εγγραφή </p>
+    </EasterEgg>
+    <% } else { %>
     <div class="my-auto mx-auto">
         <div class="container">
             <div class="row pt-xl-5">
@@ -23,25 +24,28 @@
                         <form action="" method="POST" enctype="multipart/form-data">
                             <div class="form-row">
                                 <h5 class="sm">Κατηγορία</h5>
-                                <select list="category" name="categoryInput" placeholder="Διάλεξε μια κατηγορία" class = "form-control form-control" required="">
-                                    <option value = "Ψυχαγωγία">Ψυχαγωγία</option>
-                                    <option value = "2h kathgotia">2h kathgoria</option>
+                                <select list="category" name="categoryInput" placeholder="Διάλεξε μια κατηγορία" class="form-control form-control"
+                                    required="">
+                                    <option value="Ψυχαγωγία">Ψυχαγωγία</option>
+                                    <option value="2h kathgotia">2h kathgoria</option>
                                 </select>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <h5>προϊόντα:</h5>
                                     <input list="product" id="productid" name="productInput" placeholder="προϊόν" class="form-control form-control"
-                                        required="as"  >
-                                    <datalist id="product"> <!-- bale correct analoga ti einai sto db-->
-                                            <!-- LIST WITH AVAILABLE PRODUCTS ?-->
-                                            <% if (products.length > 0) { %>
-                                            <% products.forEach((product, index) => { %> <!---->
-                                            <option value="<%= product.name %>">
+                                        required="as">
+                                    <datalist id="product">
+                                        <!-- bale correct analoga ti einai sto db-->
+                                        <!-- LIST WITH AVAILABLE PRODUCTS ?-->
+                                        <% if (products.length > 0) { %>
+                                        <% products.forEach((product, index) => { %>
+                                        <!---->
+                                        <option value="<%= product.name %>">
                                             <% } ) }else { %>
-                                            <option>Nothing in db!</option>
-                                            <% } %>
-                                            <!--
+                                        <option>Nothing in db!</option>
+                                        <% } %>
+                                        <!--
                                             <option value="2o proion">
                                             <option value="3o proion">
                                             <option value="4o proion">
@@ -51,35 +55,85 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <h5 class="sm">Τιμή</h5>
-                                    <input type="number" step =0.01 name="priceInput" placeholder="Τιμή" class="form-control form-control"
-                                        required=""  >
+                                    <input type="number" step=0.01 name="priceInput" placeholder="Τιμή" class="form-control form-control"
+                                        required="">
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
-                                    <input type = "checkbox" id= "startcheck" name = "start" onclick="startfunc()" > <b>Ημερομηνία Έναρξης Προσφοράς</b> <br >
-                                    <input type= "date" id = "displaystart" name = "startdate" value ="1453-05-29" style="display:none"    class="form-control form-control"  >
-                                </div> 
+                                    <input type="checkbox" id="startcheck" name="start" onclick="startfunc()"> <b>Ημερομηνία
+                                        Έναρξης Προσφοράς</b> <br>
+                                    <input type="date" id="displaystart" name="startdate" value="1453-05-29" style="display:none"
+                                        class="form-control form-control">
+                                </div>
                                 <div class="form-group col-md-6">
-                                    <input type = "checkbox" id= "endcheck" name= "end" onclick="endfunc()" > <b>Ημερομηνία Λήξης Προσφοράς</b> <br >
-                                    
-                                    <input type= "date" id = "displayend" name ="enddate" value ="1453-05-29" style="display:none"  class="form-control form-control">
-                                    
+                                    <input type="checkbox" id="endcheck" name="end" onclick="endfunc()"> <b>Ημερομηνία
+                                        Λήξης Προσφοράς</b> <br>
+
+                                    <input type="date" id="displayend" name="enddate" value="1453-05-29" style="display:none"
+                                        class="form-control form-control">
+
                                 </div>
                             </div>
-                            
+                            <div class="form-row">
+                                <div class="form-group col-md-10">
+                                    <h5 class="sm">Περιγραφη:</h5>
+                                    <input type="description" name="decriptionInput" placeholder="Περιγραφη" class="form-control form-control">
+                                </div>
+                                <div class="form-group col-md-2" ng-controller="addProduct">
+                                    <label>Κατηγορίες (Tags)</label>
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Πρόσθεσε</button>
+                                    <!-- The Modal -->
+                                    <div class="modal fade" id="myModal">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+
+                                                <!-- Modal Header -->
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">Κατηγορίες που ανοίκει το κατάστημα</h4>
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                </div>
+
+                                                <!-- Modal body -->
+                                                <div class="modal-body">
+                                                    <div ng-repeat="tag in tags">
+                                                        <div class="input-group mb-3">
+                                                            <input required="" name="tags" class="form-control" type="text"
+                                                                ng-model="tag.value" ng-change="loadTags(this)"><button
+                                                                type="button" class="btn btn-danger" ng-click="deleteTag(this)">Διαγραφή</button>
+                                                        </div>
+                                                        <ul class="list-group">
+                                                            <li class="list-group-item" ng-repeat="existingTag in tag.existingTags"
+                                                                ng-click="fillTextbox(existingTag, tag)">{{existingTag.name}}</li>
+                                                        </ul>
+                                                    </div>
+                                                    <button type="button" class="btn btn-primary" ng-click="addTag()">Πρόσθεσε</button>
+                                                </div>
+
+                                                <!-- Modal footer -->
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-info" data-dismiss="modal">Κλείσιμο</button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="form-row">
                                 <div class="form-group col-md-12">
                                     <h5 class="sm">Εταιρία</h5>
-                                    <input list="company" name="companyInput" placeholder="Εταιρία" class="form-control form-control"
-                                        required="" >
-                                        <datalist id= "company">
+                                    <select list="company" name="companyInput" placeholder="Εταιρία" class="form-control form-control"
+                                        required="">
                                         <% if (shops.length >0) {%>
-                                            <% shops.forEach((shop, index) => { %> <!---->
-                                                <option value="<%= shop.name %>"><%= shop.name %></option>
-                                                <% } ) %>
-                                        <% }else{ %>    
-                                            
+                                        <% shops.forEach((shop, index) => { %>
+                                        <!---->
+                                        <option value="<%= shop.name %>">
+                                            <%= shop.name %>
+                                        </option>
+                                        <% } ) %>
+                                        <% }else{ %>
+
                                         <% } %>
                                         </datalist>
                                         <div>
@@ -102,26 +156,53 @@
                         </form>
                     </div>
                 </div>
-<% } %>
+                <% } %>
 </body>
 <script>
     function endfunc() {
-      var checkBox = document.getElementById("endcheck");
-      var text = document.getElementById("displayend");
-      if (checkBox.checked == true){
-        text.style.display = "block";
-      } else {
-         text.style.display = "none";
-      }
+        var checkBox = document.getElementById("endcheck");
+        var text = document.getElementById("displayend");
+        if (checkBox.checked == true) {
+            text.style.display = "block";
+        } else {
+            text.style.display = "none";
+        }
     }
     function startfunc() {
-      var checkBox = document.getElementById("startcheck");
-      var text = document.getElementById("displaystart");
-      if (checkBox.checked == true){
-        text.style.display = "block";
-      } else {
-         text.style.display = "none";
-      }
+        var checkBox = document.getElementById("startcheck");
+        var text = document.getElementById("displaystart");
+        if (checkBox.checked == true) {
+            text.style.display = "block";
+        } else {
+            text.style.display = "none";
+        }
     }
+    var app = angular.module('addProduct', []);
+
+    app.controller('addProduct', function ($scope, $http) {
+        //modal tags
+        $scope.tags = [];
+        addTag = function () {
+            $scope.tags.push({ existingTags: [] });
+        }
+        deleteTag = function (field) {
+            $scope.tags.splice(field.$index, 1);
+        }
+        loadTags = function (field) {
+            field.tag.existingTags = [];
+            $http.get('/getTags?name=' + field.tag.value).then((response) => {
+                field.tag.existingTags = response.data;
+            })
+        }
+        fillTextbox = function (selectedTag, input) {
+            input.value = selectedTag.name;
+            input.existingTags = [];
+        }
+        $scope.fillTextbox = fillTextbox;
+        $scope.loadTags = loadTags;
+        $scope.deleteTag = deleteTag;
+        $scope.addTag = addTag;
+    });
 </script>
+
 </html>

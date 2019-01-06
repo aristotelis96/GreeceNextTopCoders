@@ -36,4 +36,15 @@ getID = function (periferia, poli, callback){
         }
     })
 }
-module.exports = {getPeriferies, getPoleis, getID};
+getAddress = function (id, callback){
+    if(id==0) // empty addressID
+        return callback(null, [{city: '', periferia: ''}]);
+    let query = "SELECT addresses.city, addresses.periferia FROM addresses WHERE id=" + pool.escape(id);
+    pool.query(query, (err, result)=>{
+        if(err)
+            callback(err);
+        else   
+            callback(null, result);
+    })
+}
+module.exports = {getPeriferies, getPoleis, getID, getAddress};
