@@ -75,7 +75,9 @@ module.exports = {
                     const dbShop = require(appDir + '/models/shops.js');
                     var shop = await (util.promisify(dbShop.returnExactShop))({
                         name: companyInput
-                    });
+                    });                    
+                    if(shop.length == 0)
+                        throw new Error ('Shop does not exist');
                     //insert price
                     const dbPrices = require(appDir + '/models/prices.js');
                     await (util.promisify(dbPrices.InsertInPrices))({
@@ -83,13 +85,11 @@ module.exports = {
                         dateFrom: startdateInput,
                         dateTo: enddateInput,
                         productID: productInput,      
-                        shopID: shop[0].id
+                        shopID: shop[0].id          //ToDO. Maybe (?) Update price for all matching shops with given name
                     })
                 }
                 catch (e) {
                     //in case of an error
-                    console.log(e);
-
                     return res.send(e.toString());
                 }
                 return res.redirect('/');

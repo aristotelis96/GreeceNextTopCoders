@@ -58,6 +58,8 @@ http.createServer(function (req, res) {
 }).listen(80);
 
 var api = express();
+api.use(express.json());       // to support JSON-encoded bodies.
+api.use(express.urlencoded({extended: true})); // to support URL-encoded bodies
 var apiRouter = require('./routing/apiRouting.js');
 api.use('/observatory/api', apiRouter);
 https.createServer({
