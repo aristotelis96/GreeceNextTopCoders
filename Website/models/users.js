@@ -26,8 +26,8 @@ returnUser = function (email, callback) {
 }
 
 insertUser = function (fields, callback) {
-    let query_sets = "INSERT INTO users (email, password, image, user_or_shop"
-    let query_vals = " VALUES(" + pool.escape(fields.email) +"," + pool.escape(fields.password) + "," + pool.escape(fields.image) +"," + pool.escape(fields.user_or_shop);
+    let query_sets = "INSERT INTO users (email, password, image"
+    let query_vals = " VALUES(" + pool.escape(fields.email) +"," + pool.escape(fields.password) + "," + pool.escape(fields.image);
     if(fields.name!= null && fields.name!=''){
         query_sets += ", name";
         query_vals += "," + pool.escape(fields.name);

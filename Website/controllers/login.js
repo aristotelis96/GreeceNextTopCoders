@@ -128,7 +128,6 @@ module.exports = {
                         email: emailInput,
                         password: EncryptedPass,
                         image: image_name,
-                        user_or_shop: "user",
                         name: name,
                         surname: surname
                     }, (err, result) => {

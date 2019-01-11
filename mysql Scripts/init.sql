@@ -14,7 +14,6 @@ CREATE TABLE users (
     `email` varchar(255) NOT NULL,
     `password` varchar(255) NOT NULL,
 	`image` varchar(255),
-    `user_or_shop` varchar(255) NOT NULL,
     `name` varchar(255) DEFAULT 'anonymous',
     `surname` varchar(255) DEFAULT 'anonymous',
     PRIMARY KEY (`id`)
