@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const jo = require('jpeg-autorotate');
 const db = require(appDir + '/models/users');
 const dbShop = require(appDir + '/models/shops');
+const dbPrices = require(appDir + '/models/prices')
 const saltRounds = 12;
 
 module.exports = {
@@ -44,13 +45,20 @@ module.exports = {
             }
             if (result.length == 0) {
                 return res.redirect('/');
-            }
-            res.render('userPage.ejs', {
-                title: "Επεξεργασία προφίλ",
-                user: result[0],
-                login: req.session.login,
-                name: req.session.email
-            })
+            } /** */
+            dbPrices.pricesOfUser(result[0].id, (err, result) => {         // otan ginei to model tote 8a to kanoume (Y)
+                if (err) {
+                    return res.status(500).send('db error pricesofuser');
+                } else {
+                    res.render('userPage.ejs', {
+                        title: "Επεξεργασία προφίλ",
+                        user: result[0],
+                        login: req.session.login,
+                        name: req.session.email,
+                        Usrproducts: result
+                    })
+                }
+            }) 
         })
     },
     userPagepost: (req, res) => {
@@ -69,7 +77,7 @@ module.exports = {
                 return res.redirect('/');
             }
             let user = await (util.promisify(db.returnUser))(email);
-            user = user[0];           
+            user = user[0];
             if (req.files != undefined && req.files.image != null) {
                 try {
                     if (user.image != 'anonymous.png') {
@@ -122,7 +130,7 @@ module.exports = {
                     });
                 }
             } else {
-                newpassword = user.password ;
+                newpassword = user.password;
             }
             db.updateUser({
                 id: user.id,
@@ -131,12 +139,12 @@ module.exports = {
                 image: newimage,
                 name: user.name,
                 surname: user.surname
-            }, (err,result)=> {
+            }, (err, result) => {
                 if (err) {
                     return res.send(err);
                 } else {
                     // if no error, return to home page logged in
-                   
+
                     return res.redirect('/userpage');
                 }
             })

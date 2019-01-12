@@ -12,4 +12,8 @@ InsertInPrices = function (fields, callback) {
         }
     })
 }
-module.exports = { InsertInPrices };
+
+pricesOfUser = function (userId, callback){
+    throw new Error('Not Implemented');
+}
+module.exports = { InsertInPrices, pricesOfUser };
