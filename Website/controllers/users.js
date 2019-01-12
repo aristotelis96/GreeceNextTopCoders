@@ -1,6 +1,10 @@
 const fs = require('fs');
+const bcrypt = require('bcrypt');
+const jo = require('jpeg-autorotate');
 const db = require(appDir + '/models/users');
 const dbShop = require(appDir + '/models/shops');
+const saltRounds = 12;
+
 module.exports = {
     deleteUser: (req, res) => {
         let email = req.query.user;
@@ -60,16 +64,16 @@ module.exports = {
         var newimage;
         var newpassword;
         async function UpdateUser() {
+            const util = require('util');
             if (!req.session.email) {
                 return res.redirect('/');
             }
             let user = await (util.promisify(db.returnUser))(email);
-            user = user[0];
+            user = user[0];           
             if (req.files != undefined && req.files.image != null) {
                 try {
                     if (user.image != 'anonymous.png') {
-                        await (util.promisify(fs.unlink))(`public/assets/profileImg/` + email + '.png')
-                        await (util.promisify(fs.unlink))(`public/assets/profileImg/` + email + '.jpeg')
+                        await (util.promisify(fs.unlink))(`public/assets/profileImg/` + user.image);
                     }
                 }
                 catch (e) {
@@ -83,7 +87,7 @@ module.exports = {
                     return res.send('wrong image type');
                 }
                 // how the file will be stored
-                image_name = emailInput + '.' + fileExtension;
+                image_name = user.email + '.' + fileExtension;
                 uploadedFile.mv('public/assets/profileImg/' + image_name, (err) => {
                     if (err) {
                         return (err + " upload.mv failed");
@@ -103,24 +107,24 @@ module.exports = {
                         })
                     }
                 });
-                newimage = image.name;
+                newimage = image_name;
             } else {
                 newimage = user.image;
             }
-            if (password != null && passwordconf != null) {
-                if (password == passwordconf) {
+            if (password != null && passwordconf != null && password != '' && passwordconf != '') {
+                if (password == passwordconf && password.length > 8) {
                     var EncryptedPass = bcrypt.hashSync(password, saltRounds);
                     newpassword = EncryptedPass;
                 } else {
                     return res.send({
                         "code": 404,
-                        "failed": "paswords dont match"
+                        "failed": "paswords dont match or password two small"
                     });
                 }
             } else {
                 newpassword = user.password ;
             }
-            db.updateuser({
+            db.updateUser({
                 id: user.id,
                 email: user.email,
                 password: newpassword,
@@ -137,5 +141,6 @@ module.exports = {
                 }
             })
         }
+        UpdateUser();
     }
 };
