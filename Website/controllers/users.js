@@ -29,7 +29,7 @@ module.exports = {
         }
         deleteAll();
     },
-    userPage: (req, res) => {
+    userPageget: (req, res) => {
         if (!req.session.email) {
             return res.redirect('/');
         }
@@ -49,7 +49,7 @@ module.exports = {
             })
         })
     },
-    UserPagePost: (req, res) => {
+    userPagepost: (req, res) => {
         var password = req.body.password;
         var passwordconf = req.body.passwordconf;
         var image = req.body.image;
