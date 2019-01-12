@@ -1,0 +1,47 @@
+<% include ./partials/header.ejs %>
+</head>
+<body>
+    <% include ./partials/navbar.ejs %>
+    <div class="row">
+        <div class="col-sm-4">.col-sm-4</div>
+        <div class="col-sm-8">
+            <% if (results.length > 0 ) {%>
+            <div class="table-responsive">    
+            <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Κατάστημα</th>
+                    <th scope="col">Προϊόν</th>
+                    <th scope="col">Τιμή</th>
+                    <% if (login) {%>
+                    <th scope="col">Επιλογές</th> 
+                    <% } %>   
+                  </tr>
+                </thead>
+                <tbody>
+                    <% results.forEach((result, index) => { %>
+                        <tr>
+                            <th scope="row">~</th>
+                            <td><%= result.shop %></td>
+                            <td><%= result.product %></td>
+                            <td><%= result.price %></td>
+                            <% if (login) {%>
+                            <td>
+                                <a href="" rel="noopener" class="btn btn-sm btn-success">Edit</a>
+                                <a href="" class="btn btn-sm btn-danger">Delete</a>
+                            </td>
+                            <% } %>
+                        </tr>
+                    <% }) %>
+                </tbody>
+                </table>
+            </div> 
+            <% } else { %>
+                <p class="text-center">Δεν βρέθηκαν σχετικά αποτελέσματα</p>  
+            <% } %>
+        </div>
+      </div>
+</body>
+
+</html>

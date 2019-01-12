@@ -16,14 +16,13 @@ const {addNewShopGET, addNewShopPOST} = require(controllersDir + '/addNewShop');
 const {getTags} = require(controllersDir + '/AJAXrelated/getTags.js');
 //addresses
 const addresses = require(controllersDir + '/AJAXrelated/addresses');
-
-
+const output = require(controllersDir + 'output.js');
+const search = require(controllersDir +'/search.js');
 //routing
 router.get('/', getHomePage);
 
 router.get('/check_user/', check_user);
 router.get('/searchShop', searchShop);
-
 router.get('/delete/', deleteUser);
 router.get('/userPage', userPage);
 
@@ -41,14 +40,15 @@ router.get('/logout', logout);
 //addresses points
 router.get('/addresses/periferies', addresses.periferies);
 router.get('/addresses/poleis', addresses.poleis);
-
+//search 
+router.get('/search', search);
+router.post('/search/output', output);
 //add Shop Page
 router.get('/addNewShop', addNewShopGET);
 router.post('/addNewShop', addNewShopPOST);
 router.get('/getTags', getTags);
 //testing section
 //router.get('/test', testModule);
-
 //error page if all fails. This should always be last
 router.get('*', function(req,res){
     res.send("<html><body><h1>Η σελίδα δεν βρέθηκε</h1><h2>Κάνε κλικ <a href='/'>εδώ</a> για να μεταφερθείς στην αρχική σελίδα</h2></body></html>");
