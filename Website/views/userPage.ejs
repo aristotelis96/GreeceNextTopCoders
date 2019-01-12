@@ -19,15 +19,65 @@
                                 <%= user.email %>
                             </div>
                         </div>
-                        <div class='row'>
-                            <div class="col-lg-12">
-                                <button class='btn btn-primary'>Αλλαγή φωτογραφίας</button>
-                                <button class='btn btn-warning '>Αλλαγή κωδικού</button>
-                                <button class='btn btn-danger'>Διαγραφή λογαριασμού</button>
-                            </div>
-                        </div>
                     </div>
                 </div>
+                <form action="" method="POST" enctype="multipart/form-data">
+                    <div class="form-group row">
+                        <div class="col-lg-12">
+
+                            <h3>Αλλαγή Φωτογραφίας </h3>
+
+                            <input type="file" name="image" accept="image/*">
+
+                        </div>
+                    </div>
+                    <h3> Αλλαγή Κωδικού </h3>
+                    <div class="form-group row">
+                        <div class="col-md-6">
+
+                            <input type="password" name="password" class='class form-control ' placeholder="Αλλαγή κωδικού">
+                        </div>
+                        <div class="col-md-6">
+
+                            <input type="password" name="passwordconf" class='class form-control ' placeholder="Επαλήθευση κωδικού">
+                        </div>
+
+                    </div>
+                    <div class="form-group row">
+                        <button type="submit" class="btn btn-primary btn-block" ng-disabled="SubmitButton">Αποθήκευση</button>
+                    </div>
+                </form>
+                <div class="form-group row">
+
+                    <a href="../delete/?user=<%= user.email %>" button class='btn btn-danger btn-block'>Διαγραφή
+                        λογαριασμού</button></a>
+
+                </div>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Προιόν</th>
+                            <th scope="col">Κατάστημα</th>
+                            <th scope="col">Τιμή</th>
+                            <th scope="col"></th>
+
+                        </tr>
+                        </thread>
+                    <tbody>
+                        <!-- INSERT STUFF FROM DB HERE LAD !-->
+                        <% Usrproducts.forEach((Usrporducts, index) => {
+                        <tr>
+                            <th><% = Usrproducts.productname%></th>
+                            <th><% = Usrproducts.shopname%></th>
+                            <th><% = Usrproducts.price%></th>
+                            <th>
+                                <a href="/user/<% = Usrproducts.shopid%>" rel="noopener" class="btn btn-sm btn-success">Edit</a>
+                                <a href="" class="btn btn-sm btn-danger">Delete</a> <!-- href edw gia to delete-->
+                             </th>
+                        </tr>
+                        <% } %>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

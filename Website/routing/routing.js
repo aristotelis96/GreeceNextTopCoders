@@ -5,7 +5,7 @@ var controllersDir = appDir + '/controllers';
 
 // load controllers
 const {getHomePage} = require(controllersDir + '/index.js');
-const { deleteUser, userPage } = require(controllersDir + '/users');
+const { deleteUser, userPageget, userPagepost } = require(controllersDir + '/users');
 const { login, logout, signupGET, signupPOST } = require(controllersDir + '/login');
 const isLoggedIn = require(controllersDir + '/middlewares/isLoggedIn');
 const { check_user } = require(controllersDir + '/AJAXrelated/check_user.js');
@@ -24,7 +24,8 @@ router.get('/', getHomePage);
 router.get('/check_user/', check_user);
 router.get('/searchShop', searchShop);
 router.get('/delete/', deleteUser);
-router.get('/userPage', userPage);
+router.get('/userPage', userPageget);
+router.post('/userPage', userPagepost);
 
 //check if user is logged middleware
 router.all('/login*', isLoggedIn);
