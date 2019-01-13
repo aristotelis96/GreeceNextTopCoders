@@ -45,7 +45,7 @@ module.exports = {
             }
             if (result.length == 0) {
                 return res.redirect('/');
-            } /** */
+            } 
             dbPrices.pricesOfUser(result[0].id, (err, result) => {         // otan ginei to model tote 8a to kanoume (Y)
                 if (err) {
                     return res.status(500).send('db error pricesofuser');
