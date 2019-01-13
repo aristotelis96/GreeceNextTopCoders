@@ -18,6 +18,7 @@ const {getTags} = require(controllersDir + '/AJAXrelated/getTags.js');
 const addresses = require(controllersDir + '/AJAXrelated/addresses');
 const output = require(controllersDir + '/output.js');
 const search = require(controllersDir +'/search.js');
+const { shoppage } = require(controllersDir + '/shopPage.js')
 //routing
 router.get('/', getHomePage);
 
@@ -26,6 +27,8 @@ router.get('/searchShop', searchShop);
 router.get('/delete/', deleteUser);
 router.get('/userPage', userPageget);
 router.post('/userPage', userPagepost);
+//shop page 
+router.get('/user/*',shoppage);
 
 //check if user is logged middleware
 router.all('/login*', isLoggedIn);
@@ -52,7 +55,7 @@ router.get('/getTags', getTags);
 //router.get('/test', testModule);
 //error page if all fails. This should always be last
 router.get('*', function(req,res){
-    res.send("<html><body><h1>Η σελίδα δεν βρέθηκε</h1><h2>Κάνε κλικ <a href='/'>εδώ</a> για να μεταφερθείς στην αρχική σελίδα</h2></body></html>");
+    res.render("notfound.ejs");
 });
 
 module.exports = router;
