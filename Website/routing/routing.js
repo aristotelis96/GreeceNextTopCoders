@@ -55,7 +55,7 @@ router.get('/getTags', getTags);
 //router.get('/test', testModule);
 //error page if all fails. This should always be last
 router.get('*', function(req,res){
-    res.send("<html><body><h1>Η σελίδα δεν βρέθηκε</h1><h2>Κάνε κλικ <a href='/'>εδώ</a> για να μεταφερθείς στην αρχική σελίδα</h2></body></html>");
+    res.render("notfound.ejs");
 });
 
 module.exports = router;
