@@ -16,7 +16,7 @@ const {addNewShopGET, addNewShopPOST} = require(controllersDir + '/addNewShop');
 const {getTags} = require(controllersDir + '/AJAXrelated/getTags.js');
 //addresses
 const addresses = require(controllersDir + '/AJAXrelated/addresses');
-const output = require(controllersDir + 'output.js');
+const output = require(controllersDir + '/output.js');
 const search = require(controllersDir +'/search.js');
 //routing
 router.get('/', getHomePage);
