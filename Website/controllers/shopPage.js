@@ -28,9 +28,9 @@ shoppage = function (req, res) {
                 shopphone: shop.phone,
                 shoplng: shop.lng,
                 shoplat: shop.lat,
-                shopuseremail: user.email,
-                shopcity: shop.address, // controller only sends ONE shop.address and view displays
-                shopperiferia: shop.address
+                shopuseremail: user.email,// not used
+                shopaddress: shop.address // controller only sends ONE shop.address and view displays
+                
             })
         }
         catch (e) {
