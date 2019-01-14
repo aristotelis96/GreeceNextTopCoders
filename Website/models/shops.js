@@ -50,8 +50,13 @@ returnExactShop = function (fields, callback) {
         query += " && lng=" + pool.escape(fields.lng);
     if (fields.lat != '' && fields.lat != null)
         query += " && lat=" + pool.escape(fields.lat);
-    if (fields.periferia != '' && fields.city != '' && fields.periferia != null && fields.city != null)
-        query += " && addressID= (SELECT id FROM addresses WHERE periferia=" + pool.escape(fields.periferia) + " && city=" + pool.escape(fields.city) + ")";
+    let address = ''
+    if(fields.periferia != null)
+        address += fields.periferia + ' ';
+    if(fields.city != null)
+        address += fields.city;
+    if(address != '')
+        query += "&& address=" + pool.escape(address);
     pool.query(query, (err, results) => {
         if (err) {
             return callback(err);
@@ -64,10 +69,15 @@ returnExactShop = function (fields, callback) {
 insertShop = function (fields, callback) {
     let query_sets = "INSERT INTO `website`.`shops` (name";
     let query_vals = "VALUES(" + pool.escape(fields.name);
-    if (fields.periferia != null && fields.poli != null) {
-        query_sets += ", addressID";
-        query_vals += ", (SELECT id FROM addresses WHERE periferia=" + pool.escape(fields.periferia) + "&& city=" + pool.escape(fields.poli) + ")"
+    let address = '';
+    if(fields.periferia != null){
+        address += fields.periferia + ' ';
     }
+    if(fields.city != null){
+        address += fields.city + ' ';
+    }
+    query_sets += ", address";
+    query_vals += "," + pool.escape(address);
     if (fields.phone != '') {
         query_sets += ", phone";
         query_vals += "," + pool.escape(fields.phone);

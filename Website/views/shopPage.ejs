@@ -1,14 +1,113 @@
 <% include ./partials/header.ejs %>
 <link rel="stylesheet" href="/css/login.css">
+<style>
+    #map {
+        height: 400px;
+        width: 100%;
+    }
+
+    div.a {
+        height: 400px;
+        width: 100%;
+        background-color: AntiqueWhite;
+    }
+</style>
 </head>
 
 <body>
     <div class="my-auto mx-auto">
         <% include ./partials/navbar.ejs %>
-        <h2>
-            <%= shopname%>
-        </h2>
+        <div class="container mt-">
+            <div class='jumbotron'>
+                <div>
+                    <h2 class='container text-center'>
+                        <%= shopname%>
+                    </h2>
+                    <div class='row p-5'>
+                        <div class='col-md-5'>
+                            <h5>Τηλέφωνο επικοινίας :
+                                <%if ( shopphone != null){%>
+                                <%= shopphone %>
+                                <% } else { %>
+                                <%= "Δεν έχει δωθεί" %>
+                                <%} %>
+                            </h5>
+                            <br>
+                            <h5>Πόλη :
+                                <%if ( shopcity != null){%>
+                                <%= shopcity %>
+                                <% } else { %>
+                                <%= "Δεν έχει δωθεί" %>
+                                <%} %>
+                            </h5>
+                            <br>
+                            <h5>Περιφέρια :
+                                <%if ( shopperiferia != null){%>
+                                <%= shopperiferia %>
+                                <% } else { %>
+                                <%= "Δεν έχει δωθεί" %>
+                                <%} %>
+                            </h5>
+                            <br>
+                            <h5>Καταχωρήθηκε από τον χρήστη :
+                                <%if ( shopuseremail != null){%>
+                                <%= shopuseremail %>
+                                <% } else { %>
+                                <%= "admin" %>
+                                <%} %>
+                            </h5>
+                            <br>
+                        </div>
+
+                        <div class='col-md-7 text-center'>
+                            <div class='a'>
+                                <div id="map"></div>
+                            </div>
+                            <%if (shoplng == 99999 || shoplat == 99999){ %>
+                            <div>Δεν έχουν δωθεί συντεταγμένες </div>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
+<script>
+    function initMap() {
+        var lang = <%=shoplng%> ;
+        var lati = <%=shoplat%> ;
+        var zooming;
+
+
+        var shopmarker;
+        if (lati == lang) {
+            shopmarker = {
+                lat: 37.983810,
+                lng: 23.727539
+            };
+            zooming = 6;
+        } else {
+            shopmarker = {
+                lat: lati,
+                lng: lang
+            };
+            zooming = 16;
+        }
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: zooming,
+            center: shopmarker
+        });
+        if (lang != lati)
+            var marker = new google.maps.Marker({
+                position: shopmarker,
+                map: map
+            });
+
+
+    }
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCJaiM1gLI2nYRcZO_PukSgLAXS-E0OaoI&callback=initMap">
+</script>
 
 </html>

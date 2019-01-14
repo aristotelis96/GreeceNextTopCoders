@@ -13,6 +13,16 @@ getAllUsers = function (callback) {
         }
     }); 
 }
+returnUserByID = function (id, callback) {
+    let query = "SELECT * FROM users WHERE id = " + pool.escape(id);
+    pool.query(query, (err, results) => {
+        if (err){
+            return callback(err);
+        } else {
+            return callback(null, results);
+        }
+    })
+}
 
 returnUser = function (email, callback) {
     let query = "SELECT * FROM users WHERE email = " + pool.escape(email);
@@ -75,4 +85,4 @@ updateUser = function (fields, callback){
         }
     })
 }
-module.exports = {getAllUsers, returnUser, insertUser, deleteUser, updateUser}
+module.exports = {getAllUsers, returnUser, insertUser, deleteUser, updateUser,returnUserByID}

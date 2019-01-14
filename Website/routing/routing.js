@@ -28,7 +28,7 @@ router.get('/delete/', deleteUser);
 router.get('/userPage', userPageget);
 router.post('/userPage', userPagepost);
 //shop page 
-router.get('/user/*',shoppage);
+router.get('/shopPage/:id',shoppage);
 
 //check if user is logged middleware
 router.all('/login*', isLoggedIn);

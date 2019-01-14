@@ -56,7 +56,7 @@ addNewShopPOST = function (req, res) {
             await (util.promisify(dbShop.insertShop))({
                 name: shopName,
                 periferia: periferia,
-                poli: poli,
+                city: poli,
                 phone: phone,
                 lng: lng,
                 lat: lat,

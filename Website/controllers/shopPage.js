@@ -2,35 +2,41 @@ const fs = require('fs');
 const session = require('express-session');
 const dbShops = require(appDir + '/models/shops.js')
 const dbaddresses = require(appDir + '/models/addresses.js')
+const dbusers = require(appDir + '/models/users.js')
 shoppage = function (req, res) {
-    var urlID = req.params;  // this gets the parameter from url
-    console.log(urlID[0])
-    dbShops.returnExactShop( {id: urlID[0]} , (err, result) => {
-        console.log(result)
-        if (err)
-            return res.status(666).send("Error in accesing Db\n" + err);
-        if (result.length == 0)
-            return res.redirect('/shopnotfound');
-        dbaddresses.getAddress(result[0].id, (err, resultaddress) =>{
-            if (err)
-            return res.status(666).send("Error in accesing Db for addresses\n" + err);
-            console.log(result[0].id);
-            console.log(resultaddress[0].city);
-            console.log(resultaddress[0].periferia);
-            res.render("shopPage.ejs",{
+    (async () => {
+        try {
+            var id = req.params.id;  // this gets the parameter from url   
+            if (isNaN(id)) {
+                throw new Error('Invalid shop Id: ' + id); //check id is number
+            }
+            const util = require('util');
+            let shop = (await (util.promisify(dbShops.returnExactShop))({ id: id }))[0];
+            if (shop == undefined)
+                throw new Error('Shop with id: ' + id + ' not found');            
+            if (shop.lat == null || shop.lng == null) {
+                shop.lng = 99999;
+                shop.lat = 99999;
+            }
+            let user = (await (util.promisify(dbusers.returnUserByID))(shop.userID))[0];
+            //ToDo update view for address
+            return res.render('shopPage.ejs', {
                 login: req.session.login,
                 title: "Σελίδα καταστήματος",
                 name: req.session.email,
-                shopname: result[0].name,
-                shopphone: result[0].phone,
-                shoplng: result[0].lng,
-                shoplat:result[0].lat,
-                shopuserID: result[0].userID,
-                shopcity: resultaddress[0].city,
-                shopperiferia: resultaddress[0].periferia             
+                shopname: shop.name,
+                shopphone: shop.phone,
+                shoplng: shop.lng,
+                shoplat: shop.lat,
+                shopuseremail: user.email,
+                shopcity: shop.address, // controller only sends ONE shop.address and view displays
+                shopperiferia: shop.address
             })
-        })
-    })
+        }
+        catch (e) {
+            return res.status(500).send("Internal Server Error: " + e.toString());
+        }
 
+    })(); return;
 }
 module.exports = { shoppage };
