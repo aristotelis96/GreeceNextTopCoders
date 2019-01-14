@@ -2,6 +2,10 @@ DROP DATABASE website;
 CREATE DATABASE website CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE website;
 
+CREATE TABLE categories (
+	`category` varchar(255)
+);
+    
 CREATE TABLE addresses (
 	`id` BIGINT,
     `city` varchar(255),
