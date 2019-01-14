@@ -35,18 +35,15 @@ getShops =  function (req, res) {
         apiResult.shops = [];
         let i;
         let end = parseInt(start) + parseInt(count);
-        const dbAddress = require(appDir + '/models/addresses');
         const dbTags = require(appDir + '/models/tags');
         for (i = start; (i < end) && (i < result.length); i++) {
-            let addressObj = await (util.promisify(dbAddress.getAddress))(result[i].addressID);
-            let address = addressObj[0].city + " " + addressObj[0].periferia + " " + result[i].address;
             let tags = await (util.promisify(dbTags.getProductsTags))(result[i].id);
             let withdrawn;
             if (result[i].withdrawn == 0) withdrawn = false; else withdrawn = true;
             apiResult.shops.push({
                 id: result[i].id,
                 name: result[i].name,
-                address: address,
+                address: result[i].address,
                 lng: result[i].lng,
                 lat: result[i].lat,
                 tags: tags,

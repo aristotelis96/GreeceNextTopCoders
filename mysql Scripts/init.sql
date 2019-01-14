@@ -22,7 +22,6 @@ CREATE TABLE users (
 CREATE TABLE shops (
 	`id` BIGINT not null auto_increment,
     `name` varchar(255),
-    `addressID` BIGINT,
     `address` varchar(255) DEFAULT '',
     `phone` int,
     `lng` double,
@@ -30,7 +29,6 @@ CREATE TABLE shops (
     `withdrawn` boolean DEFAULT false,
     `userID` BIGINT,
     PRIMARY KEY(`id`),
-    FOREIGN KEY (`addressID`) REFERENCES addresses(id),
     FOREIGN KEY (`userID`) REFERENCES users(id) ON DELETE CASCADE
 );
 
