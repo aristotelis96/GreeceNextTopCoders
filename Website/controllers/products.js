@@ -4,27 +4,36 @@ const bcrypt = require('bcrypt');
 const jo = require('jpeg-autorotate');
 const dbProducts = require(appDir + '/models/products.js');
 const dbShops = require(appDir + '/models/shops.js')
+const dbCategories = require(appDir + '/models/categories.js')
 const saltRounds = 12;
 
 module.exports = {
-    addProduct: (req, res) => {
+    addProduct: async (req, res) => {
         if (req.method == "GET") {
             var sess = req.session;
             if (req.session.email)
                 req.session.login = true;
             else
                 req.session.login = false;
-            dbProducts.getAllProducts((err, result) => {
-                dbShops.getAllShops(null, (err1, result1) => {
-                    res.render("addproduct.ejs", {
-                        login: req.session.login,
-                        title: "Πρόσθεσε προϊόν",
-                        name: req.session.email,
-                        products: result,
-                        shops: result1
-                    })
-                })
+            const util = require('util');
+            try {
+                var products = await (util.promisify(dbProducts.getAllProducts))();
+                var shops = await (util.promisify(dbShops.getAllShops))(null);
+                var categories = await (util.promisify(dbCategories.getCategories))();
+
+            } catch (e){
+                return res.status(500).send('internal server error' + e.toString());
+            }
+            return res.render("addproduct.ejs", {
+                login: req.session.login,
+                title: "Πρόσθεσε προϊόν",
+                name: req.session.email,
+                products: products,
+                shops: shops,
+                categories: categories
             })
+
+
         } else if (req.method == "POST") {
             let productInput = req.body.productInput; // inputed values
             let companyInput = req.body.companyInput; // use them to do 
@@ -36,7 +45,7 @@ module.exports = {
             let checkstartInput = req.body.start;    // check if date is given 
             let checkendInput = req.body.end;
             let tags = req.body.tags;
-            if(!Array.isArray(tags) && tags != undefined)
+            if (!Array.isArray(tags) && tags != undefined)
                 tags = [tags];  // if only 1 tag is inserted, req.body.tags returns a string
 
             if (checkendInput == "on" && checkstartInput == "on") {
@@ -75,16 +84,16 @@ module.exports = {
                     const dbShop = require(appDir + '/models/shops.js');
                     var shop = await (util.promisify(dbShop.returnExactShop))({
                         name: companyInput
-                    });                    
-                    if(shop.length == 0)
-                        throw new Error ('Shop does not exist');
+                    });
+                    if (shop.length == 0)
+                        throw new Error('Shop does not exist');
                     //insert price
                     const dbPrices = require(appDir + '/models/prices.js');
                     await (util.promisify(dbPrices.InsertInPrices))({
                         price: priceInput,
                         dateFrom: startdateInput,
                         dateTo: enddateInput,
-                        productID: productInput,      
+                        productID: productInput,
                         shopID: shop[0].id          //ToDO. Maybe (?) Update price for all matching shops with given name
                     })
                 }

@@ -26,8 +26,9 @@
                                 <h5 class="sm">Κατηγορία</h5>
                                 <select list="category" name="categoryInput" placeholder="Διάλεξε μια κατηγορία" class="form-control form-control"
                                     required="">
-                                    <option value="Ψυχαγωγία">Ψυχαγωγία</option>
-                                    <option value="2h kathgotia">2h kathgoria</option>
+                                    <% categories.forEach((category, index) => { %>
+                                    <option value="<%= category.category %>"><%= category.category %></option>
+                                    <% } ) %>
                                 </select>
                             </div>
                             <div class="form-row">
