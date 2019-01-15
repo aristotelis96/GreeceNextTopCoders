@@ -5,7 +5,10 @@ USE website;
 CREATE TABLE categories (
 	`category` varchar(255)
 );
-    
+insert into categories (category) values ('Φαγητό'),('Σινεμά'),
+									('Μουσική'),('Θέατρο'),
+                                    ('Μετακίνηση'),('Καφετέριες'),
+                                    ('Ποτό'),('Τεχνολογία'),('Άλλο');
 CREATE TABLE addresses (
 	`id` BIGINT,
     `city` varchar(255),
@@ -75,8 +78,10 @@ CREATE TABLE prices (
     `dateTo` DATE,
     `productID` BIGINT NOT NULL,
     `shopID` BIGINT NOT NULL,
+    `userID` BIGINT NOT NULL,
     FOREIGN KEY (productID) REFERENCES products(id),
     FOREIGN KEY (shopID) REFERENCES shops(id),
+    FOREIGN KEY (userID) REFERENCES users(id),
     PRIMARY KEY (`price`, `productID`, `shopID`)
 );
 
