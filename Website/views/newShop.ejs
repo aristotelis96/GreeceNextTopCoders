@@ -62,8 +62,8 @@
 
                                                     <!-- Modal body -->
                                                     <div class="modal-body">
-                                                        <div ng-repeat="tag in tags">
-                                                            <div class="input-group mb-3">
+                                                        <div ng-repeat="tag in tags" class="mb-3">
+                                                            <div class="input-group">
                                                                 <input required=""name="tags" class="form-control" type="text" ng-model="tag.value" ng-change="loadTags(this)"><button
                                                                     type="button" class="btn btn-danger" ng-click="deleteTag(this)">Διαγραφή</button>  
                                                             </div>

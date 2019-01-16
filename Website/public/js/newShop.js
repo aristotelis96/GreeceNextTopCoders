@@ -29,7 +29,6 @@ app.controller('signup', function ($scope, $http) {
         $scope.tags.splice(field.$index,1);
     }
     loadTags = function(field){
-        field.tag.existingTags = [];
         $http.get('/getTags?name='+field.tag.value).then((response)=>{
             field.tag.existingTags = response.data;
         })

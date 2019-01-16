@@ -11,9 +11,9 @@ app.controller('signup', function ($scope, $http) {
             $http.get("/check_user?email=" + $scope.email).then(function (response) {
                 if (response.data.exists) {
                     let msg = "Το email αυτό υπάρχει ήδη!";
-                    if ($scope.messages.indexOf(msg) == -1) { //make sure the message is not twice in messages array
-                        $scope.messages.push(msg);
-                    }
+                    //if ($scope.messages.indexOf(msg) == -1) { //make sure the message is not twice in messages array
+                    $scope.messages.push(msg);
+                   // }
                     $scope.SubmitButton = true;
                     $scope.alertFlag = true; // because http.get is done ASync flag is set BEFORE we have the results
                 }
