@@ -35,6 +35,9 @@ module.exports = {
 
 
         } else if (req.method == "POST") {
+            if(req.session.email == undefined)
+                res.redirect('/');
+            let user = req.session.userid;
             let productInput = req.body.productInput; // inputed values
             let companyInput = req.body.companyInput; // use them to do 
             let decriptionInput = req.body.decriptionInput;
@@ -94,6 +97,7 @@ module.exports = {
                         dateFrom: startdateInput,
                         dateTo: enddateInput,
                         productID: productInput,
+                        userID: user,
                         shopID: shop[0].id          //ToDO. Maybe (?) Update price for all matching shops with given name
                     })
                 }

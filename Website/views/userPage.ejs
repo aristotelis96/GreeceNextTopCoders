@@ -57,25 +57,24 @@
                     <thead>
                         <tr>
                             <th scope="col">Προιόν</th>
-                            <th scope="col">Κατάστημα</th>
                             <th scope="col">Τιμή</th>
+                            <th scope="col">Κατάστημα</th>
                             <th scope="col"></th>
 
                         </tr>
                         </thread>
                     <tbody>
                         <!-- INSERT STUFF FROM DB HERE LAD !-->
-                        <% Usrproducts.forEach((Usrporducts, index) => {
+                        <% Usrproducts.forEach((UsrProduct, index) => { %>
                         <tr>
-                            <th><% = Usrproducts.productname%></th>
-                            <th><% = Usrproducts.shopname%></th>
-                            <th><% = Usrproducts.price%></th>
+                            <th><%= UsrProduct.productName %></th>
+                            <th><%= UsrProduct.price %></th>
+                            <th><%= UsrProduct.shopname %></th>
                             <th>
-                                <a href="/shopPage/<% = Usrproducts.shopid%>" rel="noopener" class="btn btn-sm btn-success">Edit</a>
-                                <a href="" class="btn btn-sm btn-danger">Delete</a> <!-- href edw gia to delete-->
+                                <a href="/shopPage/<%= UsrProduct.shopid %>" rel="noopener" class="btn btn-sm btn-success">Σελίδα Καταστήματος</a>
                              </th>
                         </tr>
-                        <% } %>
+                        <% }) %>
                     </tbody>
                 </table>
             </div>

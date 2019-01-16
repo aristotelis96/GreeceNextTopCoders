@@ -78,10 +78,10 @@ CREATE TABLE prices (
     `dateTo` DATE,
     `productID` BIGINT NOT NULL,
     `shopID` BIGINT NOT NULL,
-    `userID` BIGINT NOT NULL,
+    `userID` BIGINT DEFAULT 1,
     FOREIGN KEY (productID) REFERENCES products(id),
     FOREIGN KEY (shopID) REFERENCES shops(id),
-    FOREIGN KEY (userID) REFERENCES users(id),
+    FOREIGN KEY (userID) REFERENCES users(id) ON DELETE SET NULL,
     PRIMARY KEY (`price`, `productID`, `shopID`)
 );
 

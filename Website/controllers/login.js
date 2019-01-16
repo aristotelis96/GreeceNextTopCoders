@@ -28,6 +28,7 @@ module.exports = {
                         if (bcrypt.compareSync(password, results[0].password)) {
                             var sess = req.session;
                             sess.email = emailInput;
+                            sess.userid = results[0].id;
                             res.redirect('/');
                         }
                         else {

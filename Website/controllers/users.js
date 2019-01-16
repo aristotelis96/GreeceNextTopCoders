@@ -46,16 +46,24 @@ module.exports = {
             if (result.length == 0) {
                 return res.redirect('/');
             } 
-            dbPrices.pricesOfUser(result[0].id, (err, result) => {         // otan ginei to model tote 8a to kanoume (Y)
+            dbPrices.pricesOfUser(result[0].id, (err, prices) => {         // otan ginei to model tote 8a to kanoume (Y)
                 if (err) {
                     return res.status(500).send('db error pricesofuser');
                 } else {
+                    UsrProducts = [];
+                    for(let i=0; i<prices.length; i++){
+                        UsrProducts.push({});
+                        UsrProducts[i].productName = prices[i].productName;
+                        UsrProducts[i].price = prices[i].price;
+                        UsrProducts[i].shopname = prices[i].shopName;
+                        UsrProducts[i].shopid = prices[i].shopID;
+                    }
                     res.render('userPage.ejs', {
                         title: "Επεξεργασία προφίλ",
                         user: result[0],
                         login: req.session.login,
                         name: req.session.email,
-                        Usrproducts: result
+                        Usrproducts: UsrProducts
                     })
                 }
             }) 
