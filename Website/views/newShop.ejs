@@ -87,11 +87,11 @@
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label>Γεωγραφικό πλάτος (longditude)</label>
-                                        <input type="number" value= "" step="0.00000000000001" min="-180" max="180" name="lng" id= "longditude" class="form-control">
+                                        <input type="number" value= "0" step="0.00000000000001" min="-180" max="180" name="lng" id= "longditude" class="form-control">
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label>Γεωγραφικό μήκος (latidude)</label>
-                                        <input type="number" value= "" step="0.00000000000001" min="-90" max="90" name="lat" id = "latidude" class="form-control">
+                                        <input type="number" value= "0" step="0.00000000000001" min="-90" max="90" name="lat" id = "latidude" class="form-control">
                                     </div>
                                     <div id="googleMap" style="width:100%;height:400px;"></div>
                                 </div>
@@ -130,9 +130,16 @@
         var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
         var long = document.getElementById("longditude");
         var lati = document.getElementById("latidude");
+        var marker = new google.maps.Marker({
+                position: {lat: 0 ,lng: 0}, 
+                map: map
+            });
         google.maps.event.addListener(map, 'click', function(event) {
         long.value = event.latLng.lng(); lati.value = event.latLng.lat();
+        let positionmap =  new google.maps.LatLng(event.latLng.lat(), event.latLng.lng());
+        marker.setPosition(positionmap)   ;
         });
+        
         }
         </script>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCJaiM1gLI2nYRcZO_PukSgLAXS-E0OaoI&callback=myMap"></script>
