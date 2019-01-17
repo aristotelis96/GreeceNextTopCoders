@@ -125,7 +125,7 @@
                                 <div class="form-group col-md-10">
                                     <h5 class="sm">Εταιρία</h5>
                                     <input list="company" name="companyInput" placeholder="Εταιρία" class="form-control form-control"
-                                        required="" ng-model="companyInput" ng-change="checkCompany()">
+                                        required="" ng-model="companyInput" ng-change="checkCompany()" autocomplete="off">
                                     <ul class="list-group">
                                         <li class="list-group-item" ng-repeat="company in companies" ng-click="fillCompany(company)">{{company.name}}</li>
                                     </ul>

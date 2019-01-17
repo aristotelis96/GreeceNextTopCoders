@@ -30,7 +30,7 @@ CREATE TABLE shops (
 	`id` BIGINT not null auto_increment,
     `name` varchar(255),
     `address` varchar(255) DEFAULT '',
-    `phone` int,
+    `phone` BIGINT,
     `lng` double,
     `lat` double,
     `withdrawn` boolean DEFAULT false,
@@ -50,8 +50,8 @@ CREATE TABLE categorized_shop (
 	`shopID` BIGINT NOT NULL,
     `tagID` BIGINT NOT NULL,
     PRIMARY KEY (`shopID`, `tagID`),
-    FOREIGN KEY (shopID) REFERENCES shops(id),
-    FOREIGN KEY (tagID) REFERENCES tags(id)
+    FOREIGN KEY (shopID) REFERENCES shops(id) ON DELETE CASCADE,
+    FOREIGN KEY (tagID) REFERENCES tags(id) ON DELETE CASCADE
 );
 
 CREATE TABLE products (
@@ -68,8 +68,8 @@ CREATE TABLE categorized_product (
 	`productID` BIGINT NOT NULL,
     `tagID` BIGINT NOT NULL,
     PRIMARY KEY (`productID`, `tagID`),
-    FOREIGN KEY (productID) REFERENCES products(id),
-    FOREIGN KEY (tagID) REFERENCES tags(id)
+    FOREIGN KEY (productID) REFERENCES products(id) ON DELETE CASCADE,
+    FOREIGN KEY (tagID) REFERENCES tags(id) ON DELETE CASCADE
 );
 
 CREATE TABLE prices (
@@ -79,8 +79,8 @@ CREATE TABLE prices (
     `productID` BIGINT NOT NULL,
     `shopID` BIGINT NOT NULL,
     `userID` BIGINT DEFAULT 1,
-    FOREIGN KEY (productID) REFERENCES products(id),
-    FOREIGN KEY (shopID) REFERENCES shops(id),
+    FOREIGN KEY (productID) REFERENCES products(id) ON DELETE CASCADE,
+    FOREIGN KEY (shopID) REFERENCES shops(id) ON DELETE CASCADE,
     FOREIGN KEY (userID) REFERENCES users(id) ON DELETE SET NULL,
     PRIMARY KEY (`price`, `productID`, `shopID`)
 );

@@ -128,7 +128,7 @@ module.exports = {
                 newimage = user.image;
             }
             if (password != null && passwordconf != null && password != '' && passwordconf != '') {
-                if (password == passwordconf && password.length > 8) {
+                if (password == passwordconf && password.length >= 8) {
                     var EncryptedPass = bcrypt.hashSync(password, saltRounds);
                     newpassword = EncryptedPass;
                 } else {
