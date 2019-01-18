@@ -39,7 +39,7 @@ module.exports = {
                 res.redirect('/');
             let user = req.session.userid;
             let productInput = req.body.productInput; // inputed values
-            let companyInput = req.body.companyInput; // use them to do 
+            let shopId = req.body.companyInput; // use them to do 
             let decriptionInput = req.body.decriptionInput;
             let priceInput = req.body.priceInput;
             let categoryInput = req.body.categoryInput;
@@ -85,9 +85,7 @@ module.exports = {
                     }
                     //find shop
                     const dbShop = require(appDir + '/models/shops.js');
-                    var shop = await (util.promisify(dbShop.returnExactShop))({
-                        name: companyInput
-                    });
+                    var shop = await (util.promisify(dbShop.returnShopByID))(shopId);
                     if (shop.length == 0)
                         throw new Error('Shop does not exist');
                     //insert price

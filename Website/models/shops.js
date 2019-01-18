@@ -37,6 +37,17 @@ returnShop = function (name, callback) {
         }
     })
 }
+returnShopByID = function(id, callback){
+    let query = "SELECT * FROM shops WHERE id="+ pool.escape(id);
+    pool.query(query, (err, results) => {
+        if (err) {
+            return callback(err);
+        }
+        else {
+            return callback(null, results);
+        }
+    })
+}
 returnExactShop = function (fields, callback) {
     let query = "SELECT * FROM shops WHERE";// name = " + pool.escape(fields.name);
     if (fields.name != '' && fields.name != null ) // if no name is given, it will search with id
@@ -51,11 +62,14 @@ returnExactShop = function (fields, callback) {
     if (fields.lat != '' && fields.lat != null)
         query += " && lat=" + pool.escape(fields.lat);
     let address = ''
-    if(fields.periferia != null)
+    if (fields.periferia != null)
         address += fields.periferia + ' ';
-    if(fields.city != null)
+    if (fields.city != null)
         address += fields.city;
-    if(address != '')
+    if (fields.address != null) {
+        address += fields.address + ' ';
+    }
+    if (address != '')
         query += "&& address=" + pool.escape(address);
     pool.query(query, (err, results) => {
         if (err) {
@@ -160,4 +174,4 @@ deleteShop = function (id, callback) {
         }
     })
 }
-module.exports = { getAllShops, returnShop, insertShop, returnExactShop, deleteShop };
+module.exports = { getAllShops, returnShop, insertShop, returnExactShop, deleteShop, returnShopByID};

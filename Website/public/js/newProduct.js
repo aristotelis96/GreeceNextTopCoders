@@ -72,6 +72,7 @@ app.controller('addProduct', function ($scope, $http) {
         $scope.companyInfo = company;
         $scope.companyInfoShow = true;
         $scope.SubmitButton = false;
+        $scope.companyId = company.id;
     }
 
 });
