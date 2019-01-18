@@ -26,7 +26,7 @@ getAllShops = function (fields, callback) {
     })
 }
 
-returnShop = function (name, callback) {
+returnShopByName = function (name, callback) {
     let query = "SELECT * FROM shops WHERE name LIKE CONCAT('%'," + pool.escape(name) + ",'%');";
     pool.query(query, (err, results) => {
         if (err) {
@@ -174,4 +174,4 @@ deleteShop = function (id, callback) {
         }
     })
 }
-module.exports = { getAllShops, returnShop, insertShop, returnExactShop, deleteShop, returnShopByID};
+module.exports = { getAllShops, returnShopByName, insertShop, returnExactShop, deleteShop, returnShopByID};
