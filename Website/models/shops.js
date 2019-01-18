@@ -76,6 +76,9 @@ insertShop = function (fields, callback) {
     if(fields.city != null){
         address += fields.city + ' ';
     }
+    if(fields.address != null){
+        address += fields.address + ' ';
+    }
     query_sets += ", address";
     query_vals += "," + pool.escape(address);
     if (fields.phone != '') {
@@ -89,6 +92,10 @@ insertShop = function (fields, callback) {
     if (fields.userID != null) {
         query_sets += ", userID";
         query_vals += "," + pool.escape(fields.userID);
+    }
+    if(fields.withdrawn != null){
+        query_sets += ", withdrawn";
+        query_vals += "," + ((pool.escape(fields.withdrawn)).toUpperCase()).replace(/'/g,'');
     }
     query_sets += ")";
     query_vals += ");";
@@ -120,7 +127,7 @@ insertShop = function (fields, callback) {
                                 resolve(result);
                         })
                     })
-                })();
+                })(); 
                 //last insert tag-shop relation
                 for (i = 0; i < tagsIDs.length; ++i)
                     await (util.promisify(dbTag.insertShopTagRelation))(shop.insertId, tagsIDs[i]);

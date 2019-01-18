@@ -34,7 +34,7 @@ CREATE TABLE shops (
     `lng` double,
     `lat` double,
     `withdrawn` boolean DEFAULT false,
-    `userID` BIGINT,
+    `userID` BIGINT DEFAULT 1,
     PRIMARY KEY(`id`),
     FOREIGN KEY (`userID`) REFERENCES users(id) ON DELETE CASCADE
 );

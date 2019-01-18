@@ -47,6 +47,7 @@ app.controller('addProduct', function ($scope, $http) {
     $scope.companyInfoShow = false; //shop info is displayed after shop is selected
     $scope.companies = [];    
     $scope.checkCompany = () => {
+        $scope.SubmitButton = true;
         let newComp = [];
         $scope.companyInfoShow = false;
         if ($scope.companyInput != undefined) {
@@ -70,6 +71,7 @@ app.controller('addProduct', function ($scope, $http) {
         $scope.companies = [];
         $scope.companyInfo = company;
         $scope.companyInfoShow = true;
+        $scope.SubmitButton = false;
     }
 
 });

@@ -127,7 +127,11 @@
                                     <input list="company" name="companyInput" placeholder="Εταιρία" class="form-control form-control"
                                         required="" ng-model="companyInput" ng-change="checkCompany()" autocomplete="off">
                                     <ul class="list-group">
-                                        <li class="list-group-item" ng-repeat="company in companies" ng-click="fillCompany(company)">{{company.name}}</li>
+                                        <li class="list-group-item" ng-repeat="company in companies" ng-click="fillCompany(company)">{{company.name}}
+                                            <ul>
+                                                <li>{{company.address}}</li>
+                                            </ul>
+                                        </li>
                                     </ul>
                                 </div>
                                 <div class="form-group col-md-2">
@@ -154,7 +158,7 @@
                                     </div>
                                 </div>
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary btn-block">Προσθήκη προϊόντος</button>
+                                <button type="submit" class="btn btn-primary btn-block" ng-disabled="SubmitButton">Προσθήκη προϊόντος</button>
                             </div>
                         </form>
                     </div>

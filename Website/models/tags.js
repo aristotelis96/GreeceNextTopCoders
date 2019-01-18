@@ -55,4 +55,13 @@ getProductsTags = function (id, callback){
             return callback(null, result);
     })
 }
-module.exports = { insertTag, getID, insertShopTagRelation, getTagNames, insertProductTagRelation, getProductsTags}
+getShopTags = function(id, callback){
+    let query = "SELECT tags.name FROM (tags INNER JOIN categorized_shop ON categorized_shop.tagID = tags.id) WHERE categorized_shop.shopID =" + pool.escape(id) +";";
+    pool.query(query, (err, result)=>{
+        if(err)
+            return callback(err);
+        else
+            return callback(null, result);
+    })
+}
+module.exports = { insertTag, getID, insertShopTagRelation, getTagNames, insertProductTagRelation, getProductsTags,getShopTags}
