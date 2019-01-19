@@ -1,6 +1,34 @@
 const db = require(appDir + '/models/shops.js');
 
 getShops =  function (req, res) {
+    var id = req.params.id;
+    if(id!=null){ // if id was provided in URL (ex. GET /shops/id?..) return specific shop
+        let apiResult = {};
+        if(isNaN(id)){
+            return res.status(400).send({message: "Bad request", err: "id is NaN"});
+        }
+        return db.returnShopByID(id, (err, result)=>{
+            if(err){
+                return res.status(500).send({message: "internal server error", err: err})
+            } else {
+                if(result.length == 0){
+                    return res.status(404).send({message: "Id not found"});
+                }
+                let withdrawn;
+                if (result[0].withdrawn == 0) withdrawn = false; else withdrawn = true;
+                apiResult = {
+                    id: result[0].id,
+                    name: result[0].name,
+                    address: result[0].address,
+                    lng: result[0].lng,
+                    lat: result[0].lat,
+                    tags: result[0].tags,
+                    withdrawn: withdrawn
+                }
+                return res.status(200).send(apiResult);
+            }
+        })
+    }
     let start = parseInt(req.query.start);
     if (isNaN(start))
         start = 0;
@@ -25,7 +53,7 @@ getShops =  function (req, res) {
                 sort: { column: column, AscDesc: AscDesc }
             });
         } catch (e) {
-            return res.status(500).send('Internal Server Error ' + e.toString());
+            return res.status(500).send({message: "Internal server error", err: e});
         }
         apiResult = {};
         apiResult.start = start;
@@ -36,6 +64,7 @@ getShops =  function (req, res) {
         let end = parseInt(start) + parseInt(count);
         const dbTags = require(appDir + '/models/tags');
         for (i = start; (i < end) && (i < result.length); i++) {
+            /* This should be moved to model, controller should not search for shop's tags */
             let tags = await (util.promisify(dbTags.getShopTags))(result[i].id);
             let withdrawn;
             if (result[i].withdrawn == 0) withdrawn = false; else withdrawn = true;
@@ -48,15 +77,6 @@ getShops =  function (req, res) {
                 tags: tags,
                 withdrawn: withdrawn
             });
-        }
-        var id = req.params.id;
-        if(id!=null){ // if id was provided in URL (ex. GET /shops/id?..) return specific shop
-            for(i=0; i<apiResult.shops.length; i++){
-                if(apiResult.shops[i].id==id)
-                    return res.status(200).json(apiResult.shops[i]);
-            }
-            // if none id matched an existing shop return error
-            return res.status(404).send('id not found');
         }
         return res.status(200).json(apiResult);
     })();

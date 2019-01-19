@@ -7,7 +7,7 @@ login = function (req, res) {
     var pass = req.body.password;
     dbUser.returnUser(user, (err, result) => {
         if (err) {
-            return res.status(500).send("Internal server error");
+            return res.status(500).send({message: "Internal server error", err: err});
         } else {
             if (result.length == 0)
                 return res.status(404).json({ message: 'User not found' });

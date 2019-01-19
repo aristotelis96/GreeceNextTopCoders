@@ -39,12 +39,30 @@ returnShopByName = function (name, callback) {
 }
 returnShopByID = function(id, callback){
     let query = "SELECT * FROM shops WHERE id="+ pool.escape(id);
-    pool.query(query, (err, results) => {
+    pool.query(query, (err, resultShop) => {
         if (err) {
             return callback(err);
         }
         else {
-            return callback(null, results);
+            /* Return if you dont find a shop */
+            if(resultShop.length == 0){
+                return callback(null, resultShop); 
+            }
+            /* Fetch tags of result shop */
+            const dbTags = require('./tags');
+            dbTags.getShopTags(resultShop[0].id, (err,resultTags)=>{
+                if(err){
+                    return callback(err);
+                } else{ 
+                    /* Create array of tags inside shop object */
+                    resultShop[0].tags = []; 
+                    resultTags.forEach(element => {
+                        resultShop[0].tags.push(element.name);
+                    })
+                    /* Return */
+                    return callback(null, resultShop);
+                }
+            })
         }
     })
 }
