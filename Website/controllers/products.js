@@ -1,11 +1,6 @@
-const fs = require('fs');
-const session = require('express-session');
-const bcrypt = require('bcrypt');
-const jo = require('jpeg-autorotate');
+
 const dbProducts = require(appDir + '/models/products.js');
-const dbShops = require(appDir + '/models/shops.js')
 const dbCategories = require(appDir + '/models/categories.js')
-const saltRounds = 12;
 
 module.exports = {
     addProduct: async (req, res) => {
@@ -18,7 +13,6 @@ module.exports = {
             const util = require('util');
             try {
                 var products = await (util.promisify(dbProducts.getAllProducts))();
-                var shops = await (util.promisify(dbShops.getAllShops))(null);
                 var categories = await (util.promisify(dbCategories.getCategories))();
 
             } catch (e){
@@ -29,7 +23,6 @@ module.exports = {
                 title: "Πρόσθεσε προϊόν",
                 name: req.session.email,
                 products: products,
-                shops: shops,
                 categories: categories
             })
 

@@ -1,4 +1,6 @@
 const pool = require('./index').getPool();
+const dbTags = require('./tags');
+const util = require('util');
 
 getAllShops = function (fields, callback) {
     let query = "SELECT * FROM `shops`";    
@@ -21,7 +23,21 @@ getAllShops = function (fields, callback) {
             return callback(err);
         }
         else {
-            return callback(null, result);
+            (async () => {
+                for(let i=0; i<result.length; i++) {
+                    result[i].tags = [];
+                    var resultTags;
+                    try {
+                        resultTags = await (util.promisify(dbTags.getShopTags))(result[i].id);
+                    } catch (e) {
+                        return callback(e.toString());
+                    }
+                    resultTags.forEach(tag => {
+                        result[i].tags.push(tag.name);
+                    })
+                }
+                return callback(null, result);
+            })();
         }
     })
 }
@@ -49,7 +65,6 @@ returnShopByID = function(id, callback){
                 return callback(null, resultShop); 
             }
             /* Fetch tags of result shop */
-            const dbTags = require('./tags');
             dbTags.getShopTags(resultShop[0].id, (err,resultTags)=>{
                 if(err){
                     return callback(err);
@@ -135,16 +150,14 @@ insertShop = function (fields, callback) {
     let tags = fields.tags;
     async function insert() {
         if (tags != null && tags.length > 0) {
-            const dbTag = require('./tags');
-            const util = require('util');
             let i;
             try {
                 //insert all tags
                 let tagsIDs = [];
                 for (i = 0; i < tags.length; ++i) {
                     if (tags[i] != '') {
-                        await (util.promisify(dbTag.insertTag))(tags[i]);
-                        res = await (util.promisify(dbTag.getID))(tags[i]);
+                        await (util.promisify(dbTags.insertTag))(tags[i]);
+                        res = await (util.promisify(dbTags.getID))(tags[i]);
                         tagsIDs.push(res[0].id);
                     }
                 }
@@ -162,7 +175,7 @@ insertShop = function (fields, callback) {
                 })(); 
                 //last insert tag-shop relation
                 for (i = 0; i < tagsIDs.length; ++i)
-                    await (util.promisify(dbTag.insertShopTagRelation))(shop.insertId, tagsIDs[i]);
+                    await (util.promisify(dbTags.insertShopTagRelation))(shop.insertId, tagsIDs[i]);
                 //return shop result
                 return callback(null, shop);
             }

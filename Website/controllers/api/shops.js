@@ -62,10 +62,7 @@ getShops =  function (req, res) {
         apiResult.shops = [];
         let i;
         let end = parseInt(start) + parseInt(count);
-        const dbTags = require(appDir + '/models/tags');
         for (i = start; (i < end) && (i < result.length); i++) {
-            /* This should be moved to model, controller should not search for shop's tags */
-            let tags = await (util.promisify(dbTags.getShopTags))(result[i].id);
             let withdrawn;
             if (result[i].withdrawn == 0) withdrawn = false; else withdrawn = true;
             apiResult.shops.push({
@@ -74,7 +71,7 @@ getShops =  function (req, res) {
                 address: result[i].address,
                 lng: result[i].lng,
                 lat: result[i].lat,
-                tags: tags,
+                tags: result[i].tags,
                 withdrawn: withdrawn
             });
         }
