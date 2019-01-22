@@ -63,7 +63,7 @@ addNewShopPOST = function (req, res) {
                 tags: tags,
                 userID: user.id
             });
-            res.redirect('/');
+            res.redirect('/addproduct');
         }
         catch (e) {
             res.send(e.toString());

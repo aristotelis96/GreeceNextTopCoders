@@ -1,0 +1,40 @@
+.list-group-item:hover {
+    color: #337ab7;
+    text-shadow: 0 0 1em #337ab7;
+    cursor: pointer;
+}
+
+.resultContainer {
+    height: fit-content;
+    max-height: 250px;
+    overflow: auto;
+
+}
+
+.myfade {
+    -webkit-transition: all linear 0.5s;
+    transition: all linear 0.5s;
+}
+
+.myfade.ng-hide {
+    opacity: 0;
+    transform: scale(0.5); 
+}
+
+li {
+    opacity: 1;
+}
+
+li.ng-enter {
+    -webkit-transition: 1s;
+    transition: 1s;
+    opacity: 0;
+}
+
+li.ng-enter-active {
+    opacity: 1;
+}
+
+.form-row{
+    overflow: hidden;
+}

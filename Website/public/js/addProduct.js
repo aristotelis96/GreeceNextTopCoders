@@ -16,7 +16,7 @@ function startfunc() {
         text.style.display = "none";
     }
 }
-var app = angular.module('addProduct', []);
+var app = angular.module('addProduct', ['ngAnimate']);
 
 app.controller('addProduct', function ($scope, $http) {
     //modal tags
@@ -40,14 +40,54 @@ app.controller('addProduct', function ($scope, $http) {
     $scope.loadTags = loadTags;
     $scope.deleteTag = deleteTag;
     $scope.addTag = addTag;
-    /* Search Products */
 
+    /* Search Products */
+    $scope.products = [];
+    $scope.productInfoShow = false;
+    $scope.productNotFound = false;
+    $scope.newProductFlag = false;
+
+    $scope.productSearch = () => {
+        $scope.productInfoShow = false;
+        $scope.SubmitButtonProduct = true;
+        let newProducts = [];
+        if($scope.productInput != undefined){
+            let category = "";
+            if($scope.category != null)
+                category ='&category=' + $scope.category;
+            $http.get('/searchProduct?name=' + $scope.productInput + category).then((response)=>{
+                response.data.slice(0,10).forEach(element => {
+                    newProducts.push(element);
+                })
+                $scope.products = newProducts;
+                if(response.data.length ==0){
+                    $scope.productNotFound = true;
+                } else{
+                    $scope.productNotFound = false;
+                }
+            })
+        }
+    }
+    $scope.fillProduct = (product)=>{
+        $scope.productInput = product.name;
+        $scope.products = [];
+        $scope.productInfoShow = true;    
+        $scope.productInfo = product;
+        $scope.productId = product.id;
+        $scope.SubmitButtonProduct = false;
+}
+
+    /*Add a new Product */
+    $scope.addProduct = ()=>{
+        $scope.newProductFlag = true;   
+        $scope.SubmitButtonProduct = false;
+    }
     /* Search shop */
     $scope.shopNotFound = false;
     $scope.companyInfoShow = false; //shop info is displayed after shop is selected
     $scope.companies = [];    
     $scope.checkCompany = () => {
-        $scope.SubmitButton = true;
+        $scope.SubmitButtonShop = true;
         let newComp = [];
         $scope.companyInfoShow = false;
         if ($scope.companyInput != undefined) {
@@ -71,7 +111,7 @@ app.controller('addProduct', function ($scope, $http) {
         $scope.companies = [];
         $scope.companyInfo = company;
         $scope.companyInfoShow = true;
-        $scope.SubmitButton = false;
+        $scope.SubmitButtonShop = false;
         $scope.companyId = company.id;
     }
 

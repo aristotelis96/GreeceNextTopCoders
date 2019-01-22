@@ -1,5 +1,7 @@
 const pool = require('./index').getPool();
-
+            
+const dbTag = require('./tags');
+const util = require('util');
 
 getAllProducts = function (callback) {
     let query = "SELECT * FROM `products` ORDER BY name ASC";
@@ -22,14 +24,37 @@ returnProduct = function (name, callback) {
         }
     })
 }
+
+returnProductByName = function (fields, callback) {
+    let query = "SELECT * FROM products WHERE name LIKE CONCAT('%'," + pool.escape(fields.name) + ",'%')";
+    if(fields.category != null){
+        query += " && category=" + pool.escape(fields.category);
+    }
+    query += ";";
+    pool.query(query, (err, results) => {
+        if (err) {
+            return callback(err);
+        }
+        else {
+            return callback(null, results);
+        }
+    })
+}
+
 InsertInProducts = function (fields, callback) {
-    let vals = " VALUES(" + pool.escape(fields.name) + "," + pool.escape(fields.description) + "," + pool.escape(fields.category) + ");";
-    let query = "INSERT IGNORE INTO products (name, description, category) " + vals;
+    let query = "INSERT IGNORE INTO products (name, description, category";
+    let vals = " VALUES(" + pool.escape(fields.name) + "," + pool.escape(fields.description) + "," + pool.escape(fields.category)
+    if(fields.extraData != null){
+        query += ",extra_data";
+        vals += "," + pool.escape(fields.extraData);
+    }
+    query += ")";
+    vals +=");";
+
+    query += vals;
     let tags = fields.tags;
     (async () => {
-        if (tags != null && tags.length > 0) {            
-            const dbTag = require('./tags');
-            const util = require('util');
+        if (tags != null && tags.length > 0) {
             let i;
             try {
                 //insert all tags
@@ -82,4 +107,4 @@ returnProductID = function (name, callback) {
     })
 }
 
-module.exports = { getAllProducts, returnProduct, InsertInProducts, returnProductID }
+module.exports = { getAllProducts, returnProduct, returnProductByName, InsertInProducts, returnProductID}

@@ -1,11 +1,5 @@
 <% include ./partials/header.ejs %>
-<style>
-    .list-group-item:hover{
-			color: #337ab7;
-			text-shadow:  0 0 1em #337ab7;
-			cursor: pointer;
-		}
-</style>
+<link rel="stylesheet" href="/css/addProduct.css">
 </head>
 
 <body ng-app="addProduct" ng-controller="addProduct">
@@ -21,7 +15,7 @@
             <div class="row pt-xl-5">
                 <div class="col-12 mx-auto text-center">
                     <h3>
-                        Προσθήκη νέου προϊόντος
+                        Προσθήκη νέας προσφοράς
                     </h3>
                 </div>
             </div>
@@ -30,58 +24,86 @@
                     <div class="col-12 mx-auto">
                         <form action="" method="POST" enctype="multipart/form-data">
                             <div class="form-row">
-                                <h5 class="sm">Κατηγορία</h5>
-                                <select list="category" name="categoryInput" placeholder="Διάλεξε μια κατηγορία" class="form-control form-control"
-                                    required="">
-                                    <% categories.forEach((category, index) => { %>
-                                    <option value="<%= category.category %>">
-                                        <%= category.category %>
-                                    </option>
-                                    <% } ) %>
-                                </select>
+                                <h5>Επιλογή ποιόντος ή υπηρεσίας</h5>
                             </div>
                             <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <h5>προϊόντα:</h5>
-                                    <input list="product" id="productid" name="productInput" placeholder="προϊόν" class="form-control form-control"
-                                        required="as">
-                                    <datalist id="product">
-                                        <% if (products.length > 0) { %>
-                                        <% products.forEach((product, index) => { %>
-                                        <option value="<%= product.name %>">
-                                            <% } ) }else { %>
-                                        <option>Nothing in db!</option>
-                                        <% } %>
-                                    </datalist>
+                                <div class="form-group col-lg-6">
+                                    <div class="form-row">
+                                        <div class="form-group col-lg-12">
+                                            <label class="sm">Κατηγορία</label>
+                                            <select list="category" name="categoryInput" placeholder="Διάλεξε μια κατηγορία"
+                                                class="form-control form-control" required="" ng-model="category"
+                                                ng-change="productSearch()">
+                                                <option value="">Επέλεξε κατηγορία</option>
+                                                <% categories.forEach((category, index) => { %>
+                                                <option value="<%= category.category %>">
+                                                    <%= category.category %>
+                                                </option>
+                                                <% } ) %>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-lg-12" ng-show="!newProductFlag">
+                                            <label>Αναζήτηση προιόντος ή υπηρεσίας:</label>
+                                            <input list="product" id="productid" placeholder="προϊόν" class="form-control form-control"
+                                                required="" autocomplete="off" ng-model="productInput" ng-change="productSearch()">
+                                            <input type="hidden" name="productId" ng-value="productId">
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-group col-md-6">
-                                    <h5 class="sm">Τιμή</h5>
-                                    <input type="number" step=0.01 name="priceInput" placeholder="Τιμή" class="form-control form-control"
-                                        required="">
+                                <div class="form-group col-lg-6">
+                                    <div class="form-row">
+                                        <div class="form-group col-lg-12" ng-show="!productInfoShow && !productNotFound">
+                                            <label>Προιόντα:</label>
+                                            <div class="container resultContainer" ng-show="products.length > 0">
+                                                <li class="list-group-item" ng-repeat="product in products" ng-click="fillProduct(product)">{{product.name}}
+                                                </li>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-lg-12 myfade" ng-show="productInfoShow && !productNotFound">
+                                            <label>Επιλεγμένο προιόν/υπηρεσία</label>
+                                            <div class="alert alert-info">
+                                                Πληροφορίες
+                                                <ul>
+                                                    <li>Προιόν: {{productInfo.name}}</li>
+                                                    <li>Περιγραφή: {{productInfo.description}}</li>
+                                                    <li>Πρόσθετα πεδία: {{productInfo.extra_data}}</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-lg-12 myfade" ng-show="productNotFound && !newProductFlag">
+                                            <div class="col-lg-12">
+                                                <label>Αποτέλεσμα αναζήτησης:</label>
+                                                <div class="alert alert-danger">
+                                                    Το προιόν δεν βρέθηκε σε αυτή τη κατηγορία.
+                                                    <br><a class="alert-link" href="" ng-click="addProduct()">Πρόσθεσε
+                                                        καινούργιο προιόν ή υπηρεσία</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <input type="checkbox" id="startcheck" name="start" onclick="startfunc()"> <b>Ημερομηνία
-                                        Έναρξης Προσφοράς</b> <br>
-                                    <input type="date" id="displaystart" name="startdate" value="2019-05-29" style="display:none"
-                                        class="form-control form-control">
+                            <input type="hidden" name="newProductFlag" ng-value="newProductFlag">
+                            <div class="form-row myfade" id="newProduct" ng-show="newProductFlag">
+                                <div class="form-group col-lg-2">
+                                    <label class="sm">Όνομα προιόντος ή υπηρεσίας:</label>
+                                    <input type="text" name="productName" placeholder="Όνομα" class="form-control form-control"></input>
                                 </div>
-                                <div class="form-group col-md-6">
-                                    <input type="checkbox" id="endcheck" name="end" onclick="endfunc()"> <b>Ημερομηνία
-                                        Λήξης Προσφοράς</b> <br>
-
-                                    <input type="date" id="displayend" name="enddate" value="2019-05-29" style="display:none"
-                                        class="form-control form-control">
-
+                                <div class="form-group col-lg-4">
+                                    <label class="sm">Περιγραφη:</label>
+                                    <textarea type="textarea" name="decriptionInput" placeholder="Μια σύντομη περιγραφή για το προιόν ή την υπηρεσία" class="form-control form-control"></textarea>
                                 </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-10">
-                                    <h5 class="sm">Περιγραφη:</h5>
-                                    <input type="description" name="decriptionInput" placeholder="Περιγραφη" class="form-control form-control">
+                                <div class="form-group col-lg-4">
+                                    <label class="sm">Επιπλέον πληροφορίες (προαιρετικό):</label>
+                                    <textarea type="textarea" name="extraData" placeholder="Πρόσθετες πληροφορίες (π.χ. αναλυτικά ιδιότητες ενός προιόντος)" class="form-control form-control"></textarea>
                                 </div>
-                                <div class="form-group col-md-2">
+                                <div class="form-group col-lg-2">
                                     <label>Κατηγορίες (Tags)</label>
                                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Πρόσθεσε</button>
                                     <!-- The Modal -->
@@ -122,27 +144,48 @@
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="form-group col-md-10">
-                                    <h5 class="sm">Εταιρία</h5>
+                                <div class="form-group col-lg-4">
+                                    <label class="sm">Τιμή</label>
+                                    <input type="number" step=0.01 name="priceInput" placeholder="Τιμή" class="form-control form-control"
+                                        required="">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-lg-6">
+                                    <input type="checkbox" id="startcheck" name="start" onclick="startfunc()"> <b>Ημερομηνία
+                                        Έναρξης Προσφοράς</b> <br>
+                                    <input type="date" id="displaystart" name="startdate" value="2019-05-29" style="display:none"
+                                        class="form-control form-control">
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    <input type="checkbox" id="endcheck" name="end" onclick="endfunc()"> <b>Ημερομηνία
+                                        Λήξης Προσφοράς</b> <br>
+
+                                    <input type="date" id="displayend" name="enddate" value="2019-05-29" style="display:none"
+                                        class="form-control form-control">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-lg-12">
+                                    <h5 class="sm">Επιλογή εταιρίας</h5>
                                     <input list="company" placeholder="Εταιρία" class="form-control form-control"
                                         required="" ng-model="companyInput" ng-change="checkCompany()" autocomplete="off">
                                     <input type="hidden" name="companyInput" ng-value="companyId">
                                     <ul class="list-group">
-                                        <li class="list-group-item" ng-repeat="company in companies" ng-click="fillCompany(company)">{{company.name}}
-                                            <ul>
-                                                <li>{{company.address}}</li>
-                                            </ul>
-                                        </li>
+                                        <div class="container resultContainer" ng-show="(companies.length>0)">
+                                            <li class="list-group-item" ng-repeat="company in companies" ng-click="fillCompany(company)">{{company.name}}
+                                                <ul>
+                                                    <li>{{company.address}}</li>
+                                                </ul>
+                                            </li>
+                                        </div>
                                     </ul>
-                                </div>
-                                <div class="form-group col-md-2">
-                                    <label>Δεν υπάρχει η εταιρία;</label>
-                                    <a class="btn btn-primary btn-block" href="/addnewshop">Πρόσθεσε μια εταιρία</a>
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="col-md-12">
-                                    <div class="alert alert-info" ng-show="companyInfoShow">
+                                <div class="col-lg-12">
+                                    <div class="alert alert-info myfade" ng-show="companyInfoShow">
                                         <ul>
                                             <li>Κατάστημα: {{companyInfo.name}}</li>
                                             <li>Τηλέφωνο: {{companyInfo.phone}}</li>
@@ -151,21 +194,25 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-row">
-                                    <div class="col-md-12">
-                                        <div class="alert alert-danger" ng-show="shopNotFound">
-                                            Το κατάστημα δεν βρέθηκε!
-                                        </div>
+                            <div class="form-row myfade" ng-show="shopNotFound">
+                                <div class="col-lg-12">
+                                    <div class="alert alert-danger">
+                                        Η εταιρία δεν βρέθηκε!
+                                        <a class="alert-link" href="/addnewshop">Πρόσθεσε μια εταιρία</a>
                                     </div>
                                 </div>
+                            </div>
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary btn-block" ng-disabled="SubmitButton">Προσθήκη προϊόντος</button>
+                                <button type="submit" class="btn btn-primary btn-block" ng-disabled="SubmitButtonProduct || SubmitButtonShop">Προσθήκη
+                                    προϊόντος</button>
                             </div>
                         </form>
                     </div>
                 </div>
                 <% } %>
 </body>
-<script src="/js/newProduct.js"></script>
+<script src="/js/addProduct.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.js"></script>
+
 
 </html>
