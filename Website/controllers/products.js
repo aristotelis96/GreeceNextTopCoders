@@ -62,6 +62,9 @@ module.exports = {
                     if(newProductFlag == "true"){
                         /* Get all parameters */
                         let name = req.body.productName;
+                        if(name==""){
+                            throw new Error('Empty name for new Product!');
+                        }
                         let category = req.body.categoryInput;
                         let description = req.body.decriptionInput;                        
                         let extraData = req.body.extraData;

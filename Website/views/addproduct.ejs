@@ -203,7 +203,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary btn-block" ng-disabled="SubmitButtonProduct || SubmitButtonShop">Προσθήκη
+                                <button type="submit" class="btn btn-primary btn-block" ng-disabled="(SubmitButtonProduct && !newProductFlag) || SubmitButtonShop">Προσθήκη
                                     προϊόντος</button>
                             </div>
                         </form>
