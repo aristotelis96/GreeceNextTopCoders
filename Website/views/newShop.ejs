@@ -1,6 +1,5 @@
 <% include ./partials/header.ejs %>
 <link rel="stylesheet" href="/css/login.css">
-<script src="/js/newShop.js"></script>
 </head>
 
 <body ng-app="Signup">
@@ -39,61 +38,73 @@
                                     <div class="form-group col-md-4">
                                         <label>Πόλη</label>
                                         <select class="form-control" name="poli" ng-model="poli" ng-options="poli.city as poli.city for (x, poli) in poleis"
-                                            ng-disabled="poleisDis">
+                                            ng-disabled="poleisDis" ng-change="poliSelected()">
                                         </select>
                                     </div>
-                                    <div class="form-group col-md-2">
-                                        <label>Τηλέφωνο</label>
-                                        <input type="tel" name="phone" class="form-control">
-                                    </div>
-                                    <div class="form-group col-md-2">
-                                        <label>Κατηγορίες (Tags)</label>
-                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Πρόσθεσε</button>
-                                        <!-- The Modal -->
-                                        <div class="modal fade" id="myModal">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-
-                                                    <!-- Modal Header -->
-                                                    <div class="modal-header">
-                                                        <h4 class="modal-title">Κατηγορίες που ανοίκει το κατάστημα</h4>
-                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                    </div>
-
-                                                    <!-- Modal body -->
-                                                    <div class="modal-body">
-                                                        <div ng-repeat="tag in tags" class="mb-3">
-                                                            <div class="input-group">
-                                                                <input required=""name="tags" class="form-control" type="text" ng-model="tag.value" ng-change="loadTags(this)"><button
-                                                                    type="button" class="btn btn-danger" ng-click="deleteTag(this)">Διαγραφή</button>  
-                                                            </div>
-                                                            <ul class="list-group">
-                                                                <li class="list-group-item" ng-repeat="existingTag in tag.existingTags" ng-click="fillTextbox(existingTag, tag)">{{existingTag.name}}</li>
-                                                            </ul>
-                                                        </div>
-                                                        <button type="button" class="btn btn-primary" ng-click="addTag()">Πρόσθεσε</button>
-                                                    </div>
-
-                                                    <!-- Modal footer -->
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-info" data-dismiss="modal">Κλείσιμο</button>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div class="form-group col-md-3">
+                                        <label>Οδός</label>
+                                        <input type="text" name="street" placeholder="Οδός" class="form-control" ng-model="street">
+                                    </div>                                
+                                    <div class="form-group col-md-1">
+                                            <label>Αριθμός</label>
+                                            <input type="number" min="0" step="1" name="streetNumber"  class="form-control" ng-model="streetNumber" ng-click="geoLocate()" ng-change="geoLocate()">
                                     </div>
                                 </div>
                                 <div class="form-row">
-                                    <div class="form-group col-md-6">
+                                    <div class="form-group col-md-4">
                                         <label>Γεωγραφικό πλάτος (longditude)</label>
-                                        <input type="number" value= "null" step="0.00000000000001" min="-180" max="180" name="lng" id= "longditude" class="form-control">
+                                        <input type="number"  ng-model="lng" step="0.00000000000001" min="-180" max="180" name="lng" id= "longditude" class="form-control">
                                     </div>
-                                    <div class="form-group col-md-6">
+                                    <div class="form-group col-md-4">
                                         <label>Γεωγραφικό μήκος (latidude)</label>
-                                        <input type="number" value= "null" step="0.00000000000001" min="-90" max="90" name="lat" id = "latidude" class="form-control">
+                                        <input type="number" ng-model="lat" step="0.00000000000001" min="-90" max="90" name="lat" id = "latidude" class="form-control">
                                     </div>
-                                    <div id="googleMap" style="width:100%;height:400px;"></div>
+                                    <div class="form-group col-md-2">
+                                            <label>Τηλέφωνο</label>
+                                            <input type="tel" name="phone" class="form-control">
+                                        </div>
+                                        <div class="form-group col-md-2">
+                                            <label>Κατηγορίες (Tags)</label>
+                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Πρόσθεσε</button>
+                                            <!-- The Modal -->
+                                            <div class="modal fade" id="myModal">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+    
+                                                        <!-- Modal Header -->
+                                                        <div class="modal-header">
+                                                            <h4 class="modal-title">Κατηγορίες που ανοίκει το κατάστημα</h4>
+                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        </div>
+    
+                                                        <!-- Modal body -->
+                                                        <div class="modal-body">
+                                                            <div ng-repeat="tag in tags" class="mb-3">
+                                                                <div class="input-group">
+                                                                    <input required=""name="tags" class="form-control" type="text" ng-model="tag.value" ng-change="loadTags(this)"><button
+                                                                        type="button" class="btn btn-danger" ng-click="deleteTag(this)">Διαγραφή</button>  
+                                                                </div>
+                                                                <ul class="list-group">
+                                                                    <li class="list-group-item" ng-repeat="existingTag in tag.existingTags" ng-click="fillTextbox(existingTag, tag)">{{existingTag.name}}</li>
+                                                                </ul>
+                                                            </div>
+                                                            <button type="button" class="btn btn-primary" ng-click="addTag()">Πρόσθεσε</button>
+                                                        </div>
+    
+                                                        <!-- Modal footer -->
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-info" data-dismiss="modal">Κλείσιμο</button>
+                                                        </div>
+    
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-12">
+                                        <div id="googleMap" style="width:100%;height:400px;"></div>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary btn-block" ng-disabled="SubmitButton">Εγγραφή</button>
@@ -101,14 +112,6 @@
                             </div>
                         </form>
                     </div>
-                </div>
-                <!--This is an error area-->
-                <div ng-show="alertFlag" class="alert alert-danger">
-                    <ul>
-                        <li ng-repeat="msg in messages">
-                            {{msg}}
-                        </li>
-                    </ul>
                 </div>
             </div>
             <div class="row">
@@ -121,28 +124,9 @@
             </div>
         </div>
     </div>
-    <script>
-        function myMap() {
-        var mapProp= {
-            center:new google.maps.LatLng(37.983810,23.727539),
-            zoom:9,
-        };
-        var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
-        var long = document.getElementById("longditude");
-        var lati = document.getElementById("latidude");
-        var marker = new google.maps.Marker({
-                position: {lat: 0 ,lng: 0}, 
-                map: map
-            });
-        google.maps.event.addListener(map, 'click', function(event) {
-        long.value = event.latLng.lng(); lati.value = event.latLng.lat();
-        let positionmap =  new google.maps.LatLng(event.latLng.lat(), event.latLng.lng());
-        marker.setPosition(positionmap)   ;
-        });
-        
-        }
-        </script>
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCJaiM1gLI2nYRcZO_PukSgLAXS-E0OaoI&callback=myMap"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCJaiM1gLI2nYRcZO_PukSgLAXS-E0OaoI"></script>
+        <script src="/js/newShop.js"></script>
+
 </body>
 
 </html>
