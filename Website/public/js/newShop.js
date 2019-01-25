@@ -12,6 +12,7 @@ app.controller('signup', function ($scope, $http) {
     });
 
     $scope.poleisDis = true;
+    $scope.poleis = [];
     //periferia and poleis functions
     periferiaSelected = function () {
         let periferia = $scope.periferia;
@@ -85,10 +86,13 @@ app.controller('signup', function ($scope, $http) {
                 if (address.town != undefined) name += address.town;
                 if (address.village != undefined) name += address.village;                
                 $scope.poleis.push({city: name});              
+                $scope.poleisDis = false;
                 $scope.poli = name;
                 $scope.street = '';
                 if (address.road != undefined) $scope.street += address.road;
                 $scope.streetNumber = parseInt(address.house_number);
+                if(isNaN($scope.streetNumber))
+                    $scope.streetNumber = '';
             })
         });
 

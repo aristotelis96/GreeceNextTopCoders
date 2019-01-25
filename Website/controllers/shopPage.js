@@ -11,7 +11,7 @@ shoppage = function (req, res) {
                 throw new Error('Invalid shop Id: ' + id); //check id is number
             }
             const util = require('util');
-            let shop = (await (util.promisify(dbShops.returnExactShop))({ id: id }))[0];
+            let shop = (await (util.promisify(dbShops.returnShopByID))(id))[0];
             if (shop == undefined)
                 throw new Error('Shop with id: ' + id + ' not found');            
             if (shop.lat == null || shop.lng == null) {

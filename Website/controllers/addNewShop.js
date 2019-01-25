@@ -18,14 +18,9 @@ addNewShopPOST = function (req, res) {
         return res.redirect('/');
     }
     let emailInput = req.session.email;
-    let shopName = req.body.shopName;
-    let periferia = req.body.periferia;
-    if (periferia != undefined)
-        periferia = periferia.replace('string:', '');
-    let poli = req.body.poli;
-    if (poli != undefined)
-        poli = poli.replace('string:', '');
+    let shopName = req.body.shopName;    
     let phone = req.body.phone;
+    let address = req.body.address;
     let lng = req.body.lng;
     let lat = req.body.lat;
     let tags = req.body.tags;
@@ -44,8 +39,7 @@ addNewShopPOST = function (req, res) {
                 phone: phone,
                 lng: lng,
                 lat: lat,
-                periferia: periferia,
-                city: poli
+                address: address
             });
             if (shop.length > 0) {
                 throw new Error('Shop already existing');
@@ -55,8 +49,7 @@ addNewShopPOST = function (req, res) {
             user = user[0];
             await (util.promisify(dbShop.insertShop))({
                 name: shopName,
-                periferia: periferia,
-                city: poli,
+                address: address,
                 phone: phone,
                 lng: lng,
                 lat: lat,

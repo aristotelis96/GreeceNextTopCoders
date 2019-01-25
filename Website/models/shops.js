@@ -82,11 +82,9 @@ returnShopByID = function(id, callback){
     })
 }
 returnExactShop = function (fields, callback) {
-    let query = "SELECT * FROM shops WHERE";// name = " + pool.escape(fields.name);
-    if (fields.name != '' && fields.name != null ) // if no name is given, it will search with id
-        query += " name = " + pool.escape(fields.name);
-    else 
-        query += " id = " + pool.escape(fields.id);
+    let query = "SELECT * FROM shops WHERE";
+    if (fields.name != '' && fields.name != null ) 
+        query += " name = " + pool.escape(fields.name);  
     if (fields.phone != '' && fields.phone != null)
         query += " && phone=" + pool.escape(fields.phone);
 
