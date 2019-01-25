@@ -17,7 +17,10 @@ app.controller('signup', function ($scope, $http) {
         let periferia = $scope.periferia;
         $http.get('/addresses/poleis?periferia=' + periferia)
         .then( (response) => {
-            $scope.poleis = response.data;
+            $scope.poleis = [];
+            for(let i=0; i<response.data.length; i++){                
+                $scope.poleis.push({city: response.data[i].city})
+            }
             $scope.poleisDis = false;
         });
     }
@@ -42,7 +45,7 @@ app.controller('signup', function ($scope, $http) {
                 map.setCenter((new google.maps.LatLng(response.data[0].lat, response.data[0].lon)));
                 marker.setPosition((new google.maps.LatLng(response.data[0].lat, response.data[0].lon)))
                 $scope.lng = parseFloat(response.data[0].lon); $scope.lat = parseFloat(response.data[0].lat);
-                map.setZoom(15);
+                map.setZoom(15);        
                 }            
         })
     }
@@ -71,16 +74,17 @@ app.controller('signup', function ($scope, $http) {
             $http.get(' https://eu1.locationiq.com/v1/reverse.php?key=1e7abcc58d0e64&lat='+ $scope.lat +'&lon='+ $scope.lng + '&format=json&accept-language=el').then((response)=>{
                 let address = response.data.address;
                 try{
-                    $scope.periferia = address.state_district.replace('Περιφέρεια ', ''); /* Geo location returns 'Περιφερεια .. ' , we need to remove that */
+                    $scope.periferia = address.state_district.replace('Περιφέρεια ', ''); /* Geo location returns 'Περιφερεια .. ' , we need to remove that */                                        
                 } catch(e){
                     // do nothing. try/catch needed in case of undefined/null etc.
-                }
-                periferiaSelected();
+                }        
+                //periferiaSelected();
                 /* address contains fields city/town/village one at a time, rest are null*/
                 let name = '';
                 if (address.city != undefined) name += address.city;
                 if (address.town != undefined) name += address.town;
-                if (address.village != undefined) name += address.village;
+                if (address.village != undefined) name += address.village;                
+                $scope.poleis.push({city: name});              
                 $scope.poli = name;
                 $scope.street = '';
                 if (address.road != undefined) $scope.street += address.road;

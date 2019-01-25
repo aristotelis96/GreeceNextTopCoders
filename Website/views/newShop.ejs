@@ -50,6 +50,8 @@
                                             <input type="number" min="0" step="1" name="streetNumber"  class="form-control" ng-model="streetNumber" ng-click="geoLocate()" ng-change="geoLocate()">
                                     </div>
                                 </div>
+                                <!-- Address combined, hidden --> 
+                                <input type="hidden" name="address" value="{{periferia + ' ' + poli + ' ' + street + ' ' + streetNumber}}">
                                 <div class="form-row">
                                     <div class="form-group col-md-4">
                                         <label>Γεωγραφικό πλάτος (longditude)</label>
