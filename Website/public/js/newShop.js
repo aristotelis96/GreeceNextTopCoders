@@ -26,27 +26,26 @@ app.controller('signup', function ($scope, $http) {
         marker.setPosition(positionmap);
 
         /* Set address fields based on user input */
-        $http.get(' https://eu1.locationiq.com/v1/reverse.php?key=1e7abcc58d0e64&lat=' + $scope.lat + '&lon=' + $scope.lng + '&format=json&accept-language=el').then((response) => {            
+        $http.get(' https://eu1.locationiq.com/v1/reverse.php?key=1e7abcc58d0e64&lat=' + $scope.lat + '&lon=' + $scope.lng + '&format=json&accept-language=el&normalizecity=1').then((response) => {            
             let address = response.data.address;
             try {
                 $scope.periferia = address.state_district.replace('Περιφέρεια ', ''); /* Geo location returns 'Περιφερεια .. ' , we need to remove that */
             } catch (e) {
                 // do nothing. try/catch needed in case of undefined/null etc.
             }
-            /* address contains fields city/town/village one at a time, rest are null*/
-            let name = '';
-            if (address.city != undefined) name += address.city;
-            if (address.town != undefined) name += address.town;
-            if (address.village != undefined) name += address.village;
-            if($scope.poleis.findIndex(i => i.city === name) == -1)
-                $scope.poleis.push({ city: name });
-            $scope.poleisDis = false;
-            $scope.poli = name;
+            /* address contains fields city, street, streetNumber */
+            $scope.poli = '';
+            if (address.city != undefined) {
+                $scope.poli = address.city;
+                if($scope.poleis.findIndex(i => i.city === address.city) == -1) // add to dropdown cities if doesnt exist
+                   $scope.poleis.push({ city: address.city });
+                $scope.poleisDis = false; //make dropdown available to user
+            }
             $scope.street = '';
             if (address.road != undefined) $scope.street += address.road;
             $scope.streetNumber = parseInt(address.house_number);
             if (isNaN($scope.streetNumber))
-                $scope.streetNumber = '';
+                $scope.streetNumber = ''; //If number was not found from api, leave field blank
         })
     });
     //load periferies and poleis
