@@ -83,7 +83,10 @@ app.controller('signup', function ($scope, $http) {
     geoLocate = function () {
         if ($scope.streetNumber == '' || $scope.streetNumber == null || $scope.street == '' || $scope.street == null)
             return;
-        $http.get('https://eu1.locationiq.com/v1/search.php?key=1e7abcc58d0e64&q=' + $scope.street + ' ' + $scope.streetNumber + '&format=json&accept-language=el').then((response) => {
+        /* Search inside the area user is looking at the moment */
+        let bounds = map.getBounds();
+        let viewbox = bounds.getNorthEast().lng() + ',' + bounds.getNorthEast().lat() + ',' + bounds.getSouthWest().lng() + ',' + bounds.getSouthWest().lat();
+        $http.get('https://eu1.locationiq.com/v1/search.php?key=1e7abcc58d0e64&q=' + $scope.street + ' ' + $scope.streetNumber + '&viewbox='+ viewbox + '&bounded=1&format=json&accept-language=el').then((response) => {
             /* If user has selected a periferia check if result address is in that periferia else abort */
             if (($scope.periferia == null || $scope.periferia == '') || (response.data[0].display_name.includes($scope.periferia))) {
                 map.setCenter((new google.maps.LatLng(response.data[0].lat, response.data[0].lon)));
@@ -91,6 +94,8 @@ app.controller('signup', function ($scope, $http) {
                 $scope.lng = parseFloat(response.data[0].lon); $scope.lat = parseFloat(response.data[0].lat);
                 map.setZoom(15);
             }
+        }).catch((e)=>{
+            // do nothing
         })
     }
     $scope.geoLocate = geoLocate;
