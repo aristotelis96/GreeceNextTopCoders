@@ -1,12 +1,8 @@
 
-#login_div {
+body {
     background-image: url("/img/backgrounds/login.jpg");
     background-size: 100% 100%;
-    height: 100%;
-    width: 100%;
-    min-width: 300px;
-    min-height: 400px;
-    overflow: scroll;
+    background-attachment: fixed;
 }
 
 .list-group-item:hover{
