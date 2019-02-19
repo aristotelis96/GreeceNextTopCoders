@@ -5,13 +5,13 @@
 <body ng-app="addProduct" ng-controller="addProduct">
     <% include partials/navbar.ejs %>
     <% if (!login) { %>
-    <EasterEgg class="text-center">
+    <div class="container text-center MainBox">
         <h3> Μπορείς να προσθέσεις προϊόντα μόνο αν είσαι εγγεγραμμένος χρήστης.</h3>
         <p>Πάτα <a href="/login">εδώ </a> για να συνδεθείς ή <a href="/login/signup">εδώ </a> για εγγραφή </p>
-    </EasterEgg>
+    </div>
     <% } else { %>
     <div class="my-auto mx-auto">
-        <div id="MainBox" class="container">
+        <div class="container MainBox">
             <div class="row pt-xl-3">
                 <div class="col-12 mx-auto text-center">
                     <h3>

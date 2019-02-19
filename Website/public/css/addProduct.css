@@ -5,7 +5,7 @@ body{
     background-attachment: fixed;
     color: white;
 }
-#MainBox {
+.MainBox {
     background: rgba(0,0,0, 0.5);
     border-radius: 8px;
     padding: 25px;

@@ -2,12 +2,23 @@
 <link rel="stylesheet" href="/css/login.css">
 <script src="/js/newShop.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCJaiM1gLI2nYRcZO_PukSgLAXS-E0OaoI"></script>
+<style>
+    body {
+        background-image: url("/img/backgrounds/newShop.jpg");
+        background-size: 100% 100%;
+        background-attachment: fixed;    
+    }
+    .MainBox{
+        background-color: rgba(255, 255, 255, 0.4);
+        border-radius: 8px;
+    }
+</style>
 </head>
 
 <body ng-app="Signup">
     <% include ./partials/navbar.ejs %>
     <div id="login_div" class="my-auto mx-auto">
-        <div class="container" ng-controller="signup">
+        <div class="container MainBox" ng-controller="signup">
             <div class="row pt-xl-5">
                 <div class="col-12 mx-auto text-center">
                     <h3>
@@ -26,84 +37,101 @@
                                 <div class="form-row">
                                     <div class="form-group col-md-12">
                                         <label>Όνομα καταστήματος:</label>
-                                        <input type="text" name="shopName" placeholder="Υποχρεωτικα"
-                                             required="" class="form-control form-control">
+                                        <input type="text" name="shopName" placeholder="Υποχρεωτικα" required=""
+                                            class="form-control form-control">
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-4">
                                         <label>Περιφέρια</label>
-                                        <select class="form-control" name="periferia" ng-model="periferia" ng-options="periferia.periferia as periferia.periferia for periferia in periferies"
+                                        <select class="form-control" name="periferia" ng-model="periferia"
+                                            ng-options="periferia.periferia as periferia.periferia for periferia in periferies"
                                             ng-change="periferiaSelected()">
                                         </select>
                                     </div>
                                     <div class="form-group col-md-4">
                                         <label>Πόλη</label>
-                                        <select class="form-control" name="poli" ng-model="poli" ng-options="poli.city as poli.city for (x, poli) in poleis"
+                                        <select class="form-control" name="poli" ng-model="poli"
+                                            ng-options="poli.city as poli.city for (x, poli) in poleis"
                                             ng-disabled="poleisDis" ng-change="poliSelected()">
                                         </select>
                                     </div>
                                     <div class="form-group col-md-3">
                                         <label>Οδός</label>
-                                        <input type="text" name="street" placeholder="Οδός" class="form-control" ng-model="street">
-                                    </div>                                
+                                        <input type="text" name="street" placeholder="Οδός" class="form-control"
+                                            ng-model="street">
+                                    </div>
                                     <div class="form-group col-md-1">
-                                            <label>Αριθμός</label>
-                                            <input type="number" min="0" step="1" name="streetNumber"  class="form-control" ng-model="streetNumber" ng-change="geoLocate()">
+                                        <label>Αριθμός</label>
+                                        <input type="number" min="0" step="1" name="streetNumber" class="form-control"
+                                            ng-model="streetNumber" ng-change="geoLocate()">
                                     </div>
                                 </div>
-                                <!-- Address combined, hidden --> 
-                                <input type="hidden" name="address" value="{{periferia + ' ' + poli + ' ' + street + ' ' + streetNumber}}">
+                                <!-- Address combined, hidden -->
+                                <input type="hidden" name="address"
+                                    value="{{periferia + ' ' + poli + ' ' + street + ' ' + streetNumber}}">
                                 <div class="form-row">
                                     <div class="form-group col-md-4">
                                         <label>Γεωγραφικό πλάτος (longditude)</label>
-                                        <input type="number"  ng-model="lng" step="0.00000000000001" min="-180" max="180" name="lng" id= "longditude" class="form-control">
+                                        <input type="number" ng-model="lng" step="0.00000000000001" min="-180" max="180"
+                                            name="lng" id="longditude" class="form-control">
                                     </div>
                                     <div class="form-group col-md-4">
                                         <label>Γεωγραφικό μήκος (latidude)</label>
-                                        <input type="number" ng-model="lat" step="0.00000000000001" min="-90" max="90" name="lat" id = "latidude" class="form-control">
+                                        <input type="number" ng-model="lat" step="0.00000000000001" min="-90" max="90"
+                                            name="lat" id="latidude" class="form-control">
                                     </div>
                                     <div class="form-group col-md-2">
-                                            <label>Τηλέφωνο</label>
-                                            <input type="tel" name="phone" class="form-control">
-                                        </div>
-                                        <div class="form-group col-md-2">
-                                            <label>Κατηγορίες (Tags)</label>
-                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Πρόσθεσε</button>
-                                            <!-- The Modal -->
-                                            <div class="modal fade" id="myModal">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-    
-                                                        <!-- Modal Header -->
-                                                        <div class="modal-header">
-                                                            <h4 class="modal-title">Κατηγορίες που ανοίκει το κατάστημα</h4>
-                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                        </div>
-    
-                                                        <!-- Modal body -->
-                                                        <div class="modal-body">
-                                                            <div ng-repeat="tag in tags" class="mb-3">
-                                                                <div class="input-group">
-                                                                    <input required=""name="tags" class="form-control" type="text" ng-model="tag.value" ng-change="loadTags(this)"><button
-                                                                        type="button" class="btn btn-danger" ng-click="deleteTag(this)">Διαγραφή</button>  
-                                                                </div>
-                                                                <ul class="list-group">
-                                                                    <li class="list-group-item" ng-repeat="existingTag in tag.existingTags" ng-click="fillTextbox(existingTag, tag)">{{existingTag.name}}</li>
-                                                                </ul>
-                                                            </div>
-                                                            <button type="button" class="btn btn-primary" ng-click="addTag()">Πρόσθεσε</button>
-                                                        </div>
-    
-                                                        <!-- Modal footer -->
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-info" data-dismiss="modal">Κλείσιμο</button>
-                                                        </div>
-    
+                                        <label>Τηλέφωνο</label>
+                                        <input type="tel" name="phone" class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label>Κατηγορίες (Tags)</label>
+                                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                                            data-target="#myModal">Πρόσθεσε</button>
+                                        <!-- The Modal -->
+                                        <div class="modal fade" id="myModal">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+
+                                                    <!-- Modal Header -->
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title">Κατηγορίες που ανοίκει το κατάστημα</h4>
+                                                        <button type="button" class="close"
+                                                            data-dismiss="modal">&times;</button>
                                                     </div>
+
+                                                    <!-- Modal body -->
+                                                    <div class="modal-body">
+                                                        <div ng-repeat="tag in tags" class="mb-3">
+                                                            <div class="input-group">
+                                                                <input required="" name="tags" class="form-control"
+                                                                    type="text" ng-model="tag.value"
+                                                                    ng-change="loadTags(this)"><button type="button"
+                                                                    class="btn btn-danger"
+                                                                    ng-click="deleteTag(this)">Διαγραφή</button>
+                                                            </div>
+                                                            <ul class="list-group">
+                                                                <li class="list-group-item"
+                                                                    ng-repeat="existingTag in tag.existingTags"
+                                                                    ng-click="fillTextbox(existingTag, tag)">
+                                                                    {{existingTag.name}}</li>
+                                                            </ul>
+                                                        </div>
+                                                        <button type="button" class="btn btn-primary"
+                                                            ng-click="addTag()">Πρόσθεσε</button>
+                                                    </div>
+
+                                                    <!-- Modal footer -->
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-info"
+                                                            data-dismiss="modal">Κλείσιμο</button>
+                                                    </div>
+
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-12">
@@ -111,7 +139,8 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-primary btn-block" ng-disabled="SubmitButton">Εγγραφή</button>
+                                    <button type="submit" class="btn btn-primary btn-block"
+                                        ng-disabled="SubmitButton">Εγγραφή</button>
                                 </div>
                             </div>
                         </form>
@@ -127,7 +156,7 @@
                 </div>
             </div>
         </div>
-    </div>        
+    </div>
 </body>
 
 </html>
