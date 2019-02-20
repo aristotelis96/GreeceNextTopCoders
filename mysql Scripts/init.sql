@@ -61,6 +61,7 @@ CREATE TABLE products (
     `category` varchar(255),
 	`withdrawn` boolean DEFAULT false,
     `extra_data` varchar(255),
+    `fileExtension` varchar(20),
     PRIMARY KEY (id)
 );
 

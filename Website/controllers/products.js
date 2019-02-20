@@ -3,6 +3,9 @@ const dbProducts = require(appDir + '/models/products.js');
 const dbCategories = require(appDir + '/models/categories.js')
 const dbShop = require(appDir + '/models/shops.js');
 const dbPrices = require(appDir + '/models/prices.js');
+const jo = require('jpeg-autorotate');
+const fs = require('fs');
+
 
 const util = require('util');
 module.exports = {
@@ -69,17 +72,52 @@ module.exports = {
                         let description = req.body.decriptionInput;                        
                         let extraData = req.body.extraData;
                         let tags = req.body.tags;
+                        let fileExtension = 'default';
+                        let uploadedFile = null;
                         if (!Array.isArray(tags) && tags != undefined)
                             tags = [tags];  // if only 1 tag is inserted, req.body.tags returns a just a string, but we need array
+                        /* Check if file is uploaded correctly */                        
+                        if (req.files != undefined && req.files.image != null) {
+                            uploadedFile = req.files.image;
+                            // check type. should be png or jpeg
+                            fileExtension = uploadedFile.mimetype.split('/')[1];
+                            if (!(uploadedFile.mimetype === 'image/png' || uploadedFile.mimetype === 'image/jpeg')) {
+                                return res.send('wrong image type');
+                            }
+                        }
                         /* Insert new product and get ID */
                         productId = await (util.promisify(dbProducts.InsertInProducts))({
                             name: name,
                             description: description,
                             category: category,
                             tags: tags,
-                            extraData: extraData
+                            extraData: extraData,
+                            fileExtension: fileExtension
                         })
                         productId = productId.insertId;
+                        if (uploadedFile != null) {
+                            /* Store image with name ProductID.fileExtension */
+                            let image_name = productId + '.' + fileExtension;
+                            uploadedFile.mv('public/assets/productsImg/' + image_name, (err) => {
+                                if (err) {
+                                    return (err + " upload.mv failed");
+                                }
+                                // if it was jpeg fix exif orientation
+                                if (uploadedFile.mimetype === 'image/jpeg') {
+                                    jo.rotate('./public/assets/productsImg/' + image_name, {}, function (err, buffer) {
+                                        if (err) {
+                                            //do nothing if rotate fails, just continue
+                                        }
+                                        var buf = new Buffer.from(buffer, 'binary');
+                                        fs.writeFile('./public/assets/productsImg/' + image_name, buf, function (err) {
+                                            if (err) {
+                                                return console.error(err + ' could not save image on SignupPOST');
+                                            }
+                                        });
+                                    })
+                                }
+                            });
+                        }
                     } else if (newProductFlag == "false"){
                         /* else user selected from list and we have a productId from front end */
                         productId = req.body.productId                     
