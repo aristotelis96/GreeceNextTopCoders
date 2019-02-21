@@ -107,4 +107,14 @@ returnProductID = function (name, callback) {
     })
 }
 
-module.exports = { getAllProducts, returnProduct, returnProductByName, InsertInProducts, returnProductID}
+returnProductById = function (id, callback) {
+    let query = "SELECT * FROM products WHERE id = " + pool.escape(id);
+    pool.query(query, (err, results)=>{
+        if(err){
+            return callback(err);
+        } else {
+            return callback(null, results);
+        }
+    })
+}
+module.exports = { getAllProducts, returnProduct, returnProductByName, InsertInProducts, returnProductID, returnProductById}

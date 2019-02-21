@@ -74,6 +74,7 @@ CREATE TABLE categorized_product (
 );
 
 CREATE TABLE prices (
+	`id` BIGINT auto_increment,
 	`price` DOUBLE NOT NULL,
     `dateFrom` DATE,
     `dateTo` DATE,
@@ -83,6 +84,6 @@ CREATE TABLE prices (
     FOREIGN KEY (productID) REFERENCES products(id) ON DELETE CASCADE,
     FOREIGN KEY (shopID) REFERENCES shops(id) ON DELETE CASCADE,
     FOREIGN KEY (userID) REFERENCES users(id) ON DELETE SET NULL,
-    PRIMARY KEY (`price`, `productID`, `shopID`)
+    PRIMARY KEY (`id`)
 );
 

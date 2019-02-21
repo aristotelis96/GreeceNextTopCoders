@@ -1,25 +1,32 @@
-const session = require('express-session');
-const db = require(appDir + '/models/users.js');
+const db = require(appDir + '/models/categories.js');
+const dbout = require(appDir + '/models/output.js');
+
+const util = require('util');
 
 module.exports = {
-    getHomePage: (req, res) => {
+    getHomePage: async (req, res) => {
         var sess = req.session;
         req.session.login = false;
         if (sess.email) {
             req.session.login = true;
         }
-        // Ask model for users and render view
-        db.getAllUsers((err, result) => {
-            if (err) {
-                return res.status(500).send(err);
-            }        
-            res.render('index.ejs', {
+        try {
+            /* get categories from model */
+            let categories = await (util.promisify(db.getCategories))();
+            let products = await (util.promisify(dbout.getOut))({
+                limit: 6
+            });                      
+            console.log(products);
+            return res.render('index.ejs', {
                 title: "GNTC",
-                users: result,
+                categories: categories,
+                products: products,
                 login: req.session.login,
                 name: req.session.email
             });
-        });
-
+        }
+        catch (e) {
+            return res.send(e.toString())
+        }               
     }
-};
+}

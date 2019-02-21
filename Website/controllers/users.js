@@ -4,6 +4,8 @@ const jo = require('jpeg-autorotate');
 const db = require(appDir + '/models/users');
 const dbShop = require(appDir + '/models/shops');
 const dbPrices = require(appDir + '/models/prices')
+const util = require('util');
+
 const saltRounds = 12;
 
 module.exports = {
@@ -14,7 +16,6 @@ module.exports = {
             return res.redirect('/');
         }
         async function deleteAll() {
-            const util = require('util');
             let user = await (util.promisify(db.returnUser))(email);
             user = user[0];
             try {
@@ -80,7 +81,6 @@ module.exports = {
         var newimage;
         var newpassword;
         async function UpdateUser() {
-            const util = require('util');
             if (!req.session.email) {
                 return res.redirect('/');
             }
