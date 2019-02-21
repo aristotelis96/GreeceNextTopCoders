@@ -1,47 +1,96 @@
 <% include ./partials/header.ejs %>
 </head>
+
 <body>
     <% include ./partials/navbar.ejs %>
-    <div class="row">
-        <div class="col-sm-4">.col-sm-4</div>
-        <div class="col-sm-8">
-            <% if (result.length > 0 ) {%>
-            <div class="table-responsive">    
-            <table class="table table-hover">
-                <thead>
-                  <tr>
-                    <th scope="col"></th>
-                    <th scope="col">Κατάστημα</th>
-                    <th scope="col">Προϊόν</th>
-                    <th scope="col">Τιμή</th>
-                    <% if (login) {%>
-                    <th scope="col">Επιλογές</th> 
-                    <% } %>   
-                  </tr>
-                </thead>
-                <tbody>
-                    <% result.forEach((result, index) => { %>
-                        <tr>
-                            <th scope="row">~</th>
-                            <td><%= result.shop %></td>
-                            <td><%= result.product %></td>
-                            <td><%= result.price %></td>
-                            <% if (login) {%>
-                            <td>
-                                <a href="" rel="noopener" class="btn btn-sm btn-success">Edit</a>
-                                <a href="" class="btn btn-sm btn-danger">Delete</a>
-                            </td>
-                            <% } %>
-                        </tr>
-                    <% }) %>
-                </tbody>
-                </table>
-            </div> 
-            <% } else { %>
-                <p class="text-center">Δεν βρέθηκαν σχετικά αποτελέσματα</p>  
-            <% } %>
+    <div class="container">
+    <!-- Page Content -->
+    </br>
+    <div class="container">
+        <form action="/search/output" method="POST">
+            <div class="form-row">
+                <div class="col-sm-4">
+                    <div class="btn-group-toggle py-1" data-toggle="buttons">
+                        <label class="btn btn-outline-info btn-block">
+                            <input type="checkbox" name="check[]" value="near"> κοντά μου
+                        </label>
+                    </div>
+                    <div class="btn-group-toggle py-1" data-toggle="buttons">
+                        <label class="btn btn-outline-info btn-block ">
+                            <input type="checkbox" name="check[]" value="Φαγητό"> Φαγητό
+                        </label>
+                    </div>
+                    <div class="btn-group-toggle py-1" data-toggle="buttons">
+                        <label class="btn btn-outline-info btn-block">
+                            <input type="checkbox" name="check[]" value="Καφετέριες"> Καφετέριες
+                        </label>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="btn-group-toggle py-1" data-toggle="buttons">
+                        <label class="btn btn-outline-info btn-block ">
+                            <input type="checkbox" name="check[]" value="Σινεμά"> Σινεμά
+                        </label>
+                    </div>
+                    <div class="btn-group-toggle py-1" data-toggle="buttons">
+                        <label class="btn btn-outline-info btn-block ">
+                            <input type="checkbox" name="check[]" value="Μουσική"> Μουσική
+                        </label>
+                    </div>
+                    <div class="btn-group-toggle py-1" data-toggle="buttons">
+                        <label class="btn btn-outline-info btn-block ">
+                            <input type="checkbox" name="check[]" value="Ποτό"> Ποτό
+                        </label>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="btn-group-toggle py-1" data-toggle="buttons">
+                        <label class="btn btn-outline-info btn-block ">
+                            <input type="checkbox" name="check[]" value="Θέατρο"> Θέατρο
+                        </label>
+                    </div>
+                    <div class="btn-group-toggle py-1" data-toggle="buttons">
+                        <label class="btn btn-outline-info btn-block">
+                            <input type="checkbox" name="check[]" value="Μετακίνηση"> Μεταφορές
+                        </label>
+                    </div>
+                    <div class="btn-group-toggle py-1" data-toggle="buttons">
+                        <label class="btn btn-outline-info btn-block ">
+                            <input type="checkbox" name="check[]" value="Τεχνολογία"> Τεχνολογία
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</br>
+    <!-- Page Features -->
+    <div class="row text-center">
+        <% result.forEach((product, index) => { %>
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card h-100 text-center">
+                <% if (product.fileExtension != 'default') { %>
+                    <a href="#"><img class="card-img-top productImage" src="/assets/productsImg/<%= product.id%>.<%=product.fileExtension%>" alt=""></a>
+                    <% } else { %>
+                    <a href="#"><img class="card-img-top productImage" src="/assets/productsImg/default.png" alt=""></a>
+                    <% } %>
+                <div class="card-body">
+                    <h4 class="card-title"><a href="#"><%= product.name %></a></h4>
+                    <h5>€ <%= product.price %></h5>
+                    <p class="card-text"><% product.description %></p>
+                </div>
+                <div class="card-footer">
+                    <a href="/shoppage/<%=product.shopId%>"><%= product.shopName%></a>
+                </div>
+            </div>
         </div>
-      </div>
+        <% }) %>
+    </div>
+    <!-- /.row -->
+
+    </div>
+    <!-- /.container -->
+
 </body>
 
-</html>S
+</html>
