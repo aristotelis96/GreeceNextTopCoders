@@ -1,0 +1,255 @@
+<% include ./partials/header.ejs %>
+<link rel="stylesheet" href="/css/addProduct.css">
+</head>
+
+<body ng-app="addProduct" ng-controller="addProduct">
+    <% include partials/navbar.ejs %>
+    <% if (!login) { %>
+    <div class="container text-center MainBox">
+        <h3> Μπορείς να προσθέσεις προϊόντα μόνο αν είσαι εγγεγραμμένος χρήστης.</h3>
+        <p>Πάτα <a href="/login">εδώ </a> για να συνδεθείς ή <a href="/login/signup">εδώ </a> για εγγραφή </p>
+    </div>
+    <% } else { %>
+    <div class="my-auto mx-auto">
+        <div class="container MainBox">
+            <div class="row pt-xl-3">
+                <div class="col-12 mx-auto text-center">
+                    <h3>
+                        Προσθήκη νέας προσφοράς
+                    </h3>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 mx-auto">
+                        <form action="" method="POST" enctype="multipart/form-data">
+                            <div class="form-row">
+                                <h5>Επιλογή ποιόντος ή υπηρεσίας</h5>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-lg-6">
+                                    <div class="form-row">
+                                        <div class="form-group col-lg-12">
+                                            <label class="sm">Κατηγορία</label>
+                                            <select list="category" name="categoryInput"
+                                                placeholder="Διάλεξε μια κατηγορία" class="form-control form-control"
+                                                required="" ng-model="category" ng-change="productSearch()">
+                                                <option value="">Επέλεξε κατηγορία</option>
+                                                <% categories.forEach((category, index) => { %>
+                                                <option value="<%= category.category %>">
+                                                    <%= category.category %>
+                                                </option>
+                                                <% } ) %>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-lg-12" ng-show="!newProductFlag">
+                                            <label>Αναζήτηση προιόντος ή υπηρεσίας:</label>
+                                            <input list="product" id="productid" placeholder="προϊόν"
+                                                class="form-control form-control" required="" autocomplete="off"
+                                                ng-model="productInput" ng-change="productSearch()">
+                                            <input type="hidden" name="productId" ng-value="productId">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    <div class="form-row">
+                                        <div class="form-group col-lg-12"
+                                            ng-show="!productInfoShow && !productNotFound">
+                                            <label>Προιόντα:</label>
+                                            <div class="container resultContainer" ng-show="products.length > 0">
+                                                <li class="list-group-item" ng-repeat="product in products"
+                                                    ng-click="fillProduct(product)">{{product.name}}
+                                                </li>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-lg-12 myfade"
+                                            ng-show="productInfoShow && !productNotFound">
+                                            <label>Επιλεγμένο προιόν/υπηρεσία</label>
+                                            <div class="alert alert-info">
+                                                Πληροφορίες
+                                                <ul>
+                                                    <li>Προιόν: {{productInfo.name}}</li>
+                                                    <li>Περιγραφή: {{productInfo.description}}</li>
+                                                    <li>Πρόσθετα πεδία: {{productInfo.extra_data}}</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-lg-12 myfade"
+                                            ng-show="productNotFound && !newProductFlag">
+                                            <div class="col-lg-12">
+                                                <label>Αποτέλεσμα αναζήτησης:</label>
+                                                <div class="alert alert-danger">
+                                                    Το προιόν δεν βρέθηκε σε αυτή τη κατηγορία.
+                                                    <br><a class="alert-link" href="" ng-click="addProduct()">Πρόσθεσε
+                                                        καινούργιο προιόν ή υπηρεσία</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="hidden" name="newProductFlag" ng-value="newProductFlag">
+                            <div class="form-row myfade" id="newProduct" ng-show="newProductFlag">
+                                <div class="form-group col-lg-12">
+                                    <div class="form-row">
+                                        <div class="form-group col-lg-8">
+                                    <label class="sm">Όνομα προιόντος ή υπηρεσίας:</label>
+                                            <input type="text" name="productName" placeholder="Όνομα"
+                                                class="form-control form-control"></input>
+                                </div>
+                                <div class="form-group col-lg-4">
+                                    <label>Κατηγορίες (Tags)</label>
+                                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                                data-target="#myModal">Πρόσθεσε</button>
+                                    <!-- The Modal -->
+                                    <div class="modal fade" id="myModal">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+
+                                                <!-- Modal Header -->
+                                                <div class="modal-header">
+                                                            <h4 class="modal-title">Κατηγορίες που ανοίκει το κατάστημα
+                                                            </h4>
+                                                            <button type="button" class="close"
+                                                                data-dismiss="modal">&times;</button>
+                                                </div>
+
+                                                <!-- Modal body -->
+                                                <div class="modal-body">
+                                                    <div ng-repeat="tag in tags" class="mb-3">
+                                                        <div class="input-group">
+                                                                    <input required="" name="tags" class="form-control"
+                                                                        type="text" ng-model="tag.value"
+                                                                        ng-change="loadTags(this)"><button type="button"
+                                                                        class="btn btn-danger"
+                                                                        ng-click="deleteTag(this)">Διαγραφή</button>
+                                                        </div>
+                                                        <ul class="list-group">
+                                                                    <li class="list-group-item"
+                                                                        ng-repeat="existingTag in tag.existingTags"
+                                                                        ng-click="fillTextbox(existingTag, tag)">
+                                                                        {{existingTag.name}}</li>
+                                                        </ul>
+                                                    </div>
+                                                            <button type="button" class="btn btn-primary"
+                                                                ng-click="addTag()">Πρόσθεσε</button>
+                                                </div>
+
+                                                <!-- Modal footer -->
+                                                <div class="modal-footer">
+                                                            <button type="button" class="btn btn-info"
+                                                                data-dismiss="modal">Κλείσιμο</button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-lg-4">
+                                            <label class="sm">Περιγραφη:</label>
+                                            <textarea rows="4" type="textarea" name="decriptionInput"
+                                                placeholder="Μια σύντομη περιγραφή για το προιόν ή την υπηρεσία"
+                                                class="form-control form-control"></textarea>
+                                        </div>
+                                        <div class="form-group col-lg-4">
+                                            <label class="sm">Επιπλέον πληροφορίες (προαιρετικό):</label>
+                                            <textarea rows="4" type="textarea" name="extraData"
+                                                placeholder="Πρόσθετες πληροφορίες (π.χ. αναλυτικά ιδιότητες ενός προιόντος)"
+                                                class="form-control form-control"></textarea>
+                                        </div>
+                                        <div class="form-group col-lg-4">
+                                            <label>Εικόνα προϊόντος</label>
+                                            <input type="file" name="image" class="" accept="image/*">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-lg-4">
+                                    <label class="sm">Τιμή</label>
+                                    <input type="number" step=0.01 name="priceInput" placeholder="Τιμή"
+                                        class="form-control form-control" required="">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-lg-6">
+                                    <label><input type="checkbox" id="startcheck" name="start" onclick="startfunc()">
+                                        <b>Ημερομηνία
+                                            Έναρξης Προσφοράς</b></label> <br>
+                                    <input type="date" id="displaystart" name="startdate" value="2019-05-29"
+                                        style="display:none" class="form-control form-control">
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    <label><input type="checkbox" id="endcheck" name="end" onclick="endfunc()">
+                                        <b>Ημερομηνία
+                                            Λήξης Προσφοράς</b></label> <br>
+
+                                    <input type="date" id="displayend" name="enddate" value="2019-05-29"
+                                        style="display:none" class="form-control form-control">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-lg-12">
+                                    <h5 class="sm">Επιλογή εταιρίας</h5>
+                                    <input list="company" placeholder="Εταιρία" class="form-control form-control"
+                                        required="" ng-model="companyInput" ng-change="checkCompany()"
+                                        autocomplete="off">
+                                    <input type="hidden" name="companyInput" ng-value="companyId">
+                                    <ul class="list-group">
+                                        <div class="container resultContainer" ng-show="(companies.length>0)">
+                                            <li class="list-group-item" ng-repeat="company in companies"
+                                                ng-click="fillCompany(company)">{{company.name}}
+                                                <ul>
+                                                    <li>{{company.address}}</li>
+                                                </ul>
+                                            </li>
+                                        </div>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-lg-12">
+                                    <div class="alert alert-info myfade" ng-show="companyInfoShow">
+                                        <ul>
+                                            <li>Κατάστημα: {{companyInfo.name}}</li>
+                                            <li>Τηλέφωνο: {{companyInfo.phone}}</li>
+                                            <li>Διεύθυνση: {{companyInfo.address}}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row myfade" ng-show="shopNotFound">
+                                <div class="col-lg-12">
+                                    <div class="alert alert-danger">
+                                        Η εταιρία δεν βρέθηκε!
+                                        <a class="alert-link" href="/addnewshop">Πρόσθεσε μια εταιρία</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary btn-block"
+                                    ng-disabled="(SubmitButtonProduct && !newProductFlag) || SubmitButtonShop">Προσθήκη
+                                    προϊόντος</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="/js/addProduct.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.js"></script>
+
+
+</html>
