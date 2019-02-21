@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-sm-4">.col-sm-4</div>
         <div class="col-sm-8">
-            <% if (results.length > 0 ) {%>
+            <% if (result.length > 0 ) {%>
             <div class="table-responsive">    
             <table class="table table-hover">
                 <thead>
@@ -20,7 +20,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                    <% results.forEach((result, index) => { %>
+                    <% result.forEach((result, index) => { %>
                         <tr>
                             <th scope="row">~</th>
                             <td><%= result.shop %></td>
@@ -44,4 +44,4 @@
       </div>
 </body>
 
-</html>
+</html>S

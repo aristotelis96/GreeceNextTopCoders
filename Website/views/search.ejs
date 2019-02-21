@@ -2,66 +2,67 @@
 </head>
 <body>
     <% include ./partials/navbar.ejs %>
+    <div class="container">
     <form action="/search/output" method="POST"> 
         <div class="form-row text-center">
-                <div class='col-12'>
+                <div class='col-sm-12'>
                     <p class='lead'> Διάλεξε τις κατηγορίες που σε ενδιαφέρουν </p>
                 </div>           
         </div>   
         <div class="form-row">   
-            <div class="col-4">
+            <div class="col-sm-4">
                 <div class="btn-group-toggle" data-toggle="buttons">
                     <label class="btn btn-outline-info btn-block">
-                          <input type="checkbox" name="near" checked autocomplete="off"> κοντά μου
+                          <input type="checkbox" name="check[]" value="near" > κοντά μου
                     </label>
                 </div>
             </br>
                 <div class="btn-group-toggle" data-toggle="buttons">
                         <label class="btn btn-outline-info btn-block ">
-                              <input type="checkbox" name="food" checked autocomplete="off"> Φαγητό
+                              <input type="checkbox" name="check[]" value="food" > Φαγητό
                         </label>
                 </div>
             </div>
-            <div class="col-4">
+            <div class="col-sm-4">
                 <div class="btn-group-toggle" data-toggle="buttons">
                     <label class="btn btn-outline-info btn-block ">
-                          <input type="checkbox" name="cinema" checked autocomplete="off"> Σινεμά
+                          <input type="checkbox" name="check[]" value="cinema" > Σινεμά
                     </label>
                 </div>
             </br>
                 <div class="btn-group-toggle" data-toggle="buttons">
                         <label class="btn btn-outline-info btn-block ">
-                              <input type="checkbox" name="music" checked autocomplete="off"> Μουσική
+                              <input type="checkbox" name="check[]" value="music" > Μουσική
                         </label>
                 </div>
             </div>  
-            <div class="col-4">
+            <div class="col-sm-4">
                 <div class="btn-group-toggle" data-toggle="buttons">
                     <label class="btn btn-outline-info btn-block ">
-                          <input type="checkbox" name="theater" checked autocomplete="off"> Θέατρο
+                          <input type="checkbox" name="check[]" value="theater" > Θέατρο
                     </label>
                 </div>
             </br>
                 <div class="btn-group-toggle" data-toggle="buttons">
                         <label class="btn btn-outline-info btn-block">
-                              <input type="checkbox" name="transport" checked autocomplete="off"> Μεταφορές
+                              <input type="checkbox" name="check[]" value="transport" > Μεταφορές
                         </label>
                 </div>
             </div>
         </div>
     </br>
         <div class="form-row">
-            <div class="col-12">  
+            <div class="col-sm-12">  
                 <div class="btn-group-toggle" data-toggle="buttons">
                     <label class="btn btn-outline-info btn-block ">
-                        <input type="checkbox" name="cafe" checked autocomplete="off"> Cafe - Bars - Clubs
+                        <input type="checkbox" name="check[]" value="cafe" > Cafe - Bars - Clubs
                     </label>
                 </div> 
             </div>
         </div>
     </br>
         <div class="form-row text-center">
-                <div class='col-12'>
+                <div class='col-sm-12'>
                     <p class='lead'> Εύρος Τιμών </p>
                 </div>           
         </div>
@@ -76,7 +77,7 @@
             </div>
         </div>
         <div class="form-row text-center">
-            <div class='col-12'>
+            <div class='col-sm-12'>
                 <p class='lead'> Ή δώσε μας μερικές λέξεις - κλειδιά </p>
             </div>           
         </div>
@@ -84,9 +85,10 @@
             <input type="general-search" class="form-control" name="search" id='general-search' placeholder="Αναζήτηση . . .">
         </div>
         <div class="form-row text-center">
-            <div class='col-12'>    
+            <div class='col-sm-12'>    
                 <button type="submit" class="btn btn-info mb-2 "> Ψάξε!</button>
             </div>
         </div>   
     </form>
+    </div>
 </body>

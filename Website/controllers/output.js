@@ -2,69 +2,36 @@ const fs = require('fs');
 const session = require('express-session');
 const bcrypt = require('bcrypt');
 const dbout = require(appDir + '/models/output.js');
+const util = require('util');
 
 module.exports = output = async function(req,res){
     //results = [{shop: 'A', product:'AA', price: 1},{shop: 'B', product:'BB', price:2}]
-    let cnear = req.body.near;
-    let cfood = req.body.food;
-    let ccinema = req.body.cinema;
-    let cmusic = req.body.music;
-    let ctheater = req.body.theater;
-    let ctransport = req.body.transport;
-    let ccafe = req.body.cafe;
+    let ccheck = req.body.check;
+    console.log(ccheck)
+    
     let from = req.body.from;
+    console.log(from)
     let to = req.body.to;
-    let search = req.body.search;
-    let category = "";
-    if (cnear == "on") 
-         category += "near" ;
-    if (cfood == "on") {
-        if (category != "")
-            category += "OR" 
-        category += "food";
-    }
-    if (ccinema == "on") {
-        if (category != "")
-            category += "OR" 
-        category += "cinema";
-    }   
-    if (cmusic == "on"){
-        if (category != "")
-            category += "OR"  
-        category += "music";
-    }
-    if (ctheater == "on"){
-        if (category != "")
-            category += "OR"  
-        category += "theater";
-    }
-    if (ctransport == "on"){
-        if (category != "")
-            category += "OR"  
-        category += "transport";
-    }
-    if (ccafe == "on"){
-        if (category != "")
-            category += "OR"  
-        category += "cafe OR bar OR club";
-    }                         
+    let search = req.body.search;                       
     if (!Array.isArray(search) && search != undefined)
         search = [search];
-        try  {  
-            var results = await (util.promisify(dbout.getOut)) ({    
-                categories: category,
+    var results;    
+    try  {  
+         results = await (util.promisify(dbout.getOut))({    
+                ccheck: ccheck,
                 from: from,
                 to: to,
                 search: search
         })
     }
     catch (e) {
-        // console.log(e);
+        return res.send(e.toString())
     }
+    console.log(results)
     res.render('output.ejs',{
         login: req.session.login,
         name: req.session.email, 
         title: 'Δες τι βρήκαμε για σένα!', 
-        results:results
+        result:results
     })
 }
