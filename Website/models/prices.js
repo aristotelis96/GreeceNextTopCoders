@@ -24,4 +24,22 @@ pricesOfUser = function (userId, callback){
         }
     })
 }
-module.exports = { InsertInPrices, pricesOfUser };
+
+getPrice = function (fields, callback){
+    query = "SELECT * FROM prices WHERE productID=" + pool.escape(fields.productID) + " AND shopID=" + pool.escape(fields.shopID) + " AND price=" + pool.escape(fields.price);
+    if(fields.dateFrom != 'NULL' && fields.dateFrom != '' && fields.dateFrom != null){
+        query += " AND dateFROM=" + pool.escape(fields.dateFrom);
+    }
+    if(fields.dateTo != 'NULL' && fields.dateTo != '' && fields.dateTo != null){
+        query += " AND dateTo=" + pool.escape(fields.dateTo);
+    }
+    pool.query(query, (err, result) => {
+        if(err){
+            return callback(err);
+        }
+        else {
+            return callback(null, result);
+        }
+    })
+}
+module.exports = { InsertInPrices, pricesOfUser, getPrice};

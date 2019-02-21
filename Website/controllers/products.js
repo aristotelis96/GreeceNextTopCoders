@@ -133,6 +133,17 @@ module.exports = {
                     var shop = await (util.promisify(dbShop.returnShopByID))(shopId);
                     if (shop.length == 0)
                         throw new Error('Shop does not exist'); // Unreachable, unless someone tweeks front end
+                    /* Check if price/offer already exists */
+                    let check = await (util.promisify(dbPrices.getPrice))({
+                        productID: productId,
+                        shopID: shop[0].id,
+                        price: priceInput,
+                        dateFrom: startdateInput,
+                        dateTo: enddateInput,
+                    })
+                    if(check.length>0){
+                        throw new Error("offer with specific product,shop,price,dates already exists");
+                    }
                     /* insert price */                
                     await (util.promisify(dbPrices.InsertInPrices))({
                         price: priceInput,

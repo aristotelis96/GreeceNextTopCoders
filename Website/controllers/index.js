@@ -16,7 +16,6 @@ module.exports = {
             let products = await (util.promisify(dbout.getOut))({
                 limit: 6
             });                      
-            console.log(products);
             return res.render('index.ejs', {
                 title: "GNTC",
                 categories: categories,
