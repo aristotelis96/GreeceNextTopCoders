@@ -12,8 +12,8 @@ module.exports = item = async function(req,res){
         if (isNaN(id)) {
             throw new Error('Invalid product Id: ' + id); //check id is number
         }
-        product = (await (util.promisify(dbprod.returnProductByID))(id))[0];
-        tags = (await (util.promisify(dbtags.getProductsTags))(id))[0];
+        product = (await (util.promisify(dbprod.returnProductById))(id))[0];
+        tags = (await (util.promisify(dbtags.getProductsTags))(id));
     }
     catch (e) {
         //in case of an error
