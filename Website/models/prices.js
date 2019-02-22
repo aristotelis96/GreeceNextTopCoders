@@ -24,7 +24,17 @@ pricesOfUser = function (userId, callback){
         }
     })
 }
-
+pricesOfShop = function(shopId,callback){
+    query = "select prices.price as productPrice,products.id as productId, products.name as productName, prices.dateFrom as productDateFrom, prices.dateTo as productDateTo, products.description as productDescription, products.category as productCategory, products.withdrawn as productWithdrawn from prices inner join products on prices.productID=products.id && prices.shopID="+ pool.escape(shopId);
+    pool.query(query, (err, result)=> {
+        if(err){
+            return callback(err);
+        }
+        else{
+            return callback(null, result);
+        }
+    })
+}
 getPrice = function (fields, callback){
     query = "SELECT * FROM prices WHERE productID=" + pool.escape(fields.productID) + " AND shopID=" + pool.escape(fields.shopID) + " AND price=" + pool.escape(fields.price);
     if(fields.dateFrom != 'NULL' && fields.dateFrom != '' && fields.dateFrom != null){
@@ -42,4 +52,4 @@ getPrice = function (fields, callback){
         }
     })
 }
-module.exports = { InsertInPrices, pricesOfUser, getPrice};
+module.exports = { InsertInPrices, pricesOfUser, pricesOfShop, getPrice};

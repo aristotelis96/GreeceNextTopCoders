@@ -1,7 +1,7 @@
 const fs = require('fs');
 const session = require('express-session');
 const dbShops = require(appDir + '/models/shops.js')
-const dbaddresses = require(appDir + '/models/addresses.js')
+const dbprices = require(appDir + '/models/prices.js')
 const dbusers = require(appDir + '/models/users.js')
 shoppage = function (req, res) {
     (async () => {
@@ -19,6 +19,9 @@ shoppage = function (req, res) {
                 shop.lat = 99999;
             }
             let user = (await (util.promisify(dbusers.returnUserByID))(shop.userID))[0];
+            let products = (await(util.promisify(dbprices.pricesOfShop))(id));
+            
+            
             //ToDo update view for address
             return res.render('shopPage.ejs', {
                 login: req.session.login,
@@ -29,8 +32,8 @@ shoppage = function (req, res) {
                 shoplng: shop.lng,
                 shoplat: shop.lat,
                 shopuseremail: user.email,// not used
-                shopaddress: shop.address // controller only sends ONE shop.address and view displays
-                
+                shopaddress: shop.address, // controller only sends ONE shop.address and view displays
+                productofshop : products
             })
         }
         catch (e) {
