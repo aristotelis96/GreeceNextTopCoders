@@ -27,9 +27,12 @@ verify = function(token){
         return true;
 }
 
+decode = function (token) {
+    return jwt.decode(token);
+}
 invalidateToken = function(token){
     /* Add token to blacklist */
     return myCache.set(token, true, config.ttl);
 }
 
-module.exports = {getToken, verify, invalidateToken}
+module.exports = {getToken, verify, invalidateToken, decode}

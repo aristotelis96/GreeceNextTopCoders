@@ -203,4 +203,22 @@ deleteShop = function (id, callback) {
         }
     })
 }
-module.exports = { getAllShops, returnShopByName, insertShop, returnExactShop, deleteShop, returnShopByID};
+
+/* ---------- Update Shop Function ------- */
+/* An xreiazontai epipleon pedia, elegxoume to fields gia ta pedia pou stelnoume kai simplironoume */
+/* to query String. P.x. opws gia to withdrawn */
+updateShop = function (id, fields, callback) {
+    let query = "UPDATE shops SET "
+    if(fields.withdrawn == true || fields.withdrawn == false){
+        query += "withdrawn =" + fields.withdrawn;
+    }
+    query += " WHERE id=" + id;
+    pool.query(query, (err, result)=>{
+        if(err) {
+            return callback(err);
+        } else {
+            return callback(null, result);
+        }
+    });
+}
+module.exports = { getAllShops, returnShopByName, insertShop, returnExactShop, deleteShop, returnShopByID, updateShop};

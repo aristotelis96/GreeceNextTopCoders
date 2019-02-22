@@ -1,4 +1,5 @@
 const db = require(appDir + '/models/shops.js');
+const auth = require('./authentication');
 
 getShops =  function (req, res) {
     var id = req.params.id;
@@ -130,4 +131,38 @@ postShop = function (req, res){
         }
     })
 }
-module.exports = { getShops, postShop}
+
+deleteShop = function (req, res){
+    let token = req.header('X-OBSERVATORY-AUTH')
+    let data = auth.decode(token).data;
+    let shopId = req.params.id;
+    /* If administrator , delete shop permanently */
+    if(data.email == "admin@admin") {
+        db.deleteShop(shopId, (err, result)=>{
+            if(err){
+                return res.status(500).json({
+                    message: "Internal Server Error",
+                    error: err
+                })
+            } else {
+                return res.json({message: 'OK'});
+            }
+        })
+    }
+    /* If not administrator just set Withdrawn = true */
+    else {
+        fields = {};
+        fields.withdrawn = true;
+        db.updateShop(shopId, fields, (err, result)=>{
+            if(err){
+                return res.status(500).json({
+                    message: "Internal Server Error",
+                    error: err
+                })
+            } else {
+                return res.json({message: 'OK'});
+            }
+        })
+    }
+}
+module.exports = { getShops, postShop, deleteShop}
