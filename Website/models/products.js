@@ -42,8 +42,8 @@ returnProductByName = function (fields, callback) {
 }
 
 InsertInProducts = function (fields, callback) {
-    let query = "INSERT IGNORE INTO products (name, description, category, fileExtension";
-    let vals = " VALUES(" + pool.escape(fields.name) + "," + pool.escape(fields.description) + "," + pool.escape(fields.category) + "," + pool.escape(fields.fileExtension);
+    let query = "INSERT IGNORE INTO products (name, description, category ";
+    let vals = " VALUES(" + pool.escape(fields.name) + "," + pool.escape(fields.description) + "," + pool.escape(fields.category) ;
     if(fields.extraData != null){
         query += ",extra_data";
         vals += "," + pool.escape(fields.extraData);

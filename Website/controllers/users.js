@@ -18,12 +18,12 @@ module.exports = {
         async function deleteAll() {
             let user = await (util.promisify(db.returnUser))(email);
             user = user[0];
-            try {
-                if (user.image != 'anonymous.png')
-                    await (util.promisify(fs.unlink))(`public/assets/profileImg/` + user.image)
+            try {            
+                await (util.promisify(fs.unlink))(`public/assets/profileImg/` + user.email + '.png')
             }
             catch (e) {
-                console.log(e);
+                /* Do nothing, image probably did not exist */ 
+                //console.log(e);
             }
             try {
                 await (util.promisify(db.deleteUser))(email);
@@ -37,7 +37,7 @@ module.exports = {
     },
     userPageget: (req, res) => {
         if (!req.session.email) {
-            return res.redirect('/');
+            return res.redirect('/login');
         }
         var email = req.session.email;
         db.returnUser(email, (err, result) => {
@@ -73,12 +73,10 @@ module.exports = {
     userPagepost: (req, res) => {
         var password = req.body.password;
         var passwordconf = req.body.passwordconf;
-        var image = req.body.image;
+        var image = req.files.image;
         var email = req.session.email;
         var uploadedFile;
-        var image_name;
-        var fileExtension;
-        var newimage;
+        var image_name;        
         var newpassword;
         async function UpdateUser() {
             if (!req.session.email) {
@@ -88,22 +86,19 @@ module.exports = {
             user = user[0];
             if (req.files != undefined && req.files.image != null) {
                 try {
-                    if (user.image != 'anonymous.png') {
-                        await (util.promisify(fs.unlink))(`public/assets/profileImg/` + user.image);
-                    }
+                        await (util.promisify(fs.unlink))(`public/assets/profileImg/` + user.email + '.png');
                 }
                 catch (e) {
                     // console.log(e);
                 }
-                uploadedFile = req.files.image;
+                uploadedFile = image;
                 image_name = uploadedFile.name;
-                // check type. should be png or jpeg
-                fileExtension = uploadedFile.mimetype.split('/')[1];
+                // check type. should be png or jpeg                
                 if (!(uploadedFile.mimetype === 'image/png' || uploadedFile.mimetype === 'image/jpeg')) {
                     return res.send('wrong image type');
                 }
-                // how the file will be stored
-                image_name = user.email + '.' + fileExtension;
+                // how the file will be stored (png regardless)
+                image_name = user.email + '.png';
                 uploadedFile.mv('public/assets/profileImg/' + image_name, (err) => {
                     if (err) {
                         return (err + " upload.mv failed");
@@ -123,10 +118,7 @@ module.exports = {
                         })
                     }
                 });
-                newimage = image_name;
-            } else {
-                newimage = user.image;
-            }
+            } 
             if (password != null && passwordconf != null && password != '' && passwordconf != '') {
                 if (password == passwordconf && password.length >= 8) {
                     var EncryptedPass = bcrypt.hashSync(password, saltRounds);
@@ -144,14 +136,13 @@ module.exports = {
                 id: user.id,
                 email: user.email,
                 password: newpassword,
-                image: newimage,
                 name: user.name,
                 surname: user.surname
             }, (err, result) => {
                 if (err) {
                     return res.send(err);
                 } else {
-                    // if no error, return to home page logged in
+                    // if no error, return to userPage
 
                     return res.redirect('/userpage');
                 }

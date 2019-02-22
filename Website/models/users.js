@@ -36,8 +36,8 @@ returnUser = function (email, callback) {
 }
 
 insertUser = function (fields, callback) {
-    let query_sets = "INSERT INTO users (email, password, image"
-    let query_vals = " VALUES(" + pool.escape(fields.email) +"," + pool.escape(fields.password) + "," + pool.escape(fields.image);
+    let query_sets = "INSERT INTO users (email, password"
+    let query_vals = " VALUES(" + pool.escape(fields.email) +"," + pool.escape(fields.password);
     if(fields.name!= null && fields.name!=''){
         query_sets += ", name";
         query_vals += "," + pool.escape(fields.name);
@@ -71,8 +71,7 @@ deleteUser = function (email, callback){
 
 updateUser = function (fields, callback){
     let query = "UPDATE users SET email=" + pool.escape(fields.email) 
-        + ", password=" + pool.escape(fields.password) 
-        + ", image=" + pool.escape(fields.image) 
+        + ", password=" + pool.escape(fields.password)         
         + ", name=" + pool.escape(fields.name) 
         + ", surname=" + pool.escape(fields.surname) 
         + "WHERE id=" + pool.escape(fields.id) 

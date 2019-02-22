@@ -20,7 +20,6 @@ CREATE TABLE users (
 	`id` BIGINT not null auto_increment,
     `email` varchar(255) NOT NULL,
     `password` varchar(255) NOT NULL,
-	`image` varchar(255),
     `name` varchar(255) DEFAULT 'anonymous',
     `surname` varchar(255) DEFAULT 'anonymous',
     PRIMARY KEY (`id`)
@@ -61,7 +60,6 @@ CREATE TABLE products (
     `category` varchar(255),
 	`withdrawn` boolean DEFAULT false,
     `extra_data` varchar(255),
-    `fileExtension` varchar(20),
     PRIMARY KEY (id)
 );
 

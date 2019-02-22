@@ -69,11 +69,7 @@
         <% result.forEach((product, index) => { %>
         <div class="col-lg-3 col-md-6 mb-4">
             <div class="card h-100 text-center">
-                <% if (product.fileExtension != 'default') { %>
-                    <a href="#"><img class="card-img-top productImage" src="/assets/productsImg/<%= product.id%>.<%=product.fileExtension%>" alt=""></a>
-                    <% } else { %>
-                    <a href="#"><img class="card-img-top productImage" src="/assets/productsImg/default.png" alt=""></a>
-                    <% } %>
+                    <a href="#"><img class="card-img-top productImage" src="/assets/productsImg/<%= product.id%>.png" onerror="this.onerror=null;this.src='/assets/productsImg/default.png'" alt="" ></a>
                 <div class="card-body">
                     <h4 class="card-title"><a href="#"><%= product.name %></a></h4>
                     <h5>€ <%= product.price %></h5>

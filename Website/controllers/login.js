@@ -64,17 +64,15 @@ module.exports = {
         let surname = req.body.name;
         let uploadedFile;
         let image_name;
-        let fileExtension;
         if (req.files != undefined && req.files.image != null) {
             uploadedFile = req.files.image;
             image_name = uploadedFile.name;
             // check type. should be png or jpeg
-            fileExtension = uploadedFile.mimetype.split('/')[1];
             if (!(uploadedFile.mimetype === 'image/png' || uploadedFile.mimetype === 'image/jpeg')) {
                 return res.send('wrong image type');
             }
-            // how the file will be stored
-            image_name = emailInput + '.' + fileExtension;
+            // how the file will be stored (png regardless)
+            image_name = emailInput + '.png'; 
             uploadedFile.mv('public/assets/profileImg/' + image_name, (err) => {
                 if (err) {
                     return (err + " upload.mv failed");
@@ -95,8 +93,6 @@ module.exports = {
                 }
             });
 
-        } else { //give him anonymous image
-            image_name = 'anonymous.png';
         }
         // server side validation, make sure passwords match
         if (password != passwordconfirm && password.length > 8) {
@@ -128,7 +124,6 @@ module.exports = {
                     dbUser.insertUser({
                         email: emailInput,
                         password: EncryptedPass,
-                        image: image_name,
                         name: name,
                         surname: surname
                     }, (err, result) => {

@@ -71,8 +71,7 @@ module.exports = {
                         let category = req.body.categoryInput;
                         let description = req.body.decriptionInput;                        
                         let extraData = req.body.extraData;
-                        let tags = req.body.tags;
-                        let fileExtension = 'default';
+                        let tags = req.body.tags;                        
                         let uploadedFile = null;
                         if (!Array.isArray(tags) && tags != undefined)
                             tags = [tags];  // if only 1 tag is inserted, req.body.tags returns a just a string, but we need array
@@ -80,7 +79,6 @@ module.exports = {
                         if (req.files != undefined && req.files.image != null) {
                             uploadedFile = req.files.image;
                             // check type. should be png or jpeg
-                            fileExtension = uploadedFile.mimetype.split('/')[1];
                             if (!(uploadedFile.mimetype === 'image/png' || uploadedFile.mimetype === 'image/jpeg')) {
                                 return res.send('wrong image type');
                             }
@@ -92,12 +90,11 @@ module.exports = {
                             category: category,
                             tags: tags,
                             extraData: extraData,
-                            fileExtension: fileExtension
                         })
                         productId = productId.insertId;
                         if (uploadedFile != null) {
-                            /* Store image with name ProductID.fileExtension */
-                            let image_name = productId + '.' + fileExtension;
+                            /* Store image with name ProductID.png */
+                            let image_name = productId + '.png';
                             uploadedFile.mv('public/assets/productsImg/' + image_name, (err) => {
                                 if (err) {
                                     return (err + " upload.mv failed");

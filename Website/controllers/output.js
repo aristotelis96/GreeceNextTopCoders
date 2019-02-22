@@ -6,11 +6,8 @@ const util = require('util');
 
 module.exports = output = async function(req,res){
     //results = [{shop: 'A', product:'AA', price: 1},{shop: 'B', product:'BB', price:2}]
-    let ccheck = req.body.check;
-    console.log(ccheck)
-    
+    let ccheck = req.body.check;        
     let from = req.body.from;
-    console.log(from)
     let to = req.body.to;
     let search = req.body.search;                       
     if (!Array.isArray(search) && search != undefined)
@@ -27,7 +24,6 @@ module.exports = output = async function(req,res){
     catch (e) {
         return res.send(e.toString())
     }
-    console.log(results)
     res.render('output.ejs',{
         login: req.session.login,
         name: req.session.email, 
