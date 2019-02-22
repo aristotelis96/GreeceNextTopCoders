@@ -2,7 +2,7 @@
 const pool = require('./index').getPool();
 
 getOut = function (fields, callback) {
-    let query = "SELECT shops.name as 'shopName', shops.id as 'shopId', products.id, products.name, products.description, prices.price FROM shops, prices, products WHERE (shops.id = prices.shopID AND prices.productID = products.id)";
+    let query = "SELECT shops.name as 'shopName', shops.id as 'shopId', products.id, products.name, products.description, prices.price, prices.dateFrom, prices.dateTo FROM shops, prices, products WHERE (shops.id = prices.shopID AND prices.productID = products.id)";
     if (fields.ccheck!= undefined && fields.ccheck != []){
         query += " AND ("
         for (let i=0; i<fields.ccheck.length; i++){
