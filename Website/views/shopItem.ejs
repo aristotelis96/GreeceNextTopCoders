@@ -19,7 +19,7 @@
             <div class="list-group">
               <a href="#" class="list-group-item active"><%= product.category %></a>
               <% tags.forEach((tag, index) => { %>
-              <a href="#" class="list-group-item"><% tag %></a>
+              <a href="#" class="list-group-item"><%= tag.name %></a>
               <% }) %>
             </div>
           </div>
