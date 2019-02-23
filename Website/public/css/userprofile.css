@@ -1,0 +1,6 @@
+body{
+    background-image: url("/img/backgrounds/userprofile.jpg");
+    background-size: 100% 100%;
+    background-attachment: fixed;
+    color: black;
+}

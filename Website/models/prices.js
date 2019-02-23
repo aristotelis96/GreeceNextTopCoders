@@ -14,7 +14,7 @@ InsertInPrices = function (fields, callback) {
 }
 
 pricesOfUser = function (userId, callback){
-    query = "select prices.price, shops.name as shopName, shops.id as shopID, products.name as productName from prices inner join users inner join products inner join shops on prices.shopID=shops.id && prices.productID=products.id && prices.userID=users.id where users.id=" + pool.escape(userId);
+    query = "select prices.price, shops.name as shopName, shops.id as shopID, products.name as productName, products.id as productid from prices inner join users inner join products inner join shops on prices.shopID=shops.id && prices.productID=products.id && prices.userID=users.id where users.id=" + pool.escape(userId);
     pool.query(query, (err, result)=> {
         if(err){
             return callback(err);

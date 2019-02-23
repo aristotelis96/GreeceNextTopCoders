@@ -1,84 +1,90 @@
 <% include ./partials/header.ejs %>
+<link rel="stylesheet" href="/css/userprofile.css">
 </head>
-
-<body style='background-color:blanchedalmond'>
+<body >
     <% include ./partials/navbar.ejs %>
-    <div class="container mt-5">
-        <div class='jumbotron'>
-            <div class='container'>
+    <div style="background: rgba(255, 255, 255, 0.322);" class="container mt-5 py-2">
+        
                 <div class='row p-5'>
                     <div class='col-md-4 text-center'>
                         <img src="/assets/profileImg/<%= user.email %>.png" style="max-width: 100%; max-height: 100%;" onerror="this.onerror=null;this.src='/assets/profileImg/anonymous.png'">
                     </div>
                     <div class='col-md-8 pt-1'>
-                        <div class='row pt-4 alert alert-info'>
-                            <div class='col-md-6'>
-                                User email:
+                            <div style="background: rgba(255, 255, 255, 0.5);" class="card card-outline-secondary my-4">
+                                    <div style="background:white; text-align:center;" class="card-header">
+                                       <h5>User email:   <%= user.email %></h5>
+                                    </div>
+                                    <div class="card-body">
+                        
+                        <form action="" method="POST" enctype="multipart/form-data">
+                            <div  class="form-group row ">
+                                <div class="col-lg-6">
+        
+                                    <h3>Αλλαγή Φωτογραφίας </h3>
+                                </div>
+                                <div class="col-lg-6">
+                                    <input type="file" name="image" accept="image/*">
+                                </div>
+                                
                             </div>
-                            <div class='col-md-6'>
-                                <%= user.email %>
+                            <h3 style="text-align:center;"> Αλλαγή Κωδικού </h3>
+                            <div class="form-group row">
+                                <div class="col-md-6">
+        
+                                    <input type="password" name="password" class='class form-control ' placeholder="Αλλαγή κωδικού">
+                                </div>
+                                <div class="col-md-6">
+        
+                                    <input type="password" name="passwordconf" class='class form-control ' placeholder="Επαλήθευση κωδικού">
+                                </div>
+        
                             </div>
+                            <div class="form-group row">
+                                <button type="submit" class="btn btn-primary btn-block" ng-disabled="SubmitButton">Αποθήκευση</button>
+                            </div>
+                        </form>
+                        <div class="form-group row">
+        
+                            <a href="../delete/?user=<%= user.email %>" button class='btn btn-danger btn-block'>Διαγραφή
+                                λογαριασμού</button></a>
+        
                         </div>
                     </div>
                 </div>
-                <form action="" method="POST" enctype="multipart/form-data">
-                    <div class="form-group row">
-                        <div class="col-lg-12">
-
-                            <h3>Αλλαγή Φωτογραφίας </h3>
-
-                            <input type="file" name="image" accept="image/*">
-
-                        </div>
-                    </div>
-                    <h3> Αλλαγή Κωδικού </h3>
-                    <div class="form-group row">
-                        <div class="col-md-6">
-
-                            <input type="password" name="password" class='class form-control ' placeholder="Αλλαγή κωδικού">
-                        </div>
-                        <div class="col-md-6">
-
-                            <input type="password" name="passwordconf" class='class form-control ' placeholder="Επαλήθευση κωδικού">
-                        </div>
-
-                    </div>
-                    <div class="form-group row">
-                        <button type="submit" class="btn btn-primary btn-block" ng-disabled="SubmitButton">Αποθήκευση</button>
-                    </div>
-                </form>
-                <div class="form-group row">
-
-                    <a href="../delete/?user=<%= user.email %>" button class='btn btn-danger btn-block'>Διαγραφή
-                        λογαριασμού</button></a>
-
-                </div>
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th scope="col">Προιόν</th>
-                            <th scope="col">Τιμή</th>
-                            <th scope="col">Κατάστημα</th>
-                            <th scope="col"></th>
-
-                        </tr>
-                        </thread>
-                    <tbody>
-                        <!-- INSERT STUFF FROM DB HERE LAD !-->
-                        <% Usrproducts.forEach((UsrProduct, index) => { %>
-                        <tr>
-                            <th><%= UsrProduct.productName %></th>
-                            <th><%= UsrProduct.price %></th>
-                            <th><%= UsrProduct.shopname %></th>
-                            <th>
-                                <a href="/shopPage/<%= UsrProduct.shopid %>" rel="noopener" class="btn btn-sm btn-success">Σελίδα Καταστήματος</a>
-                             </th>
-                        </tr>
-                        <% }) %>
-                    </tbody>
-                </table>
             </div>
         </div>
-    </div>
+                
+                        <!-- INSERT STUFF FROM DB HERE LAD !-->
+                        <div style="background: rgba(255, 255, 255, 0.5);" class="card card-outline-secondary my-4">
+                                <div style="background:white;" class="card-header">
+                                  Τα προϊόντα μου
+                                </div>
+                                <div class="card-body">
+                                  <div class="row">
+                                  <% for(var i=0; i < 1; i++) { %>                    
+                                    <% Usrproducts.forEach((product, index) => { %>
+                                    <div class="col-lg-3 col-md-6 mb-4" ng-hide="hideProductPrice[<%=index%>] || hideProductDate[<%=index%>]">
+                                        <div class="card h-100 text-center">
+                                            <a href="#"><img class="card-img-top productImage"
+                                                    src="/assets/productsImg/<%= product.id%>.png"
+                                                    onerror="this.onerror=null;this.src='/assets/productsImg/default.png'"
+                                                    alt=""></a>
+                                            <div class="card-body">
+                                                <h4 class="card-title"><a href="/item/<%=product.productid%>"><%= product.productName %></a></h4>
+                                                <h5>€ <%= product.price %></h5>
+                                                
+                                            </div>
+                                            <div class="card-footer">
+                                                <a href="/shoppage/<%=product.shopid%>"><%= product.shopname%></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <% }) }%>
+                                  </div>
+                                </div>
+                              </div>
+                
+            </div>
+        
     </div>
 </body>

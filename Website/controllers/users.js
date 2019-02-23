@@ -54,6 +54,7 @@ module.exports = {
                     UsrProducts = [];
                     for(let i=0; i<prices.length; i++){
                         UsrProducts.push({});
+                        UsrProducts[i].productid = prices[i].productid;
                         UsrProducts[i].productName = prices[i].productName;
                         UsrProducts[i].price = prices[i].price;
                         UsrProducts[i].shopname = prices[i].shopName;
