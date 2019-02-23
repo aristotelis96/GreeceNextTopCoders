@@ -10,9 +10,9 @@
                         <img src="/assets/profileImg/<%= user.email %>.png" style="max-width: 100%; max-height: 100%;" onerror="this.onerror=null;this.src='/assets/profileImg/anonymous.png'">
                     </div>
                     <div class='col-md-8 pt-1'>
-                            <div style="background: rgba(255, 255, 255, 0.5);" class="card card-outline-secondary my-4">
+                            <div style="background: rgba(255, 255, 255, 0.5);" class="card card-outline-secondary ">
                                     <div style="background:white; text-align:center;" class="card-header">
-                                       <h5>User email:   <%= user.email %></h5>
+                                       <h4>User email:  </h4><h4 class="font-weight-light"> <%= user.email %></h4>
                                     </div>
                                     <div class="card-body">
                         
@@ -20,14 +20,14 @@
                             <div  class="form-group row ">
                                 <div class="col-lg-6">
         
-                                    <h3>Αλλαγή Φωτογραφίας </h3>
+                                    <h3 class="font-weight-light">Αλλαγή Φωτογραφίας </h3>
                                 </div>
                                 <div class="col-lg-6">
                                     <input type="file" name="image" accept="image/*">
                                 </div>
                                 
                             </div>
-                            <h3 style="text-align:center;"> Αλλαγή Κωδικού </h3>
+                            <h3 class="font-weight-light" style="text-align:center;"> Αλλαγή Κωδικού </h3>
                             <div class="form-group row">
                                 <div class="col-md-6">
         
