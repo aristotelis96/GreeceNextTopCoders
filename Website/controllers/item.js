@@ -14,6 +14,7 @@ module.exports = item = async function(req,res){
         }
         product = (await (util.promisify(dbprod.returnProductById))(id))[0];
         tags = (await (util.promisify(dbtags.getProductsTags))(id));
+        result = (await (util.promisify(dbprod.returnOfferById))(id));
     }
     catch (e) {
         //in case of an error
@@ -24,6 +25,7 @@ module.exports = item = async function(req,res){
         name: req.session.email, 
         title: 'Σελίδα Προιόντος', 
         product: product,
-        tags:tags
+        tags:tags,
+        result:result
     })
 }

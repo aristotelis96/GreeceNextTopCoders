@@ -117,4 +117,15 @@ returnProductById = function (id, callback) {
         }
     })
 }
-module.exports = { getAllProducts, returnProduct, returnProductByName, InsertInProducts, returnProductID, returnProductById}
+
+returnOfferById = function (id, callback){
+    let query = "SELECT shops.name as 'shopName', shops.id as 'shopId', products.id, products.name, products.description, prices.price, prices.dateFrom, prices.dateTo FROM shops, prices, products WHERE (products.id =" + pool.escape(id) + "AND shops.id = prices.shopID AND prices.productID = products.id)";
+    pool.query(query, (err, results)=>{
+        if(err){
+            return callback(err);
+        } else {
+            return callback(null, results);
+        }
+    })
+}
+module.exports = { getAllProducts, returnProduct, returnProductByName, InsertInProducts, returnProductID, returnProductById, returnOfferById}

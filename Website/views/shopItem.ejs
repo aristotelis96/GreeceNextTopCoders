@@ -3,12 +3,12 @@
 </head>
 <body>
     <% include ./partials/navbar.ejs %>
-     if (<%= product.withdrawn %> == 1){
+     <% if (product.withdrawn == 1){ %>
         <div class="container">
 
         </div>
-    }
-    else{
+    <%}
+    else{ %>
     <div class="container">
 
         <div class="row">
@@ -26,12 +26,26 @@
     
           <div class="col-lg-9">
     
-            <div class="card mt-4">
-              <img class="card-img-top img-fluid" src="http://placehold.it/900x400" alt="">
+            <div class="card mt-4; text-center">
+              <div style="height:300px;overflow:hidden;">
+            <img style="max-height: 100%; max-width: 100%; width:auto;"class="card-img-top img-fluid" src="/assets/productsImg/<%= product.id%>.png"
+              onerror="this.onerror=null;this.src='/assets/productsImg/default.png'"
+              alt="Card image cap">
+              </div>
               <div class="card-body">
                 <h3 class="card-title"><%= product.name %></h3>
+                <%if (product.description == ''){%>
+                    <form action="/item/<%=product.id%>" method="POST">
+                        <div class="form-group">
+                            <input type="newdescription" class="form-control" name="newdescription" id='newdescription' placeholder="Πρόσθεσε περιγραφή. . .">
+                        </div>
+                        <button type="submit" class="btn btn-info mb-2 "> Πρόσθεσε!</button>
+                    </form>
+                <%}
+                else{%>
                 <h4>Περιγραφή</h4>
-                <p class="card-text"><%= product.description %></p>
+                <p class="card-text"><%=product.description %></p>
+                <%}%>
                 <span class="text-warning">&#9733; &#9733; &#9733; &#9733; &#9734;</span>
                 4.0 stars
               </div>
@@ -40,19 +54,28 @@
     
             <div class="card card-outline-secondary my-4">
               <div class="card-header">
-                Product Reviews
+                Που Μπορεί να το βρείς
               </div>
               <div class="card-body">
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
-                <small class="text-muted">Posted by Anonymous on 3/1/17</small>
-                <hr>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
-                <small class="text-muted">Posted by Anonymous on 3/1/17</small>
-                <hr>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
-                <small class="text-muted">Posted by Anonymous on 3/1/17</small>
-                <hr>
-                <a href="#" class="btn btn-success">Leave a Review</a>
+                <% for(var i=0; i < 1; i++) { %>                    
+                  <% result.forEach((product, index) => { %>
+                  <div class="col-lg-3 col-md-6 mb-4" ng-hide="hideProductPrice[<%=index%>] || hideProductDate[<%=index%>]">
+                      <div class="card h-100 text-center">
+                          <a href="#"><img class="card-img-top productImage"
+                                  src="/assets/productsImg/<%= product.id%>.png"
+                                  onerror="this.onerror=null;this.src='/assets/productsImg/default.png'"
+                                  alt=""></a>
+                          <div class="card-body">
+                              <h4 class="card-title"><a href="#"><%= product.name %></a></h4>
+                              <h5>€ <%= product.price %></h5>
+                              <p class="card-text"><%= product.description %></p>
+                          </div>
+                          <div class="card-footer">
+                              <a href="/shoppage/<%=product.shopId%>"><%= product.shopName%></a>
+                          </div>
+                      </div>
+                  </div>
+                  <% }) }%>
               </div>
             </div>
             <!-- /.card -->
@@ -64,6 +87,6 @@
     
       </div>
       <!-- /.container -->
-    }
+    <%}%>
     </body>
 </html>
