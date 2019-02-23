@@ -1,6 +1,10 @@
 <% include ./partials/header.ejs %>
+
+<script> var categories = <%- JSON.stringify(categories)%>;</script>
+<script src="/js/search.js"></script>
+
 </head>
-<body>
+<body ng-app="search" ng-controller="search">
     <% include ./partials/navbar.ejs %>
     <div class="container">
     <form action="/search/output" method="POST"> 
@@ -9,96 +13,72 @@
                     <p class='lead'> Διάλεξε τις κατηγορίες που σε ενδιαφέρουν </p>
                 </div>           
         </div>   
-        <div class="form-row">   
-            <div class="col-sm-4">
-                <div class="btn-group-toggle" data-toggle="buttons">
-                    <label class="btn btn-outline-info btn-block">
-                          <input type="checkbox" name="check[]" value="near" > κοντά μου
-                    </label>
-                </div>
-            </br>
-                <div class="btn-group-toggle" data-toggle="buttons">
-                        <label class="btn btn-outline-info btn-block ">
-                              <input type="checkbox" name="check[]" value="Φαγητό" > Φαγητό
-                        </label>
-                </div>
-            </br>
-                <div class="btn-group-toggle" data-toggle="buttons">
-                    <label class="btn btn-outline-info btn-block">
-                          <input type="checkbox" name="check[]" value="Καφετέριες" > Καφετέριες
-                    </label>
-                </div>
-            </br>
-            </div>
-            <div class="col-sm-4">
-                <div class="btn-group-toggle" data-toggle="buttons">
-                    <label class="btn btn-outline-info btn-block ">
-                          <input type="checkbox" name="check[]" value="Σινεμά" > Σινεμά
-                    </label>
-                </div>
-            </br>
-                <div class="btn-group-toggle" data-toggle="buttons">
-                        <label class="btn btn-outline-info btn-block ">
-                              <input type="checkbox" name="check[]" value="Μουσική" > Μουσική
-                        </label>
-                </div>
-            </br>
-                <div class="btn-group-toggle" data-toggle="buttons">
-                    <label class="btn btn-outline-info btn-block ">
-                          <input type="checkbox" name="check[]" value="Ποτό" > Ποτό
-                    </label>
-                </div>
-            </div>  
-            <div class="col-sm-4">
-                <div class="btn-group-toggle" data-toggle="buttons">
-                    <label class="btn btn-outline-info btn-block ">
-                          <input type="checkbox" name="check[]" value="Θέατρο" > Θέατρο
-                    </label>
-                </div>
-            </br>
-                <div class="btn-group-toggle" data-toggle="buttons">
-                        <label class="btn btn-outline-info btn-block">
-                              <input type="checkbox" name="check[]" value="Μετακίνηση" > Μεταφορές
-                        </label>
-                </div>
-            </br>
-                <div class="btn-group-toggle" data-toggle="buttons">
-                 <label class="btn btn-outline-info btn-block ">
-                          <input type="checkbox" name="check[]" value="Τεχνολογία" > Τεχνολογία
-                    </label>
-                </div>
-            </br>
-            </div>
-        </div>
-    </br>
-        <div class="form-row text-center">
-                <div class='col-sm-12'>
-                    <p class='lead'> Εύρος Τιμών </p>
-                </div>           
-        </div>
         <div class="form-row">
-            <div class="form-group col-md-6">
-                <label>Από</label>
-                    <input type="number" step="5" min="0" name="from" class="form-control">
-            </div>
-            <div class="form-group col-md-6">
-                <label>Έως</label>
-                    <input type="number" step="5" min="0" name="to" class="form-control">
+            <div class="col-sm-4 p-1" ng-repeat="category in categories">
+                <div class="btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-outline-info btn-block">
+                        <input type="checkbox" name="check[]" value="{{category.category}}"> {{category.category}}
+                    </label>
+                </div>
             </div>
         </div>
         <div class="form-row text-center">
             <div class='col-sm-12'>
-                <p class='lead'> Ή δώσε μας μερικές λέξεις - κλειδιά </p>
-            </div>           
+                <p class='lead'> Εύρος Τιμών </p>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label class="pull-left">Από</label>
+                        <input type="number" step="1" min="0" name="from" class="form-control">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="pull-right">Έως</label>
+                        <input type="number" step="1" min="0" name="to" class="form-control">
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <input type="general-search" class="form-control" name="search" id='general-search' placeholder="Αναζήτηση . . .">
+        <div class="form-row">
+            <div class="col-lg-12 text-center">
+                <label class='lead'> Ή δώσε μας μερικές λέξεις - κλειδιά </label>
+                <div class="input-group mb-3">
+                    <input type="text" name="search" class="form-control" placeholder="Some text">                
+                    <div class="input-group-append">
+                        <div class="input-group-text  d-none d-md-block">
+                          <label>Αναζήτησε σε:</label>
+                        </div>
+                    </div>
+                    <div class="input-group-append">
+                        <div class="input-group-text d-none d-md-block">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="products" value="products" name="searchFor[]" checked>
+                                <label class="custom-control-label" for="products">Προϊόντα</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group-append">
+                        <div class="input-group-text d-none d-md-block">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="shops" value="shops" name="searchFor[]">
+                                <label class="custom-control-label" for="shops">Καταστήματα</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group-append ">
+                        <div class="input-group-text  d-none d-md-block">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="tags" value="tags" name="searchFor[]">
+                                <label class="custom-control-label" for="tags">Tags</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="form-row text-center">
-            <div class='col-sm-12'>    
+            <div class='col-sm-12 pt-3'>
                 <button type="submit" class="btn btn-info mb-2 "> Ψάξε!</button>
             </div>
-        </div>   
+        </div>
     </form>
     </div>
 </body>

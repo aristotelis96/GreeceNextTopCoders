@@ -1,0 +1,9 @@
+.productCard {
+    opacity: 1;
+    -webkit-transition: all linear 0.4s;
+    transition: all linear 0.4s;
+}
+
+.productCard.ng-hide {
+    opacity: 0;
+}

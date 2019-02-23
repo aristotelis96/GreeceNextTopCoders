@@ -12,10 +12,26 @@ getOut = function (fields, callback) {
         }
         query += ")";
     }
+    if (fields.searchString != null && fields.searchString != ''){
+        if(fields.searchFor != undefined){        
+            if(fields.searchFor.includes('products'))
+                query += " AND products.name LIKE CONCAT('%'," + pool.escape(fields.searchString) + ",'%')";
+            if(fields.searchFor.includes('shops'))
+                query += " AND shops.name LIKE CONCAT('%'," + pool.escape(fields.searchString) + ",'%')";
+            if(fields.searchFor.includes('tags')){        
+                let tags = fields.searchString[0].split(" ");                
+                query += " AND products.id IN (SELECT categorized_product.productID FROM categorized_product INNER JOIN tags ON tags.id=categorized_product.tagID WHERE "
+                tags.forEach(i => {
+                    query += " tags.name LIKE CONCAT('%'," + pool.escape(i) + ",'%') OR ";
+                })
+                query += "0)"
+            }
+        }
+    }
     if (fields.from != null && fields.from != '')
-        query += " AND prices.price > " + fields.from;
+        query += " AND prices.price >= " + fields.from;
     if (fields.to != null && fields.to != '')
-        query += " AND prices.price <" + fields.to;
+        query += " AND prices.price =<" + fields.to;
     if (fields.limit!= null){
         query += " LIMIT " + fields.limit;
     }
