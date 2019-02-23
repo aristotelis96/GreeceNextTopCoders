@@ -129,8 +129,12 @@ returnOfferById = function (id, callback){
     })
 }
 
-addDById = function(fields, callback){
-    let query = "UPDATE products SET description ="+ fields.description + "WHERE id = " + pool.escape(fields.id);
+updateProduct = function(fields, callback){
+    let query = "UPDATE products SET "
+    if(fields.description != null && fields.description != ''){
+        query += "description =" + pool.escape(fields.description);
+    }
+    query += "WHERE id =" + pool.escape(fields.id);
     pool.query(query, (err, results)=>{
         if(err){
             return callback(err);
@@ -139,4 +143,4 @@ addDById = function(fields, callback){
         }
     })
 }
-module.exports = { getAllProducts, returnProduct, returnProductByName, InsertInProducts, returnProductID, returnProductById, returnOfferById, addDById}
+module.exports = { getAllProducts, returnProduct, returnProductByName, InsertInProducts, returnProductID, returnProductById, returnOfferById, updateProduct}

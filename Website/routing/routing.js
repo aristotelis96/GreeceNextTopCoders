@@ -28,7 +28,7 @@ const {getTags} = require(controllersDir + '/AJAXrelated/getTags.js');
 const output = require(controllersDir + '/output.js');
 const search = require(controllersDir +'/search.js');
 //shop Item
-const item = require(controllersDir + '/item.js')
+const {getItem, postItem} = require(controllersDir + '/item.js')
 //routing
 router.get('/', getHomePage);
 //check if user is logged middleware
@@ -47,7 +47,8 @@ router.post('/userPage', userPagepost);
 //shop page 
 router.get('/shopPage/:id',shoppage);
 //item page
-router.get('/item/:id',item);
+router.get('/item/:id',getItem);
+router.post('/item/:id', postItem);
 //Products 
 router.get('/addproduct', addProduct);
 router.post('/addproduct', addProduct);

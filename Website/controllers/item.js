@@ -4,18 +4,13 @@ const dbprod = require(appDir + '/models/products.js');
 const dbtags = require(appDir + '/models/tags.js');
 const util = require('util');
 
-module.exports = item = async function(req,res){
+getItem = async function(req,res){
     var product;
     var tags;
-    let nd = req.body.newdescription;
     try {
         var id = req.params.id;  // this gets the parameter from url   
         if (isNaN(id)) {
             throw new Error('Invalid product Id: ' + id); //check id is number
-        }
-        if (nd != undefined || nd !=''){
-            let fields={description:nd, id:id};
-            await(util.promisify(dbprod.addDById))(fields);
         }
         product = (await (util.promisify(dbprod.returnProductById))(id))[0];
         tags = (await (util.promisify(dbtags.getProductsTags))(id));
@@ -34,3 +29,19 @@ module.exports = item = async function(req,res){
         result:result
     })
 }
+
+postItem = async function (req, res){
+    let id = req.params.id;
+    let nd = req.body.newdescription;
+    if (nd != undefined || nd !=''){        
+        await(util.promisify(dbprod.updateProduct))({
+            id: id,
+            description: nd
+        });
+        return res.redirect('/item/'+ id);
+    }
+}
+
+
+
+module.exports = {getItem, postItem}
