@@ -35,41 +35,33 @@ module.exports = {
         }
         deleteAll();
     },
-    userPageget: (req, res) => {
+    userPageget: async (req, res) => {
+        /* Promisify */
+        let promisify = util.promisify;
+
         if (!req.session.email) {
             return res.redirect('/login');
         }
         var email = req.session.email;
-        db.returnUser(email, (err, result) => {
-            if (err) {
-                return res.status(500).send("database error\n" + err);
-            }
-            if (result.length == 0) {
-                return res.redirect('/');
-            } 
-            dbPrices.pricesOfUser(result[0].id, (err, prices) => {         // otan ginei to model tote 8a to kanoume (Y)
-                if (err) {
-                    return res.status(500).send('db error pricesofuser');
-                } else {
-                    UsrProducts = [];
-                    for(let i=0; i<prices.length; i++){
-                        UsrProducts.push({});
-                        UsrProducts[i].productid = prices[i].productid;
-                        UsrProducts[i].productName = prices[i].productName;
-                        UsrProducts[i].price = prices[i].price;
-                        UsrProducts[i].shopname = prices[i].shopName;
-                        UsrProducts[i].shopid = prices[i].shopID;
-                    }
-                    res.render('userPage.ejs', {
-                        title: "Επεξεργασία προφίλ",
-                        user: result[0],
-                        login: req.session.login,
-                        name: req.session.email,
-                        Usrproducts: UsrProducts
-                    })
-                }
-            }) 
-        })
+        try {
+            let user = (await (promisify(db.returnUser))(email))[0];
+            /* if no user found throw error */ 
+            if (user == undefined)
+                throw new Error("User with email=" + email + " was not found");
+            /* Get offers made by this user */
+            let prices = await (promisify(dbPrices.pricesOfUser))(user.id);
+
+            return res.render('userPage.ejs', {
+                title: "Επεξεργασία προφίλ",
+                user: user,
+                login: req.session.login,
+                name: req.session.email,
+                Usrproducts: prices
+            })
+        }
+        catch (e){
+            return res.send(e.toString());
+        }
     },
     userPagepost: (req, res) => {
         var password = req.body.password;

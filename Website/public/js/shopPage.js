@@ -16,7 +16,6 @@ if (lati == null || lang == null) {
     zooming = 15;
 }
 
-console.log(shopmarker);
 var map = new google.maps.Map(document.getElementById("map"), {
     zoom: zooming,
     center: shopmarker
