@@ -86,9 +86,9 @@
                     <p class="m-0 text-center">Το προϊόν ενδέχεται να μην είναι διαθέσιμο</p>
                     <% } %>
                   <div class="card h-100 text-center">
-                        <a href="#"><img class="card-img-top productImage" src="/assets/productsImg/<%= productofshop.productId%>.png" alt="" onerror="this.onerror=null;this.src='/assets/productsImg/default.png'"></a>
+                        <a href="/item/<%=productofshop.productId%>"><img class="card-img-top productImage" src="/assets/productsImg/<%= productofshop.productId%>.png" alt="" onerror="this.onerror=null;this.src='/assets/productsImg/default.png'"></a>
                     <div class="card-body">
-                      <h4 class="card-title"><a href="#"> <%= productofshop.productName %></a></h4>
+                      <h4 class="card-title"><a href="/item/<%=productofshop.productId%>"> <%= productofshop.productName %></a></h4>
                       <h5>Τιμή : <%= productofshop.productPrice%> € </h3>
                       <h5>Κατηγορία : <%=productofshop.productCategory%> </h5>  
                       <% if (productofshop.productDescription != null && productofshop.productDescription != '') { %>
