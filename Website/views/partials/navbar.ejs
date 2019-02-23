@@ -34,7 +34,7 @@
                           <a class="dropdown-item navbar-dark bg-dark"  href="#"><font color="white">Αλλαγή κωδικού</font></a> 
                           <div class="dropdown-divider"></div>
                           <form class="form" method="get" action="/logout" role="form">
-                            <button type="submit" class="btn navbar-dark bg-dark"><font color="white">Αποσύνδεση <%= name %> </button>
+                            <button type="submit" class="btn navbar-dark bg-dark"><font color="white">Αποσύνδεση <%= name %> </font></button>
                         </form>
                         </div>
                       </div>
@@ -51,20 +51,20 @@
                     
                                 <form class="px-4 py-3" action="/login" method = "POST">
                                         <div class="form-group">
-                                          <label for="exampleDropdownFormEmail1"><font color="white">Email address</label>
+                                          <label for="exampleDropdownFormEmail1"><font color="white">Email address</font></label>
                                           <input type="email" class="form-control" name="emailInput" id="emailInput" placeholder="email@example.com">
                                         </div>
                                         <div class="form-group">
-                                          <label for="exampleDropdownFormPassword1"><font color="white">Password</label>
+                                          <label for="exampleDropdownFormPassword1"><font color="white">Password</font></label>
                                           <input type="password" class="form-control" name="passwordInput" id="passwordInput" placeholder="Password">
                                         </div>
                                         <input type="hidden" id="url" name="url" >
-                                        <button onclick="myFunction()" type="submit" class="btn btn-primary"><font color="white">Sign in</button>
+                                        <button onclick="myFunction()" type="submit" class="btn btn-primary"><font color="white">Sign in</font></button>
                                       </form>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item navbar-dark bg-dark" href="/login/signup"><font color="white">Νέος χρήστης!</a>
+                    <a class="dropdown-item navbar-dark bg-dark" href="/login/signup"><font color="white">Νέος χρήστης!</font></a>
                     <a class="dropdown-item navbar-dark bg-dark" href="#"><font color="white">Ξέχασες τον
-                            κωδικό σου</a>
+                            κωδικό σου</font></a>
                 </div>
                   </div>
                     
@@ -80,4 +80,5 @@
               document.getElementById("url").value = document.URL;
             }
             </script>
+            
 </nav>
