@@ -29,6 +29,8 @@ const output = require(controllersDir + '/output.js');
 const search = require(controllersDir +'/search.js');
 //shop Item
 const {getItem, postItem} = require(controllersDir + '/item.js')
+
+const about = require(controllersDir + '/about.js');
 //routing
 router.get('/', getHomePage);
 //check if user is logged middleware
@@ -65,7 +67,7 @@ router.get('/addNewShop', addNewShopGET);
 router.post('/addNewShop', addNewShopPOST);
 router.get('/getTags', getTags);
 router.get('/searchShop', searchShop);
-
+router.get('/about', about);
 //testing section
 //router.get('/test', (req,res)=>{console.log(req.get('Referer'));res.redirect('back')});
 //error page if all fails. This should always be last
