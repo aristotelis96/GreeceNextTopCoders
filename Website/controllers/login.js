@@ -17,9 +17,9 @@ module.exports = {
             var emailInput = req.body.emailInput;
             var password = req.body.passwordInput;
             var url = req.body.url;
-            console.log(url)
+            
             url = url.slice(17, url.length)
-            console.log(url)
+            
             if (url == '' || url == '/search/output')
             url ='/';
             
