@@ -51,7 +51,8 @@
                 <div class="container">
                     <!-- Page Content -->
                     <!-- Page Features -->
-                    <div class="row text-center">                                                
+                    <div class="row text-center">
+                        <% if (result.length > 0 ) { %>                                                
                         <% result.forEach((product, index) => { %>
                         <div class="col-lg-3 productCard mb-4" ng-hide="hideProductPrice[<%=index%>] || hideProductDate[<%=index%>]">
                             <div class="card h-100 text-center">
@@ -69,7 +70,9 @@
                                 </div>
                             </div>
                         </div>
-                        <% }) %>
+                        <% }) } else {%>
+                            Δεν βρεθηκαν αποτελεσματα
+                        <% } %>
                     </div>
                     <!-- /.row -->
                 </div>
