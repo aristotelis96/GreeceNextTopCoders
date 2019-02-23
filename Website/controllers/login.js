@@ -16,6 +16,13 @@ module.exports = {
         } else if (req.method == "POST") {
             var emailInput = req.body.emailInput;
             var password = req.body.passwordInput;
+            var url = req.body.url;
+            console.log(url)
+            url = url.slice(17, url.length)
+            console.log(url)
+            if (url == '' || url == '/search/output')
+            url ='/';
+            
             dbUser.returnUser(emailInput, function (error, results) {
                 if (error) {
                     console.error("error ocurred in database during Login", error);
@@ -29,7 +36,7 @@ module.exports = {
                             var sess = req.session;
                             sess.email = emailInput;
                             sess.userid = results[0].id;
-                            res.redirect('/');
+                            res.redirect(url);
                         }
                         else {
                             res.render('login.ejs', {

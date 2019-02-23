@@ -18,8 +18,10 @@
                             <input type="password" name="passwordInput" id="passwordInput" placeholder="Κωδικός" class="form-control form-control-lg"
                                 required="">
                         </div>
+                        
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary btn-block">Είσοδος</button>
+                                <input type="hidden" id="url" name="url" >
+                            <button onclick="myFunction()" type="submit" class="btn btn-primary btn-block">Είσοδος</button>
                         </div>
                     </form>
                 </div>
@@ -65,5 +67,9 @@
         </div>
     </div>
 </body>
-
+<script>
+        function myFunction() {
+          document.getElementById("url").value = document.URL;
+        }
+        </script>
 </html>

@@ -5,6 +5,11 @@ const dbprices = require(appDir + '/models/prices.js')
 const dbusers = require(appDir + '/models/users.js')
 shoppage = function (req, res) {
     (async () => {
+        var sess = req.session;
+        req.session.login = false;
+        if (sess.email) {
+            req.session.login = true;
+        }
         try {
             var id = req.params.id;  // this gets the parameter from url   
             if (isNaN(id)) {
