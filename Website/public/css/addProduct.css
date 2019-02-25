@@ -1,10 +1,21 @@
 
-body{
-    background-image: url("/img/backgrounds/addProduct.jpg");
-    background-size: 100% 100%;
-    background-attachment: fixed;
-    color: white;
+@media (min-width: 801px) {
+    body{
+        background-image: url("/img/backgrounds/addProduct.jpg");
+        background-size: 100% auto ;
+        background-attachment: fixed;
+        color: white;
+    }
 }
+@media (max-width: 801px) {
+    body{
+        background-image: url("/img/backgrounds/addProduct.jpg");
+        background-size:auto 100% ;
+        background-attachment: fixed;
+        color: white;
+    }
+}
+
 .MainBox {
     background: rgba(0,0,0, 0.5);
     border-radius: 8px;

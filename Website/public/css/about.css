@@ -1,6 +1,19 @@
-body{
-    background-image: url("/img/backgrounds/about1.jpg");
-    background-size: 100% 100%;
-    background-attachment: fixed;
-    color: black;
+@media (min-width: 801px) {
+    body{
+        background-image: url("/img/backgrounds/about1.jpg");
+        background-size:100% 100% ;
+        background-attachment: fixed;
+        color: black;
+
+    }
+}
+@media (max-width: 801px) {
+    body{
+        background-image: url("/img/backgrounds/about2.jpg");
+        background-size: auto 100% ;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        color: black;
+
+    }
 }

@@ -1,3 +1,20 @@
+@media (min-width: 801px) {
+    body{
+        background-image: url("/img/backgrounds/index.jpg");
+        background-size: 100% auto ;
+        background-attachment: fixed;
+        color: black;
+    }
+}
+@media (max-width: 801px) {
+    body{
+        background-image: url("/img/backgrounds/index.jpg");
+        background-size: auto 100% ;
+        background-attachment: fixed;
+        color: black;
+    }
+}
+
 .productImage {
     max-width: 200px;
     max-height: 200px;

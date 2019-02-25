@@ -1,6 +1,16 @@
-body{
-    background-image: url("/img/backgrounds/shopitem.jpg");
-    background-size: 100% 100%;
-    background-attachment: fixed;
-    color: black;
+@media (min-width: 801px) {
+    body{
+        background-image: url("/img/backgrounds/shopitem.jpg");
+        background-size: 100% 100%  ;
+        background-attachment: fixed;
+        color: black;
+    }
+}
+@media (max-width: 801px) {
+    body{
+        background-image: url("/img/backgrounds/shopitem.jpg");
+        background-size: auto 100%  ;
+        background-attachment: fixed;
+        color: black;
+    }
 }
