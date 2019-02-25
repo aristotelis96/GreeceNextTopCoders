@@ -5,11 +5,6 @@ const dbtags = require(appDir + '/models/tags.js');
 const util = require('util');
 
 getItem = async function(req,res){
-    var sess = req.session;
-        req.session.login = false;
-        if (sess.email) {
-            req.session.login = true;
-        }
     var product;
     var tags;
     try {
@@ -36,11 +31,6 @@ getItem = async function(req,res){
 }
 
 postItem = async function (req, res){
-    var sess = req.session;
-        req.session.login = false;
-        if (sess.email) {
-            req.session.login = true;
-        }
     let id = req.params.id;
     let nd = req.body.newdescription;
     if (nd != undefined || nd !=''){        

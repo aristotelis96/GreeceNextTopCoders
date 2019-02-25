@@ -5,11 +5,6 @@ const util = require('util');
 
 module.exports = {
     getHomePage: async (req, res) => {
-        var sess = req.session;
-        req.session.login = false;
-        if (sess.email) {
-            req.session.login = true;
-        }
         try {
             /* get categories from model */
             let categories = await (util.promisify(db.getCategories))();

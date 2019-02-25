@@ -3,7 +3,7 @@ var router = express.Router();
 
 var controllersDir = appDir + '/controllers';
 
-// load controllers
+/* ------------- Load Controllers ---------- */
 //home page
 const {getHomePage} = require(controllersDir + '/index.js');
 //user
@@ -32,7 +32,13 @@ const {getItem, postItem} = require(controllersDir + '/item.js')
 
 const about = require(controllersDir + '/about.js');
 const contact = require(controllersDir + '/contact.js')
-//routing
+//navbar middleware
+const {navbarLogin} = require(controllersDir + '/middlewares/navbarLogin.js');
+
+/* --------- ROUTING --------- */
+//Navbar login from every page
+router.all('/*', navbarLogin)
+
 router.get('/', getHomePage);
 //check if user is logged middleware
 router.all('/login*', isLoggedIn);

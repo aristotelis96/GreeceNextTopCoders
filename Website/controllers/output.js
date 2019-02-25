@@ -5,12 +5,6 @@ const dbout = require(appDir + '/models/output.js');
 const util = require('util');
 
 module.exports = output = async function(req,res){
-    //results = [{shop: 'A', product:'AA', price: 1},{shop: 'B', product:'BB', price:2}]
-    var sess = req.session;
-        req.session.login = false;
-        if (sess.email) {
-            req.session.login = true;
-        }
     let ccheck = req.body.check;        
     let from = req.body.from;
     let to = req.body.to;

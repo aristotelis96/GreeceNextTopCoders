@@ -5,18 +5,11 @@ const dbShop = require(appDir + '/models/shops.js');
 const dbPrices = require(appDir + '/models/prices.js');
 const jo = require('jpeg-autorotate');
 const fs = require('fs');
-
-
 const util = require('util');
+
 module.exports = {
     addProduct: async (req, res) => {
         if (req.method == "GET") {
-            var sess = req.session;
-            if (req.session.email)
-                req.session.login = true;
-            else
-                req.session.login = false;
-            const util = require('util');
             try {
                 var products = await (util.promisify(dbProducts.getAllProducts))();
                 var categories = await (util.promisify(dbCategories.getCategories))();

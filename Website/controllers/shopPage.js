@@ -4,11 +4,6 @@ const dbusers = require(appDir + '/models/users.js')
 const util = require('util');
 
 shoppage = async function (req, res) {
-    var sess = req.session;
-        req.session.login = false;
-        if (sess.email) {
-            req.session.login = true;
-        }
     try {
         var id = req.params.id;  // this gets the parameter from url   
         if (isNaN(id)) {
