@@ -23,3 +23,13 @@
 .productCard.ng-hide {
     opacity: 0;
 }
+
+.filters {
+    max-height: 500px;
+    -webkit-transition: all linear 0.4s;
+    transition: all linear 0.4s;
+}
+
+.filters.ng-hide {
+    max-height: 0px;
+}

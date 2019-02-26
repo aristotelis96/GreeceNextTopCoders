@@ -19,3 +19,11 @@
     max-width: 200px;
     max-height: 200px;
 }
+
+.btn-link{
+    cursor:pointer;
+    font-family:inherit;
+    font-size:inherit;
+    background:rgba(255, 255, 255, 0.034); 
+    text-align:center;
+  }
