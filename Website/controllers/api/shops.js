@@ -1,5 +1,6 @@
 const db = require(appDir + '/models/shops.js');
 const auth = require('./authentication');
+const util = require('util');
 
 getShops =  function (req, res) {
     var id = req.params.id;
@@ -45,7 +46,6 @@ getShops =  function (req, res) {
     if (sort != 'id|ASC' && sort != 'name|ASC' && sort != 'name|DESC')
         sort = 'id|DESC';
     (async () => {
-        const util = require('util');
         var result;
         try {
             let [column, AscDesc] = sort.split('|');
@@ -117,7 +117,7 @@ postShop = function (req, res){
         tags: tags
     }, (err, result) => {
         if (err) {
-            return res.status(400).json({ message: "Bad request" });
+            return res.status(500).json({ message: "Internal Server Error" , err: err.toString()});
         } else {
             return res.status(200).json({
                 id: result.insertId,
@@ -132,10 +132,73 @@ postShop = function (req, res){
     })
 }
 
+putShop = function (req, res) {
+    /* Get id parameters */
+    let shopId = req.params.id;
+    if(isNaN(shopId)){
+        return res.status(400).json({message: "Bad request", err: "id is NaN"});
+    }
+    /* Get body parameters */
+    let name = req.body.name;
+    if(name == null)
+        return res.status(400).json({message: "Bad request"});
+    let address = req.body.address;
+    if(address == null)
+        return res.status(400).json({message: "Bad request"});  
+    let lng = req.body.lng;
+    if(lng == null || isNaN(lng))
+        return res.status(400).json({message: "Bad request"});
+    let lat = req.body.lat;
+    if(lat == null || isNaN(lat))
+        return res.status(400).json({message: "Bad request"});
+    /* get tags */
+    let tags = req.body.tags;
+    if(tags == null)
+        return res.status(400).json({message: "Bad request"});
+    tags = tags.replace(/"/g,'');
+    tags = tags.replace(/\[/g,'');
+    tags = tags.replace(/\]/g,'');
+    tags = tags.split(',');
+    let i = tags.indexOf('');
+    if(i!=-1)
+        tags.splice(i, 1);
+    let withdrawn = req.body.withdrawn;
+    if(withdrawn == null)
+        return res.status(400).json({message: "Bad request"});
+    db.updateShop(shopId, {
+        name: name,
+        address: address,
+        lng: lng,
+        lat: lat,
+        withdrawn: withdrawn,
+        tags: tags
+    }, (err, result)=>{
+        if (err) {
+            return res.status(500).json({ message: "Internal Server Error", err: err.toString()});
+        } else {
+            if(result.affectedRows == 0)
+                return res.status(404).json({message: "Not Found", err: "id not found"})
+            else
+                return res.status(200).json({
+                    id: shopId,
+                    name: name,
+                    address: address,
+                    lng: lng,
+                    lat: lat,
+                    tags: tags,
+                    withdrawn: withdrawn
+                })
+        }
+    });
+}
+
 deleteShop = function (req, res){
     let token = req.header('X-OBSERVATORY-AUTH')
     let data = auth.decode(token).data;
     let shopId = req.params.id;
+    if(isNaN(shopId)){
+        return res.status(400).send({message: "Bad request", err: "id is NaN"});
+    }
     /* If administrator , delete shop permanently */
     if(data.email == "admin@admin") {
         db.deleteShop(shopId, (err, result)=>{
@@ -145,7 +208,10 @@ deleteShop = function (req, res){
                     error: err
                 })
             } else {
-                return res.json({message: 'OK'});
+                if(result.affectedRows == 1)
+                    return res.status(200).json({message: 'OK'});
+                else
+                    return res.status(404).json({message: "Not Found", err: "id not found"})
             }
         })
     }
@@ -160,9 +226,12 @@ deleteShop = function (req, res){
                     error: err
                 })
             } else {
-                return res.json({message: 'OK'});
+                if(result.affectedRows == 1)
+                    return res.status(200).json({message: 'OK'});
+                else
+                    return res.status(404).json({message: "Not Found", err: "id not found"})
             }
         })
     }
 }
-module.exports = { getShops, postShop, deleteShop}
+module.exports = { getShops, postShop, deleteShop, putShop}

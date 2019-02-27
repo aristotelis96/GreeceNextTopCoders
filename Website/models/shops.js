@@ -170,7 +170,7 @@ insertShop = function (fields, callback) {
                                 resolve(result);
                         })
                     })
-                })(); 
+                })();                 
                 //last insert tag-shop relation
                 for (i = 0; i < tagsIDs.length; ++i)
                     await (util.promisify(dbTags.insertShopTagRelation))(shop.insertId, tagsIDs[i]);
@@ -207,12 +207,51 @@ deleteShop = function (id, callback) {
 /* ---------- Update Shop Function ------- */
 /* An xreiazontai epipleon pedia, elegxoume to fields gia ta pedia pou stelnoume kai simplironoume */
 /* to query String. P.x. opws gia to withdrawn */
-updateShop = function (id, fields, callback) {
-    let query = "UPDATE shops SET "
+updateShop = async function (shopId, fields, callback) {
+    let query = "UPDATE shops SET"
     if(fields.withdrawn == true || fields.withdrawn == false){
-        query += "withdrawn =" + fields.withdrawn;
+        query += " withdrawn =" + fields.withdrawn + ",";
     }
-    query += " WHERE id=" + id;
+    if(fields.name != null && fields.name != ''){
+        query += " name =" + pool.escape(fields.name) + ",";
+    }
+    if(fields.address != null && fields.address != ''){
+        query += " address =" + pool.escape(fields.address) + ",";
+    }
+    if(fields.lng != null && fields.lng != ''){
+        query += " lng =" + pool.escape(fields.lng) + ",";
+    }
+    if(fields.lat != null && fields.lat != ''){
+        query += " lat =" + pool.escape(fields.lat) + ",";
+    }
+    if(fields.withdrawn != null && fields.withdrawn != ''){
+        query += " withdrawn =" + pool.escape(fields.withdrawn) + ",";
+    }
+    let tags = fields.tags;
+    if (tags!= null) {
+        let i;
+        try {
+            //insert all tags
+            let tagsIDs = [];
+            for (i = 0; i < tags.length; ++i) {
+                if (tags[i] != '') {
+                    await (util.promisify(dbTags.insertTag))(tags[i]);
+                    res = await (util.promisify(dbTags.getID))(tags[i]);
+                    tagsIDs.push(res[0].id);
+                }
+            }
+            //erase past tag-shop relations
+            await (util.promisify(dbTags.clearShopTagRelation))(shopId)
+            // Insert Shop Tag relationship
+            for (i = 0; i < tagsIDs.length; ++i)
+                await (util.promisify(dbTags.insertShopTagRelation))(shopId, tagsIDs[i]);
+        }
+        catch (e) {
+            return callback(e);
+        }
+    }
+    query = query.substring(0, query.length - 1); 
+    query += " WHERE id=" + shopId;
     pool.query(query, (err, result)=>{
         if(err) {
             return callback(err);

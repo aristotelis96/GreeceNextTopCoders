@@ -28,6 +28,11 @@ getOut = function (fields, callback) {
             }
         }
     }
+    if(fields.withdrawn != null)
+        query += " AND products.withdrawn =" + pool.escape(fields.withdrawn) + " AND shops.withdrawn=" + pool.escape(fields.withdrawn)
+    else   
+        query += " AND products.withdrawn =false AND shops.withdrawn=false";
+        
     if (fields.priceFrom != null && fields.priceFrom != '')
         query += " AND prices.price >= " + fields.priceFrom;
     if (fields.priceTo != null && fields.priceTo != '')

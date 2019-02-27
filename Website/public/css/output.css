@@ -15,22 +15,21 @@
     }
 }
 .productCard {
-    opacity: 1;
-    -webkit-transition: all linear 0.4s;
-    transition: all linear 0.4s;
+    -webkit-transition: opacity 0.4s, box-shadow 0.15s;
+    transition: opacity 0.4s, box-shadow 0.15s;
+
+    opacity: 1;    
+    box-shadow: 0 0 0;
 }
 
 .productCard.ng-hide {
     opacity: 0;
 }
-.productCard{
-    box-shadow: 0 0 0;
-    transition: box-shadow 0.15s;
-    -webkit-transition: box-shadow 0.15s;
-}
+
 .productCard:hover{
     box-shadow: 0 0 1em;
 }
+
 .filters {
     max-height: 500px;
     -webkit-transition: all linear 0.4s;

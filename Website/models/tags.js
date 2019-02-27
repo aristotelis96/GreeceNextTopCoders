@@ -28,6 +28,15 @@ insertShopTagRelation = function (shopID, tagID, callback) {
             return callback(null, result);
     })
 }
+clearShopTagRelation = function (shopId, callback){
+    let query = "DELETE FROM categorized_shop WHERE shopId =" + pool.escape(shopId);
+    pool.query(query, (err, result)=>{
+        if(err)
+            return callback(err);
+        else
+            return callback(null, result);
+    })
+}
 insertProductTagRelation = function (productID, tagID, callback) {
     let query = "INSERT IGNORE INTO categorized_product (productID, tagID) VALUES (" + pool.escape(productID) + "," + pool.escape(tagID) + ");";
     pool.query(query, (err, result) => {
@@ -64,4 +73,4 @@ getShopTags = function(id, callback){
             return callback(null, result);
     })
 }
-module.exports = { insertTag, getID, insertShopTagRelation, getTagNames, insertProductTagRelation, getProductsTags,getShopTags}
+module.exports = { insertTag, getID, insertShopTagRelation, getTagNames, insertProductTagRelation, getProductsTags,getShopTags, clearShopTagRelation}
