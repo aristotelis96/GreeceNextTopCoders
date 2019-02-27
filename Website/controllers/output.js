@@ -17,8 +17,8 @@ module.exports = output = async function(req,res){
          results = await (util.promisify(dbout.getOut))({   
                 searchString: search, 
                 ccheck: ccheck,
-                from: from,
-                to: to,
+                priceFrom: from,
+                priceTo: to,
                 search: search,
                 searchFor: searchFor,
                 limit: 50

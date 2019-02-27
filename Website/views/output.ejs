@@ -63,7 +63,17 @@
                                 <div class="card-body">
                                     <h4 class="card-title"><a href="/item/<%= product.id %>"><%= product.name %></a></h4>
                                     <h5>€ <%= product.price %></h5>
-                                    <p class="card-text"><%= product.description %></p>
+                                    <p class="card-text"><%= product.description %></p>                                    
+                                        <%
+                                            var startDate = (new Date(product.dateFrom))
+                                            var endDate = (new Date(product.dateTo))
+                                            if (!(isNaN(startDate) || isNaN(endDate))) {
+                                        %>
+                                        <p class="card-text"></p>
+                                            Από: <%= startDate.getDate()%>-<%= startDate.getMonth()+1%>-<%=startDate.getFullYear()%>
+                                            Έως: <%= endDate.getDate()%>-<%= endDate.getMonth()+1%>-<%=endDate.getFullYear()%>                                                                                                     
+                                        </p>
+                                        <% } %>                                              
                                 </div>
                                 <div class="card-footer">
                                     <a href="/shoppage/<%=product.shopId%>"><%= product.shopName%></a>

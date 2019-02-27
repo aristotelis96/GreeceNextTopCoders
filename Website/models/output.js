@@ -28,13 +28,13 @@ getOut = function (fields, callback) {
             }
         }
     }
-    if (fields.from != null && fields.from != '')
-        query += " AND prices.price >= " + fields.from;
-    if (fields.to != null && fields.to != '')
-        query += " AND prices.price =<" + fields.to;
+    if (fields.priceFrom != null && fields.priceFrom != '')
+        query += " AND prices.price >= " + fields.priceFrom;
+    if (fields.priceTo != null && fields.priceTo != '')
+        query += " AND prices.price <= " + fields.priceTo;   
     if (fields.limit!= null){
         query += " LIMIT " + fields.limit;
-    }
+    }    
     pool.query(query, (err, result) => {
         if(err){
             return callback(err);
