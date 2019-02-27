@@ -71,7 +71,7 @@
                     <% Usrproducts.forEach((product, index) => { console.log(product); %>
                     <div class="col-lg-3 col-md-6 mb-4"
                         ng-hide="hideProductPrice[<%=index%>] || hideProductDate[<%=index%>]">
-                        <div class="card h-100 text-center">
+                        <div class="card h-100 text-center productCard">
                             <a href="/item/<%=product.productid%>"><img class="card-img-top productImage"
                                     src="/assets/productsImg/<%= product.productid%>.png"
                                     onerror="this.onerror=null;this.src='/assets/productsImg/default.png'" alt=""></a>

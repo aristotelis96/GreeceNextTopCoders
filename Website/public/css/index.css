@@ -20,6 +20,15 @@
     max-height: 200px;
 }
 
+.card{
+    box-shadow: 0 0 0;
+    transition: box-shadow 0.15s;
+    -webkit-transition: box-shadow 0.15s;
+}
+.card:hover{
+    box-shadow: 0 0 1em;
+}
+
 .btn-link{
     cursor:pointer;
     font-family:inherit;

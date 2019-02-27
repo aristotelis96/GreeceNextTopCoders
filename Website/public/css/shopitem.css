@@ -14,3 +14,12 @@
         color: black;
     }
 }
+
+.productCard{
+    box-shadow: 0 0 0;
+    transition: box-shadow 0.15s;
+    -webkit-transition: box-shadow 0.15s;
+}
+.productCard:hover{
+    box-shadow: 0 0 1em;
+}
