@@ -17,7 +17,7 @@ router.get('*', checkFormat);
 router.get('/shops', getShops);
 router.post('/shops', authentication, postShop);
 router.get('/shops/:id', getShops);
-router.put('/shops/:id', putShop);
+router.put('/shops/:id', authentication, putShop);
 router.delete('/shops/:id', authentication, deleteShop);
 
 router.all('*', (req, res) => {return res.status(400).json({message: 'Bad Request'})})

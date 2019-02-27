@@ -5,7 +5,7 @@ function authentication (req, res, next){
     if(auth.verify(token))
         next();
     else
-        res.status(403).json({message: 'Forbidden, need to login'});
+        res.status(401).json({message: 'Not authorized, need to login'});
 }
 
 module.exports = authentication;
