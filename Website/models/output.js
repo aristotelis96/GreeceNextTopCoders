@@ -37,6 +37,9 @@ getOut = function (fields, callback) {
         query += " AND prices.price >= " + fields.priceFrom;
     if (fields.priceTo != null && fields.priceTo != '')
         query += " AND prices.price <= " + fields.priceTo;   
+    if (fields.positionLng != null && fields.positionLat != null && fields.distance != null){
+        query += " AND acos(sin(radians(" + fields.positionLat + "))*sin(radians(lat)) + cos(radians(" + fields.positionLat + "))*cos(radians(lat))*cos(radians(lng)-radians(" + fields.positionLng + "))) * 6371 <" + fields.distance;        
+    }    
     if (fields.limit!= null){
         query += " LIMIT " + fields.limit;
     }    

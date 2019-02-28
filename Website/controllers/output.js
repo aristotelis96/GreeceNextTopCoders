@@ -10,6 +10,12 @@ module.exports = output = async function(req,res){
     let to = req.body.to;
     let search = req.body.search;  
     let searchFor = req.body.searchFor;       
+    let geolocation = req.body.geoLocationFlag;
+    if (geolocation != undefined) {
+        var positionLng = req.body.positionLng;
+        var positionLat = req.body.positionLat;
+        var distance = req.body.distance;
+    }
     if (!Array.isArray(search) && search != undefined)
         search = [search];
     var results;    
@@ -21,6 +27,9 @@ module.exports = output = async function(req,res){
                 priceTo: to,
                 search: search,
                 searchFor: searchFor,
+                positionLat: positionLat,
+                positionLng: positionLng,
+                distance: distance,
                 limit: 50
         })
     }

@@ -58,7 +58,6 @@ getProducts =  function (req, res) {
         } catch (e) {
             return res.status(500).send({message: "Internal server error", err: e});
         }
-        console.log(result)
         apiResult = {};
         apiResult.start = start;
         apiResult.count = count;
