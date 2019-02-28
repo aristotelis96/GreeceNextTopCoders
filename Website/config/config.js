@@ -2,7 +2,6 @@
 // this should be checked in the future
 var path = require('path');
 var appDir = path.dirname(__dirname);
-var password = require('./password.js');
 // end of critical area
 
 const config = {
@@ -16,8 +15,8 @@ const config = {
     },
     db: {
         /****** MySQL Server is hosted @ Okeanos VM. Change to 'root'@'localhost' for local mysql server ******/
-        host: 'snf-854220.vm.okeanos.grnet.gr', //change to 'localhost'
-        user: 'admin', //change to 'root'
+        host: '83.212.74.151', //change to 'localhost'
+        user: 'root', //change to 'root'
         password: 'password', // password // from require('./password.js');
         database: 'website'
     },

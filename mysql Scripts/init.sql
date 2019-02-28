@@ -1,4 +1,4 @@
-DROP DATABASE website;
+DROP DATABASE IF EXISTS website;
 CREATE DATABASE website CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE website;
 
@@ -6,9 +6,10 @@ CREATE TABLE categories (
 	`category` varchar(255)
 );
 insert into categories (category) values ('Φαγητό'),('Σινεμά'),
-									('Μουσική'),('Θέατρο'),
+ 									('Μουσική'),('Θέατρο'),
                                     ('Μετακίνηση'),('Καφετέριες'),
                                     ('Ποτό'),('Τεχνολογία'),('Άλλο');
+
 CREATE TABLE addresses (
 	`id` BIGINT,
     `city` varchar(255),
@@ -28,16 +29,15 @@ CREATE TABLE users (
 CREATE TABLE shops (
 	`id` BIGINT not null auto_increment,
     `name` varchar(255),
-    `address` varchar(255) DEFAULT '',
-    `phone` BIGINT,
+	`phone` BIGINT,
     `lng` double,
     `lat` double,
     `withdrawn` boolean DEFAULT false,
     `userID` BIGINT DEFAULT 1,
+	`address` varchar(255) DEFAULT '',
     PRIMARY KEY(`id`),
     FOREIGN KEY (`userID`) REFERENCES users(id) ON DELETE CASCADE
 );
-
 -- tags: katigories twn shops i twn products
 CREATE TABLE tags (
 	`id` BIGINT not null auto_increment,
