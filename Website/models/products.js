@@ -14,6 +14,40 @@ getAllProducts = function (callback) {
         }
     });
 }
+getAllProductsWithFields = function (fields,callback) {
+    let query = "SELECT * FROM `products`"; // ORDER BY name ASC";
+    if(fields != null){
+        if (fields.status == 'ACTIVE')
+            query += " WHERE withdrawn=0 ";
+        else if (fields.status == 'WITHDRAWN')
+            query += " WHERE withdrawn=1 ";
+        if (fields.sort != null)
+            query += "ORDER BY " + fields.sort.column + " " + fields.sort.AscDesc;
+    }
+    query += ";";
+    pool.query(query, (err, results) => {
+        if (err) {
+            return callback(err);
+        }
+        else {
+            if(results.length == 0)
+                return callback(null, results);
+
+            dbTag.getProductsTags(results[0].id, (err,resTags)=>{
+                if (err)
+                    return callback(err);
+                else{
+                    results[0].tags = [];
+                    resTags.forEach(element => {
+                        results[0].tags.push(element.name);
+                    });
+                    return callback(null, results);
+                }                    
+            })
+        }
+    });
+}
+
 returnProduct = function (name, callback) {
     let query = "SELECT * FROM products WHERE name = " + pool.escape(name);
     pool.query(query, (err, results) => {
@@ -112,8 +146,22 @@ returnProductById = function (id, callback) {
     pool.query(query, (err, results)=>{
         if(err){
             return callback(err);
-        } else {
-            return callback(null, results);
+        } 
+        else {
+            if(results.length == 0)
+                return callback(null, results);
+
+            dbTag.getProductsTags(results[0].id, (err,resTags)=>{
+                if (err)
+                    return callback(err);
+                else{
+                    results[0].tags = [];
+                    resTags.forEach(element => {
+                        results[0].tags.push(element.name);
+                    });
+                    return callback(null, results);
+                }                    
+            })
         }
     })
 }
@@ -143,4 +191,4 @@ updateProduct = function(fields, callback){
         }
     })
 }
-module.exports = { getAllProducts, returnProduct, returnProductByName, InsertInProducts, returnProductID, returnProductById, returnOfferById, updateProduct}
+module.exports = { getAllProducts,getAllProductsWithFields, returnProduct, returnProductByName, InsertInProducts, returnProductID, returnProductById, returnOfferById, updateProduct}
