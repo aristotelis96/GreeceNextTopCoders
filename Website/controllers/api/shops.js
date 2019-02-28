@@ -192,6 +192,86 @@ putShop = function (req, res) {
     });
 }
 
+patchShop = async function (req, res) {
+    /* Get id parameters */
+    let shopId = req.params.id;
+    if(isNaN(shopId)){
+        return res.status(400).json({message: "Bad request", err: "id is NaN"});
+    }
+    let fields = {}; /* fields is parameters for db.updateShop */
+    /* Get body parameters */
+    let name = req.body.name;
+    let fieldsToBeChanged = 0;
+    if(name != null){
+        fieldsToBeChanged++;
+        fields.name = name;
+    }
+    let address = req.body.address;
+    if(address != null){
+        fieldsToBeChanged++;
+        fields.address = address;
+    }
+    let lng = req.body.lng;
+    if(lng != null) {
+        if (isNaN(lng))
+            return res.status(400).json({message: "Bad request"});    
+        fieldsToBeChanged++;        
+        fields.lng = lng;
+    }
+    let lat = req.body.lat;
+    if(lat != null) {
+        if (isNaN(lat))
+            return res.status(400).json({message: "Bad request"});
+        fieldsToBeChanged++;
+        fields.lat = lat;
+    }
+    /* get tags */
+    let tags = req.body.tags;
+    if (tags != null) {
+        tags = tags.replace(/"/g, '');
+        tags = tags.replace(/\[/g, '');
+        tags = tags.replace(/\]/g, '');
+        tags = tags.split(',');
+        let i = tags.indexOf('');
+        if (i != -1)
+            tags.splice(i, 1);
+        fieldsToBeChanged++;
+        fields.tags = tags;
+    }
+    let withdrawn = req.body.withdrawn;
+    if(withdrawn != null){
+        fieldsToBeChanged++;
+        fields.withdrawn = withdrawn;
+    }        
+    if (fieldsToBeChanged != 1)
+        return res.status(400).json({ message: "Bad request, sent too many fields" });
+    /* Update shop and return updated shop */
+    let promisify = util.promisify // use promisify function
+    try {
+        let UpdateRes = await (promisify(db.updateShop))(shopId, fields);
+        /* Check if no id was found to be updated */
+        if (UpdateRes.affectedRows == 0)
+            return res.status(404).json({ message: "Not Found", err: "id not found" })
+        /* Fetch updated shop and reply */
+        let updatedShop = await (promisify(db.returnShopByID))(shopId);
+        let withdrawn;
+        if (updatedShop[0].withdrawn == 0) withdrawn = false; else withdrawn = true;
+        let apiResult = {
+            id: updatedShop[0].id,
+            name: updatedShop[0].name,
+            address: updatedShop[0].address,
+            lng: updatedShop[0].lng,
+            lat: updatedShop[0].lat,
+            tags: updatedShop[0].tags,
+            withdrawn: withdrawn
+        }
+        return res.status(200).send(apiResult);
+    }
+    catch(e) {
+        return res.status(500).json({ message: "Internal Server Error", err: err.toString() });
+    }
+}
+
 deleteShop = function (req, res){
     let token = req.header('X-OBSERVATORY-AUTH')
     let data = auth.decode(token).data;
@@ -208,10 +288,10 @@ deleteShop = function (req, res){
                     error: err
                 })
             } else {
-                if(result.affectedRows == 1)
-                    return res.status(200).json({message: 'OK'});
-                else
+                if(result.affectedRows == 0)
                     return res.status(404).json({message: "Not Found", err: "id not found"})
+                else
+                    return res.status(200).json({message: 'OK'});                    
             }
         })
     }
@@ -234,4 +314,4 @@ deleteShop = function (req, res){
         })
     }
 }
-module.exports = { getShops, postShop, deleteShop, putShop}
+module.exports = { getShops, postShop, deleteShop, putShop, patchShop}

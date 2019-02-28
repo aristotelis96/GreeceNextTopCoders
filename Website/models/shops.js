@@ -225,7 +225,7 @@ updateShop = async function (shopId, fields, callback) {
         query += " lat =" + pool.escape(fields.lat) + ",";
     }
     if(fields.withdrawn != null && fields.withdrawn != ''){
-        query += " withdrawn =" + pool.escape(fields.withdrawn) + ",";
+        query += " withdrawn =" + ((pool.escape(fields.withdrawn)).toUpperCase()).replace(/'/g,'') + ",";
     }
     let tags = fields.tags;
     if (tags!= null) {

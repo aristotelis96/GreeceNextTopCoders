@@ -5,7 +5,7 @@ var controllersDir = appDir + '/controllers/api';
 
 //load controllers
 const {checkFormat} = require(controllersDir + '/middlewares/checkFormat.js');
-const {getShops, postShop, deleteShop, putShop} = require(controllersDir + '/shops.js');
+const {getShops, postShop, deleteShop, putShop, patchShop} = require(controllersDir + '/shops.js');
 const login = require(controllersDir + '/login');
 const authentication = require(controllersDir + '/middlewares/authentication');
 //login - logout
@@ -18,6 +18,7 @@ router.get('/shops', getShops);
 router.post('/shops', authentication, postShop);
 router.get('/shops/:id', getShops);
 router.put('/shops/:id', authentication, putShop);
+router.patch('/shops/:id', authentication, patchShop);
 router.delete('/shops/:id', authentication, deleteShop);
 
 router.all('*', (req, res) => {return res.status(400).json({message: 'Bad Request'})})
