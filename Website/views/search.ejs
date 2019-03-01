@@ -98,7 +98,7 @@
                         <label class="label">Απόσταση από σένα
                             <input type="hidden" ng-value="positionLng" name="positionLng">
                             <input type="hidden" ng-value="positionLat" name="positionLat">
-                            <input type="range" class="slider" max="20" min="0" step="0.1" name="distance" ng-click="slider()" ng-model="slideValue">
+                            <input type="range" class="slider" max="20" min="0" step="0.1" name="distance" ng-change="slider()" ng-model="slideValue">
                         </label>
                     </div>
                     <div class="col-lg-6 text-center">

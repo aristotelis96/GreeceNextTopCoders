@@ -11,7 +11,6 @@ module.exports = {
     addProduct: async (req, res) => {
         if (req.method == "GET") {
             try {
-                var products = await (util.promisify(dbProducts.getAllProducts))();
                 var categories = await (util.promisify(dbCategories.getCategories))();
 
             } catch (e){
@@ -21,7 +20,6 @@ module.exports = {
                 login: req.session.login,
                 title: "Πρόσθεσε προϊόν",
                 name: req.session.email,
-                products: products,
                 categories: categories
             })
 

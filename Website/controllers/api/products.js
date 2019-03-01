@@ -51,7 +51,7 @@ getProducts =  function (req, res) {
         var result;
         try {
             let [column, AscDesc] = sort.split('|'); // <- nice 
-            result = await (util.promisify(db.getAllProductsWithFields))({
+            result = await (util.promisify(db.getAllProducts))({
                 status: status,
                 sort: { column: column, AscDesc: AscDesc }
             });

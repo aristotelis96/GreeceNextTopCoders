@@ -3,18 +3,7 @@ const pool = require('./index').getPool();
 const dbTag = require('./tags');
 const util = require('util');
 
-getAllProducts = function (callback) {
-    let query = "SELECT * FROM `products` ORDER BY name ASC";
-    pool.query(query, (err, result) => {
-        if (err) {
-            return callback(err);
-        }
-        else {
-            return callback(null, result);
-        }
-    });
-}
-getAllProductsWithFields = function (fields,callback) {
+getAllProducts = function (fields,callback) {
     let query = "SELECT * FROM `products`"; // ORDER BY name ASC";
     if(fields != null){
         if (fields.status == 'ACTIVE')
@@ -191,4 +180,4 @@ updateProduct = function(fields, callback){
         }
     })
 }
-module.exports = { getAllProducts,getAllProductsWithFields, returnProduct, returnProductByName, InsertInProducts, returnProductID, returnProductById, returnOfferById, updateProduct}
+module.exports = { getAllProducts, returnProduct, returnProductByName, InsertInProducts, returnProductID, returnProductById, returnOfferById, updateProduct}
