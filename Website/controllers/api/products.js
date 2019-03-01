@@ -271,7 +271,7 @@ patchProducts = async function (req, res) {
         return res.status(200).send(apiResult);
     }
     catch(e) {
-        return res.status(500).json({ message: "Internal Server Error", err: err.toString() });
+        return res.status(500).json({ message: "Internal Server Error", error: e.toString() });
     }
 }
 deleteProducts = function (req, res){

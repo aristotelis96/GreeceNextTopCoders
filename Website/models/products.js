@@ -171,7 +171,7 @@ returnOfferById = function (id, callback){
 }
 
 updateProduct = async function(fields, callback){
-    let query = "UPDATE products SET "
+    let query = "UPDATE products SET id =" + fields.id + ',' ;
     if(fields.description != null && fields.description != ''){
         query += " description =" + pool.escape(fields.description) + ",";
     }
