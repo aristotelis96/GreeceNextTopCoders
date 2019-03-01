@@ -7,7 +7,7 @@ var controllersDir = appDir + '/controllers/api';
 const {checkFormat} = require(controllersDir + '/middlewares/checkFormat.js');
 const {getShops, postShop, deleteShop, putShop, patchShop} = require(controllersDir + '/shops.js');
 const {getProducts, postProducts, putProducts, patchProducts, deleteProducts} = require(controllersDir + '/products.js');
-
+const {getPrices} = require(controllersDir + '/prices.js');
 const login = require(controllersDir + '/login');
 const authentication = require(controllersDir + '/middlewares/authentication');
 //login - logout
@@ -29,6 +29,9 @@ router.get('/products/:id', getProducts);
 router.put('/products/:id', authentication, putProducts);
 router.patch('/products/:id', authentication, patchProducts);
 router.delete('/products/:id', authentication, deleteProducts);
+
+//prices
+router.get('/prices', getPrices);
 
 router.all('*', (req, res) => {return res.status(400).json({message: 'Bad Request'})})
 module.exports = router;
