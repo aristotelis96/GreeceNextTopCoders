@@ -71,6 +71,10 @@ InsertInProducts = function (fields, callback) {
         query += ",extra_data";
         vals += "," + pool.escape(fields.extraData);
     }
+    if(fields.withdrawn != null){
+        query += ",withdrawn";
+        vals += "," + pool.escape(fields.withdrawn);
+    }
     query += ")";
     vals +=");";
 
@@ -166,12 +170,45 @@ returnOfferById = function (id, callback){
     })
 }
 
-updateProduct = function(fields, callback){
+updateProduct = async function(fields, callback){
     let query = "UPDATE products SET "
     if(fields.description != null && fields.description != ''){
-        query += "description =" + pool.escape(fields.description);
+        query += " description =" + pool.escape(fields.description) + ",";
     }
-    query += "WHERE id =" + pool.escape(fields.id);
+    if(fields.name != null && fields.name != '')
+        query += " name =" + pool.escape(fields.name) + ",";
+    if(fields.category !=null && fields.category != '')
+        query += " category =" + pool.escape(fields.category) + ",";
+    if(fields.extraData != null && fields.extraData != '')
+        query += " extra_data=" + pool.escape(fields.extraData) + ",";
+    if(fields.withdrawn != null && fields.withdrawn != '')
+        query += " withdrawn =" + ((pool.escape(fields.withdrawn)).toUpperCase()).replace(/'/g,'') + ",";
+    let tags = fields.tags;
+    if (tags!= null) {
+        let i;
+        try {
+            //insert all tags
+            let tagsIDs = [];
+            for (i = 0; i < tags.length; ++i) {
+                if (tags[i] != '') {
+                    await (util.promisify(dbTag.insertTag))(tags[i]);
+                    res = await (util.promisify(dbTag.getID))(tags[i]);
+                    tagsIDs.push(res[0].id);
+                }
+            }
+            //erase past tag-product relations
+            await (util.promisify(dbTag.clearProductTagRelation))(fields.id)
+            // Insert Shop Tag relationship
+            for (i = 0; i < tagsIDs.length; ++i)
+                await (util.promisify(dbTag.insertProductTagRelation))(fields.id, tagsIDs[i]);
+        }
+        catch (e) {
+            return callback(e);
+        }
+    }
+    query = query.substring(0, query.length - 1);
+        
+    query += " WHERE id =" + pool.escape(fields.id);
     pool.query(query, (err, results)=>{
         if(err){
             return callback(err);
@@ -180,4 +217,14 @@ updateProduct = function(fields, callback){
         }
     })
 }
-module.exports = { getAllProducts, returnProduct, returnProductByName, InsertInProducts, returnProductID, returnProductById, returnOfferById, updateProduct}
+deleteProduct = function (id, callback) {
+    let query = "DELETE FROM products WHERE id=" + pool.escape(id);
+    pool.query(query, (err, result) => {
+        if (err) {
+            return callback(err);
+        } else {
+            return callback(null, result);
+        }
+    })
+}
+module.exports = { getAllProducts, returnProduct, returnProductByName, InsertInProducts, returnProductID, returnProductById, returnOfferById, updateProduct, deleteProduct}

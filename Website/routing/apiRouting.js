@@ -6,7 +6,7 @@ var controllersDir = appDir + '/controllers/api';
 //load controllers
 const {checkFormat} = require(controllersDir + '/middlewares/checkFormat.js');
 const {getShops, postShop, deleteShop, putShop, patchShop} = require(controllersDir + '/shops.js');
-const {getProducts/*, postProducts, deleteProducts, putProducts, patchProducts*/} = require(controllersDir + '/products.js');
+const {getProducts, postProducts, putProducts, patchProducts, deleteProducts} = require(controllersDir + '/products.js');
 
 const login = require(controllersDir + '/login');
 const authentication = require(controllersDir + '/middlewares/authentication');
@@ -24,11 +24,11 @@ router.patch('/shops/:id', authentication, patchShop);
 router.delete('/shops/:id', authentication, deleteShop);
 //products 
 router.get('/products', getProducts);
-//router.post('/products', authentication, postProducts);
+router.post('/products', authentication, postProducts);
 router.get('/products/:id', getProducts);
-//router.put('/products/:id', authentication, putProducts);
-//router.patch('/products/:id', authentication, patchProducts);
-//router.delete('/products/:id', authentication, deleteProducts);
+router.put('/products/:id', authentication, putProducts);
+router.patch('/products/:id', authentication, patchProducts);
+router.delete('/products/:id', authentication, deleteProducts);
 
 router.all('*', (req, res) => {return res.status(400).json({message: 'Bad Request'})})
 module.exports = router;
