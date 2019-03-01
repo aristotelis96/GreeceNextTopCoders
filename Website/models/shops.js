@@ -208,7 +208,7 @@ deleteShop = function (id, callback) {
 /* An xreiazontai epipleon pedia, elegxoume to fields gia ta pedia pou stelnoume kai simplironoume */
 /* to query String. P.x. opws gia to withdrawn */
 updateShop = async function (shopId, fields, callback) {
-    let query = "UPDATE shops SET"
+    let query = "UPDATE shops SET id=" + shopId + ","
     if(fields.withdrawn == true || fields.withdrawn == false){
         query += " withdrawn =" + fields.withdrawn + ",";
     }

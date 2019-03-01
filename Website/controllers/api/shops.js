@@ -267,7 +267,7 @@ patchShop = async function (req, res) {
         }
         return res.status(200).send(apiResult);
     }
-    catch(e) {
+    catch(err) {
         return res.status(500).json({ message: "Internal Server Error", err: err.toString() });
     }
 }

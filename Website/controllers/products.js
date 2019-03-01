@@ -37,12 +37,16 @@ module.exports = {
             if (checkendInput == "on" && checkstartInput == "on") {
                 //do nothing ? 
             } else if (checkstartInput == "on") {
-                enddateInput = "NULL";
+                checkendInput = new Date(); 
+                checkendInput = (checkendInput.getFullYear()+1) + "-" + (checkendInput.getMonth()+1) + "-" + checkendInput.getDate();
             } else if (checkendInput == "on") {
-                startdateInput = "NULL";            // if no date given, put null
+                startdateInput = new Date(); 
+                startdateInput = (startdateInput.getFullYear()+1) + "-" + (startdateInput.getMonth()+1) + "-" + startdateInput.getDate();
             } else {
-                startdateInput = "NULL";
-                enddateInput = "NULL";
+                startdateInput = new Date(); 
+                startdateInput = (startdateInput.getFullYear()+1) + "-" + (startdateInput.getMonth()+1) + "-" + startdateInput.getDate();
+                checkendInput = new Date(); 
+                checkendInput = (checkendInput.getFullYear()+1) + "-" + (checkendInput.getMonth()+1) + "-" + checkendInput.getDate();
             }
             
             /* Get company id */

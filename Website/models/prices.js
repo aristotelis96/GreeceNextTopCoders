@@ -1,6 +1,6 @@
-
+const util = require('util');
 const pool = require('./index').getPool();
-
+const dbTags = require('./tags.js');
 InsertInPrices = function (fields, callback) {
     let vals = " VALUES(" + pool.escape(fields.price) + "," + pool.escape(fields.dateFrom) + "," + pool.escape(fields.dateTo) + "," + pool.escape(fields.productID) + "," + pool.escape(fields.shopID) + "," +pool.escape(fields.userID)+");";
     let query = "INSERT INTO prices (price, dateFrom, dateTo, productID, shopID, userID)" + vals;
@@ -42,7 +42,7 @@ getPrice = function (fields, callback){
     }
     if(fields.dateTo != 'NULL' && fields.dateTo != '' && fields.dateTo != null){
         query += " AND dateTo=" + pool.escape(fields.dateTo);
-    }
+    }    
     pool.query(query, (err, result) => {
         if(err){
             return callback(err);
@@ -52,4 +52,80 @@ getPrice = function (fields, callback){
         }
     })
 }
-module.exports = { InsertInPrices, pricesOfUser, pricesOfShop, getPrice};
+
+getPrices = async function (fields, callback) {
+    query = "SELECT prices.price, products.id AS productId, products.name AS productName, shops.id AS shopId, shops.name AS shopName, shops.address AS shopAddress, DATE_FORMAT(prices.dateTo, '%Y-%m-%d') as 'date' ";
+    if ((fields.geoDist != null && !(isNaN(fields.geoDist))) && (fields.geoLng != null && !(isNaN(fields.geoLng))) && (fields.geoLat != null && !(isNaN(fields.geoLat))))
+        query += ", acos(sin(radians(" + fields.geoLat + "))*sin(radians(lat)) + cos(radians(" + fields.geoLat + "))*cos(radians(lat))*cos(radians(lng)-radians(" + fields.geoLng + "))) * 6371 As shopDist ";
+    query += "FROM prices INNER JOIN products ON prices.productID = products.id INNER JOIN shops ON prices.shopId = shops.id ";
+    query += "WHERE 1=1"
+    if ((fields.geoDist != null && !(isNaN(fields.geoDist))) && (fields.geoLng != null && !(isNaN(fields.geoLng))) && (fields.geoLat != null && !(isNaN(fields.geoLat))))
+        query += " AND acos(sin(radians(" + fields.geoLat + "))*sin(radians(lat)) + cos(radians(" + fields.geoLat + "))*cos(radians(lat))*cos(radians(lng)-radians(" + fields.geoLng + "))) * 6371 <" + fields.geoDist + " ";        
+    if (fields.dateFrom != null && fields.dateTo != null)
+        query += " AND ((prices.dateFrom <= " + pool.escape(fields.dateTo) + " AND prices.dateTo >=" + pool.escape(fields.dateFrom) + ") OR prices.dateTo = '0000-00-00')";
+    if (fields.shops != null && fields.shops.length > 0) {
+        query += " AND ("
+        for(let i = 0; i<fields.shops.length; i++){
+            query += " shops.id = " + fields.shops[i] + " OR";
+        }
+        query += " 0)";
+    }
+    if (fields.products != null && fields.products.length > 0) {
+        query += " AND ("
+        for(let i = 0; i<fields.products.length; i++){
+            query += " products.id = " + fields.products[i] + " OR";
+        }
+        query += " 0)";
+    }
+    if (fields.tags != null && fields.tags.length > 0){
+        query += " AND ((products.id IN (SELECT categorized_product.productID FROM categorized_product INNER JOIN tags ON tags.id = categorized_product.tagID WHERE ("
+        for (let i = 0; i<fields.tags.length; i++){
+            query += " tags.name =" + pool.escape(fields.tags[i]) + " OR";            
+        }
+        query += " 0))) || (shops.id IN (SELECT categorized_shop.shopID FROM categorized_shop INNER JOIN tags ON tags.id = categorized_shop.tagID WHERE (";
+        for (let i = 0; i<fields.tags.length; i++){
+            query += " tags.name =" + pool.escape(fields.tags[i]) + " OR";            
+        }
+        query += " 0))))"
+    }
+    console.log(query);
+    if (fields.sort != null) {
+        if(fields.sort.column == 'geoDist') 
+            fields.sort.column = "shopDist"
+        if(fields.sort.column == 'date')
+            fields.sort.column = "(convert(prices.dateTo,DATE))"
+        query += " ORDER BY " + fields.sort.column + " " + fields.sort.AscDesc;
+    }
+    let promisify = util.promisify;
+    try {
+        let results = await (async () => {
+            // need promises, util.promisify doesnt work with pool.qeury
+            return new Promise((resolve, reject) => {
+                pool.query(query, (err, result) => {
+                    if (err)
+                        reject(err);
+                    else
+                        resolve(result);
+                })
+            })
+        })();
+        for (let i = 0; i<results.length; i++){
+            results[i].shopTags = [];
+            (await (promisify(dbTags.getShopTags))(results[i].shopId)).forEach(tag =>{
+                results[i].shopTags.push(tag.name);
+            });
+            results[i].productTags = [];
+            (await (promisify(dbTags.getProductsTags))(results[i].productId)).forEach(tag =>{
+                results[i].shopTags.push(tag.name);
+            });            
+        }
+        
+        return callback(null, results);
+    }
+    catch(err){
+        return callback(err);
+    }
+}
+
+
+module.exports = { InsertInPrices, pricesOfUser, pricesOfShop, getPrice, getPrices};
