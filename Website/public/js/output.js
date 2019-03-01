@@ -41,13 +41,13 @@ app.controller('output', function ($scope) {
             let s_prod_date = new Date(products[i].dateFrom);
             let e_prod_date = new Date(products[i].dateTo);
             if (products[i].dateFrom != "0000-00-00") {
-                if (startDate == undefined || startDate == '' || s_prod_date >= startDate)
+                if (startDate == undefined || startDate == '' || e_prod_date >= startDate)
                     minFlag = false;
                 else
                     minFlag = true;
             }
             if (products[i].dateTo != "0000-00-00") {
-                if (endDate == undefined || endDate == '' || e_prod_date <= endDate)
+                if (endDate == undefined || endDate == '' || s_prod_date <= endDate)
                     maxFlag = false;
                 else
                     maxFlag = true;
