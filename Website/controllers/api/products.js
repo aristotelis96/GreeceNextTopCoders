@@ -228,6 +228,7 @@ patchProducts = async function (req, res) {
     }
     /* get tags */
     let tags = req.body.tags;
+    
     if (tags != null) {
         tags = tags.replace(/"/g, '');
         tags = tags.replace(/\[/g, '');
@@ -261,9 +262,9 @@ patchProducts = async function (req, res) {
         let apiResult = {
             id: updatedProduct[0].id,
             name: updatedProduct[0].name,
-            address: updatedProduct[0].address,
-            lng: updatedProduct[0].lng,
-            lat: updatedProduct[0].lat,
+            description: updatedProduct[0].description,
+            category: updatedProduct[0].category,
+            extraData: updatedProduct[0].extraData,
             tags: updatedProduct[0].tags,
             withdrawn: withdrawn
         }
