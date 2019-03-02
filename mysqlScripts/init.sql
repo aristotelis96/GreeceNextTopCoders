@@ -1,5 +1,5 @@
-DROP DATABASE IF EXISTS website;
-CREATE DATABASE website CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+-- DROP DATABASE IF EXISTS website;
+-- CREATE DATABASE `website` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE website;
 
 CREATE TABLE categories (

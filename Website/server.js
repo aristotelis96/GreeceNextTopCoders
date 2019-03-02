@@ -9,12 +9,12 @@ const app = express();
 const config = require('./config/config.js');
 const session = require('express-session');
 
+//global app Dir
+global.appDir = config.app.appDir;
+
 //initialize database pool
 const db = require('./models/index');
 db.initialize();
-
-//global app Dir
-global.appDir = config.app.appDir;
 
 // configure middleware
 global.app = app;
