@@ -108,7 +108,10 @@ postShop = function (req, res){
     let withdrawn = req.body.withdrawn;
     if(withdrawn == null)
         return res.status(400).json({message: "Bad request"});
-    
+    if(withdrawn == "false")
+        withdrawn = 0 ;
+    else if (withdrawn == "true")
+        withdrawn = 1 ;   
     db.insertShop({
         name: name,
         address: address,
@@ -124,8 +127,8 @@ postShop = function (req, res){
                 id: result.insertId,
                 name: name,
                 address: address,
-                lng: lng,
-                lat: lat,
+                lng: (parseFloat(lng)),
+                lat: (parseFloat(lat)),
                 tags: tags,
                 withdrawn: withdrawn
             })
