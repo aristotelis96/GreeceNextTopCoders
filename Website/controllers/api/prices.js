@@ -1,5 +1,6 @@
 const db = require(appDir + '/models/prices.js');
 const util = require('util');
+const auth = require('./authentication');
 
 getPrices = function (req, res){
     let apiResult ={};
@@ -77,5 +78,38 @@ getPrices = function (req, res){
         return res.json(apiResult);
     })();
 }
+postPrices = function(req,res){
+    let price = req.body.price;
+    if (price == null)
+        return res.status(400).json({message: "Bad request"});
+    let dateFrom = (new Date(req.body.dateFrom));
+    if (req.body.dateFrom == null)
+        return res.status(400).json({message: "Bad request"});
+    let dateTo = (new Date(req.body.dateTo));
+    if (req.body.dateTo == null)
+            return res.status(400).json({message: "Bad request"});
+    let productId = parseInt(req.body.productId);
+    if (productId == null)
+        return res.status(400).json({message: "Bad request"});
+    let shopId = parseInt(req.body.shopId);
+    if (shopId == null)
+        return res.status(400).json({message: "Bad request"});
+    let token = req.header('X-OBSERVATORY-AUTH')
+    let data = auth.decode(token).data;        
+    db.InsertInPrices({
+        price:price,
+        dateFrom:dateFrom,
+        dateTo:dateTo,
+        productID:productId,
+        shopID:shopId,
+        userID:data.id
+    },(err,result) => {
+        if (err){
+            return res.status(500).json({message: "Internal Server Error" , err: err.toString()});
+        } else{
+            
+        }
+    })
 
-module.exports = {getPrices}
+}
+module.exports = {getPrices, postPrices}
