@@ -54,7 +54,8 @@ getPrice = function (fields, callback){
 }
 
 getPrices = async function (fields, callback) {
-    query = "SELECT prices.price, products.id AS productId, products.name AS productName, shops.id AS shopId, shops.name AS shopName, shops.address AS shopAddress, DATE_FORMAT(prices.dateTo, '%Y-%m-%d') as 'date' ";
+    query = "SELECT * FROM ("
+    query += "SELECT prices.price, products.id AS productId, products.name AS productName, shops.id AS shopId, shops.name AS shopName, shops.address AS shopAddress, prices.dateFrom as dateFrom, prices.dateTo as dateTo ";
     if ((fields.geoDist != null && !(isNaN(fields.geoDist))) && (fields.geoLng != null && !(isNaN(fields.geoLng))) && (fields.geoLat != null && !(isNaN(fields.geoLat))))
         query += ", acos(sin(radians(" + fields.geoLat + "))*sin(radians(lat)) + cos(radians(" + fields.geoLat + "))*cos(radians(lat))*cos(radians(lng)-radians(" + fields.geoLng + "))) * 6371 As shopDist ";
     query += "FROM prices INNER JOIN products ON prices.productID = products.id INNER JOIN shops ON prices.shopId = shops.id ";
@@ -88,12 +89,21 @@ getPrices = async function (fields, callback) {
         }
         query += " 0))))"
     }
-    console.log(query);
+    query += ") AS Main JOIN (";
+    query += "select selected_date as date from ";
+    query += "(select adddate('1970-01-01',t4.i*10000 + t3.i*1000 + t2.i*100 + t1.i*10 + t0.i) selected_date from "
+    query += "(select 0 i union select 1 union select 2 union select 3 union select 4 union select 5 union select 6 union select 7 union select 8 union select 9) t0,"
+    query += "(select 0 i union select 1 union select 2 union select 3 union select 4 union select 5 union select 6 union select 7 union select 8 union select 9) t1,"
+    query += "(select 0 i union select 1 union select 2 union select 3 union select 4 union select 5 union select 6 union select 7 union select 8 union select 9) t2,"
+    query += "(select 0 i union select 1 union select 2 union select 3 union select 4 union select 5 union select 6 union select 7 union select 8 union select 9) t3,"
+    query += "(select 0 i union select 1 union select 2 union select 3 union select 4 union select 5 union select 6 union select 7 union select 8 union select 9) t4) v "
+    query += "where selected_date between " + pool.escape(fields.dateFrom) + " and " + pool.escape(fields.dateTo) + " ) AS dates "
+    query += "ON dates.date >= Main.dateFrom && dates.date <= Main.dateTo ";
     if (fields.sort != null) {
         if(fields.sort.column == 'geoDist') 
-            fields.sort.column = "shopDist"
+            fields.sort.column = "Main.shopDist"
         if(fields.sort.column == 'date')
-            fields.sort.column = "(convert(prices.dateTo,DATE))"
+            fields.sort.column = "dates.date"
         query += " ORDER BY " + fields.sort.column + " " + fields.sort.AscDesc;
     }
     let promisify = util.promisify;
