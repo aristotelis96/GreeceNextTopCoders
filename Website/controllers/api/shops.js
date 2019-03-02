@@ -97,6 +97,7 @@ postShop = function (req, res){
     let tags = req.body.tags;
     if(tags == null)
         return res.status(400).json({message: "Bad request"});
+    tags = tags.toString();
     tags = tags.replace(/"/g,'');
     tags = tags.replace(/\[/g,'');
     tags = tags.replace(/\]/g,'');
