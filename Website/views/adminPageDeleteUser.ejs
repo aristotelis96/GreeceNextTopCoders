@@ -1,0 +1,43 @@
+<% include ./partials/header.ejs %>
+<link rel="stylesheet" href="/css/userprofile.css">
+</head>
+
+<body>
+    <% include ./partials/navbar.ejs %>
+    <% if (name == 'admin@admin') { %> <!-- CHANGE_THIS -->
+        <div style="background: rgba(255, 255, 255, 0.322);" class="container mt-5 py-2">
+                <table class="table table-striped ">
+                        <thead>
+                          <tr>
+                            <th scope="col">Email</th>
+                            <th scope="col">Όνομα</th>
+                            <th scope="col">Επώνυμο</th>
+                            <th scope="col">ID</th>
+                            <th scope="col"></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                        <% users.forEach((user, index) => { %>
+                            <tr>
+                                <th scope="row"><%= user.email %></th>
+                                <td><%= user.name %></td>
+                                <td><%= user.surname %></td>
+                                <td><%= user.id %></td>
+                                <td>
+                                <% if (user.email != 'admin@admin') { %>
+                                <form  action="/adminPage/DeleteUser/<%= user.id %>" method = "POST">
+                                    <button  type="submit" onclick="return confirm('Είσαι σίγουρος ότι θέλεις να διαγράψεις τον χρήστη: <%= user.email %> ?')" class='btn btn-danger btn-block'>Διαγραφή Χρήστη</button>
+                                </form>
+                                <% } %>
+                            </td>
+                            </tr>
+                        <% }) %>
+                        </tbody>
+                    </table>    
+                        <a type="button" class="btn btn-primary btn-block" href='/adminPage'>Προφίλ</a>
+        </div>  
+    <% } else { %>
+        <div class=' text-center'>Η σελίδα δεν βρέθηκε, πάτα <a href='/'>εδώ</a> για να μεταφερθείς στην αρχική σελίδα</div>
+    <% } %> 
+    </div>
+</body>

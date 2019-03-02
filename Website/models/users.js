@@ -69,6 +69,17 @@ deleteUser = function (email, callback){
     })
 }
 
+deleteUserbyId = function (id, callback){
+    let query = "DELETE FROM users WHERE id = " + pool.escape(id);
+    pool.query(query, (err, result) => {
+        if(err){
+            return callback(err);
+        } else {
+            return callback(null, result);
+        }
+    })
+}
+
 updateUser = function (fields, callback){
     let query = "UPDATE users SET email=" + pool.escape(fields.email) 
         + ", password=" + pool.escape(fields.password)         
@@ -84,4 +95,4 @@ updateUser = function (fields, callback){
         }
     })
 }
-module.exports = {getAllUsers, returnUser, insertUser, deleteUser, updateUser,returnUserByID}
+module.exports = {getAllUsers, returnUser, insertUser, deleteUser, deleteUserbyId, updateUser,returnUserByID}

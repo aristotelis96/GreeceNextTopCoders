@@ -18,7 +18,11 @@
                 <div class="dropdown">
                   <button class="btn btn-secondary dropdown-toggle navbar-dark bg-dark" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Καλώς ήρθες</button>
                     <div class="dropdown-menu navbar-dark bg-dark" aria-labelledby="dropdownMenuButton">
+                      <% if (name =='admin@admin') { %>
+                        <a class="dropdown-item navbar-dark bg-dark"  href="/adminpage"><font color="white">Προφίλ</font></a>
+                      <% } else { %>
                       <a class="dropdown-item navbar-dark bg-dark"  href="/userpage"><font color="white">Προφίλ</font></a>
+                      <% } %>
                       <a class="dropdown-item navbar-dark bg-dark"  href="#"><font color="white">Αλλαγή κωδικού</font></a> 
                       <div class="dropdown-divider"></div>
                       <form class="form" method="get" action="/logout" role="form">

@@ -1,0 +1,39 @@
+<% include ./partials/header.ejs %>
+<link rel="stylesheet" href="/css/userprofile.css">
+</head>
+
+<body>
+    <% include ./partials/navbar.ejs %>
+    <% if (name == 'admin@admin') { %> <!-- CHANGE_THIS -->
+        <div style="background: rgba(255, 255, 255, 0.322);" class="container mt-5 py-2">
+                <table class="table table-striped ">
+                        <thead>
+                          <tr>
+                            <th scope="col">Όνομα</th>
+                            <th scope="col">Τηλέφονο</th>
+                            <th scope="col">Προστέθηκε απο τον χρήστη</th>
+                            <th scope="col"></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                        <% shops.forEach((shop, index) => { %>
+                            <tr>
+                                <th scope="row"> <a href='/shoppage/<%= shop.id %>'><%= shop.name %></a></th>
+                                <td><%= shop.phone %></td>
+                                <td><%= shop.userID %></td>
+                                <td>                                
+                                <form  action="/adminPage/DeleteShop/<%= shop.id %>" method = "POST">
+                                    <button  type="submit" onclick="return confirm('Είσαι σίγουρος ότι θέλεις να διαγράψεις το κατάστημα: <%= shop.name %> ?')" class='btn btn-danger btn-block'>Διαγραφή Καταστήματος</button>
+                                </form>
+                            </td>
+                            </tr>
+                        <% }) %>
+                        </tbody>
+                    </table>    
+                        <a type="button" class="btn btn-primary btn-block" href='/adminPage'>Προφίλ</a>
+        </div>  
+    <% } else { %>
+        <div class=' text-center'>Η σελίδα δεν βρέθηκε, πάτα <a href='/'>εδώ</a> για να μεταφερθείς στην αρχική σελίδα</div>
+    <% } %> 
+    </div>
+</body>

@@ -34,6 +34,7 @@ const about = require(controllersDir + '/about.js');
 const contact = require(controllersDir + '/contact.js')
 //navbar middleware
 const {navbarLogin} = require(controllersDir + '/middlewares/navbarLogin.js');
+const {adminPage, adminDeleteUserget, adminDeleteUserpost, adminDeleteShopget } = require(controllersDir + '/admin.js');
 
 /* --------- ROUTING --------- */
 //Navbar login from every page
@@ -76,6 +77,11 @@ router.get('/getTags', getTags);
 router.get('/searchShop', searchShop);
 router.get('/about', about);
 router.get('/contact', contact);
+router.get('/adminPage', adminPage);
+router.get('/adminPage/DeleteUser', adminDeleteUserget)
+router.post('/adminPage/DeleteUser/:id',adminDeleteUserpost)
+router.get('/adminPage/DeleteShop',adminDeleteShopget)
+router.post('/adminPage/DeleteShop/:id',adminDeleteShoppost)
 //testing section
 //router.get('/test', (req,res)=>{console.log(req.get('Referer'));res.redirect('back')});
 //error page if all fails. This should always be last
