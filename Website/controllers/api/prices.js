@@ -1,6 +1,7 @@
 const db = require(appDir + '/models/prices.js');
 const util = require('util');
 const auth = require('./authentication');
+const http = require('http');
 
 getPrices = function (req, res){
     let apiResult ={};
@@ -78,7 +79,7 @@ getPrices = function (req, res){
         return res.json(apiResult);
     })();
 }
-postPrices = function(req,res){
+postPrices = async function(req,res){
     let price = req.body.price;
     if (price == null)
         return res.status(400).json({message: "Bad request"});
@@ -94,8 +95,21 @@ postPrices = function(req,res){
     let shopId = parseInt(req.body.shopId);
     if (shopId == null)
         return res.status(400).json({message: "Bad request"});
+    dateFrom = dateFrom.getFullYear() + "-" + ("0" + (dateFrom.getMonth()+1)).slice(-2) + "-" + ("0" + (dateFrom.getDate())).slice(-2);
+    dateTo = dateTo.getFullYear() + "-" + ("0" + (dateTo.getMonth()+1)).slice(-2) + "-" + ("0" + (dateTo.getDate())).slice(-2);
     let token = req.header('X-OBSERVATORY-AUTH')
-    let data = auth.decode(token).data;        
+    let data = auth.decode(token).data;    
+    /* Check if price/offer already exists */
+    let check = await (util.promisify(db.getPrice))({
+        productID: productId,
+        shopID: shopId,
+        price: price,
+        dateFrom: dateFrom,
+        dateTo: dateTo,
+    })
+    if(check.length>0){    
+        await (util.promisify(db.deletePrice))(check[0].id)
+    }    
     db.InsertInPrices({
         price:price,
         dateFrom:dateFrom,
@@ -103,11 +117,43 @@ postPrices = function(req,res){
         productID:productId,
         shopID:shopId,
         userID:data.id
-    },(err,result) => {
-        if (err){
-            return res.status(500).json({message: "Internal Server Error" , err: err.toString()});
-        } else{
-            
+    }, async (err, result) => {
+        if (err) {
+            return res.status(500).json({ message: "Internal Server Error", err: err.toString() });
+        } else {
+            var result;
+            try {                
+                result = await(util.promisify(db.getPrices))({                                        
+                    dateFrom: dateFrom,
+                    dateTo: dateTo,
+                    shops: [shopId],
+                    products: [productId],                    
+                    sort: { column: 'price', AscDesc: 'ASC' }
+                });
+            } catch (e) {
+                return res.status(500).send({ message: "Internal server error", err: e.toString() });
+            }
+            let apiResult = {};
+            apiResult.start = 0;
+            apiResult.count = 20;
+            apiResult.total = result.length;
+            apiResult.prices = [];
+            let i;
+            for (i = 0; (i < 20) && (i < result.length); i++) {
+                apiResult.prices.push({
+                    price: result[i].price,
+                    date: result[i].date,
+                    productName: result[i].productName,
+                    productId: result[i].productId,
+                    productTags: result[i].productTags,
+                    shopId: result[i].shopId,
+                    shopName: result[i].shopName,
+                    shopTags: result[i].shopTags,
+                    shopAddress: result[i].shopAddress,
+                    shopDist: result[i].shopDist
+                });
+            }
+            return res.json(apiResult);
         }
     })
 
