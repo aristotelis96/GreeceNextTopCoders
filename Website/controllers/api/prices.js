@@ -23,8 +23,8 @@ getPrices = function (req, res){
         dateFrom = new Date();
         dateTo = new Date();
     }
-    dateFrom = dateFrom.getFullYear() + "-" + (dateFrom.getMonth()+1) + "-" + dateFrom.getDate();
-    dateTo = dateTo.getFullYear() + "-" + (dateTo.getMonth()+1) + "-" + dateTo.getDate();
+    dateFrom = dateFrom.getFullYear() + "-" + ("0" + (dateFrom.getMonth()+1)).slice(-2) + "-" + ("0" + (dateFrom.getDate())).slice(-2);
+    dateTo = dateTo.getFullYear() + "-" + ("0" + (dateTo.getMonth()+1)).slice(-2) + "-" + ("0" + (dateTo.getDate())).slice(-2);
     let shops = req.query.shops;
     if (!Array.isArray(shops) && shops != undefined)
         shops = [shops];
