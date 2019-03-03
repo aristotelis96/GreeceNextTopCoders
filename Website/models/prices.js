@@ -12,9 +12,20 @@ InsertInPrices = function (fields, callback) {
         }
     })
 }
+pricesOfProduct = function (prodId, callback){
+    query = "select prices.price, prices.id as id, shops.name as shopName, shops.id as shopID, products.name as productName, products.id as productid from prices inner join users inner join products inner join shops on prices.shopID=shops.id && prices.productID=products.id && prices.userID=users.id where products.id=" + pool.escape(prodId);
+    pool.query(query, (err, result)=> {
+        if(err){
+            return callback(err);
+        }
+        else{
+            return callback(null, result);
+        }
+    })
+}
 
 pricesOfUser = function (userId, callback){
-    query = "select prices.price, shops.name as shopName, shops.id as shopID, products.name as productName, products.id as productid from prices inner join users inner join products inner join shops on prices.shopID=shops.id && prices.productID=products.id && prices.userID=users.id where users.id=" + pool.escape(userId);
+    query = "select prices.price, prices.id as id, shops.name as shopName, shops.id as shopID, products.name as productName, products.id as productid from prices inner join users inner join products inner join shops on prices.shopID=shops.id && prices.productID=products.id && prices.userID=users.id where users.id=" + pool.escape(userId);
     pool.query(query, (err, result)=> {
         if(err){
             return callback(err);
@@ -25,7 +36,7 @@ pricesOfUser = function (userId, callback){
     })
 }
 pricesOfShop = function(shopId,callback){
-    query = "select prices.price as productPrice,products.id as productId, products.name as productName, prices.dateFrom as productDateFrom, prices.dateTo as productDateTo, products.description as productDescription, products.category as productCategory, products.withdrawn as productWithdrawn from prices inner join products on prices.productID=products.id && prices.shopID="+ pool.escape(shopId);
+    query = "select prices.price as productPrice, shops.name as shopName, prices.id as id, products.id as productId, products.name as productName, prices.dateFrom as productDateFrom, prices.dateTo as productDateTo, products.description as productDescription, products.category as productCategory, products.withdrawn as productWithdrawn from prices inner join products inner join shops on prices.productID=products.id && prices.shopID=shops.id && prices.shopID="+ pool.escape(shopId);
     pool.query(query, (err, result)=> {
         if(err){
             return callback(err);
@@ -148,4 +159,4 @@ deletePrice = function (id, callback){
         }
     })
 }
-module.exports = { InsertInPrices, pricesOfUser, pricesOfShop, getPrice, getPrices, deletePrice};
+module.exports = { InsertInPrices, pricesOfUser, pricesOfShop, getPrice, getPrices, deletePrice, pricesOfProduct};

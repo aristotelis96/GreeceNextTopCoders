@@ -10,22 +10,24 @@
                         <thead>
                           <tr>
                             <th scope="col">Όνομα</th>
-                            <th scope="col">Τηλέφωνο</th>
-                            <th scope="col">Προστέθηκε απο τον χρήστη</th>
-                            <th scope="col"></th>
+                            <th scope="col">Τιμή</th>
+                            <th scope="col">Κατάστημα</th>
                             <th scope="col"></th>
                           </tr>
                         </thead>
                         <tbody>
-                        <% shops.forEach((shop, index) => { %>
+                        <% prices.forEach((price, index) => { %>
                             <tr>
-                                <th scope="row"> <a href='/shoppage/<%= shop.id %>'><%= shop.name %></a></th>
-                                <td><%= shop.phone %></td>
-                                <td><%= shop.userID %></td>
-                                <td><a type="button" class="btn btn-primary btn-block" href='/adminPage/DeletePrice/shop/<%= shop.id %>'>Προσφορές του καταστήματος</a></td>
+                                <th scope="row"> <a href='/item/<%= price.productid %>'><%= price.productName %></a></th>
+                                <% if (prices.checked == 1) { %>
+                                <td><%= price.productPrice %></td>
+                                <% } else { %>
+                                <td><%= price.price %></td>      
+                                <% } %>                          
+                                <td><%= price.shopName %></td>
                                 <td>                                
-                                <form  action="/adminPage/DeleteShop/<%= shop.id %>" method = "POST">
-                                    <button  type="submit" onclick="return confirm('Είσαι σίγουρος ότι θέλεις να διαγράψεις το κατάστημα: <%= shop.name %> ?')" class='btn btn-danger btn-block'>Διαγραφή Καταστήματος</button>
+                                <form  action="/adminPage/DeletePrice/<%= price.id %>" method = "POST">
+                                    <button  type="submit" onclick="return confirm('Είσαι σίγουρος ότι θέλεις να διαγράψεις την προσφορα: <%= price.productName %> του καταστήματος <%= price.shopName %> ?')" class='btn btn-danger btn-block'>Διαγραφή Προσφοράς</button>
                                 </form>
                             </td>
                             </tr>

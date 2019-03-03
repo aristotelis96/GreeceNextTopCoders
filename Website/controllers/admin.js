@@ -3,6 +3,7 @@ const session = require('express-session');
 const dbprod = require(appDir + '/models/products.js');
 const db = require(appDir + '/models/users');
 const dbShops = require(appDir + '/models/shops');
+const dbprices = require(appDir + '/models/prices');
 const util = require('util');
 
 adminPage= async function (req, res) { 
@@ -111,7 +112,7 @@ adminDeleteShoppost = async function(req, res) {
     try{
         var id = req.params.id;
         if (isNaN(id)) {
-            throw new Error('Invalid user Id: ' + id); //check id is number
+            throw new Error('Invalid shop Id: ' + id); //check id is number
         }
         await (util.promisify(dbShops.deleteShop))(id);
         return res.redirect('/adminPage');
@@ -125,5 +126,162 @@ adminDeleteShoppost = async function(req, res) {
         });
     }
 }
+adminDeleteProductget = async function(req, res){
+    var email = req.session.email;
+    if (email != 'admin@admin')
+        return res.redirect('/');
+    try{
+        var products = await (util.promisify(dbprod.getAllProducts))({
+            status: 'ALL',
+            sort: { column: 'name', AscDesc: 'DESC' }
+        });
+        return res.render('adminPageDeleteProduct.ejs',{
+            title: "Επεξεργασία προφίλ",
+            products: products,
+            login: req.session.login,
+            name: req.session.email,
+        });
 
-module.exports = {adminPage, adminDeleteUserget, adminDeleteUserpost, adminDeleteShopget, adminDeleteShoppost}
+
+    }
+    catch(e){
+        return res.render("ErrorPage.ejs", {
+            login: req.session.login,
+            name: req.session.email,
+            title: 'Η Σελίδα δεν είναι διαθέσιμη',
+            ErrorMessage: e.toString()
+        })
+    }
+
+}
+adminDeleteProductpost = async function(req, res) {
+    var email = req.session.email;
+    if (email != 'admin@admin')
+        return res.redirect('/');
+    try{
+        var id = req.params.id;
+        if (isNaN(id)) {
+            throw new Error('Invalid product Id: ' + id); //check id is number
+        }
+        await (util.promisify(dbprod.deleteProduct))(id);
+        return res.redirect('/adminPage');
+
+    }catch(e){
+        return res.render("ErrorPage.ejs", {
+            login: req.session.login,
+            name: req.session.email,
+            title: 'Η Σελίδα δεν είναι διαθέσιμη',
+            ErrorMessage: e.toString()
+        });
+    }
+}
+
+adminDeletePriceget = async function(req, res){
+    var email = req.session.email;
+    if (email != 'admin@admin')
+        return res.redirect('/');
+    try{
+        var id = req.params.id;
+        if (isNaN(id)) {
+            throw new Error('Invalid product Id: ' + id); //check id is number
+        }
+        var prices = await (util.promisify(dbprices.pricesOfProduct))(id);
+        return res.render('adminPageDeletePrice.ejs',{
+            title: "Επεξεργασία προφίλ",
+            prices: prices,
+            login: req.session.login,
+            name: req.session.email,
+        });
+
+
+    }
+    catch(e){
+        return res.render("ErrorPage.ejs", {
+            login: req.session.login,
+            name: req.session.email,
+            title: 'Η Σελίδα δεν είναι διαθέσιμη',
+            ErrorMessage: e.toString()
+        })
+    }
+}
+
+adminDeletePricepost = async function(req, res) {
+    var email = req.session.email;
+    if (email != 'admin@admin')
+        return res.redirect('/');
+    try{
+        var id = req.params.id;
+        if (isNaN(id)) {
+            throw new Error('Invalid product Id: ' + id); //check id is number
+        }
+        await (util.promisify(dbprices.deletePrice))(id);
+        return res.redirect('/adminPage');
+
+    }catch(e){
+        return res.render("ErrorPage.ejs", {
+            login: req.session.login,
+            name: req.session.email,
+            title: 'Η Σελίδα δεν είναι διαθέσιμη',
+            ErrorMessage: e.toString()
+        });
+    }
+}
+adminDeletePricegetuser = async function(req, res){
+    var email = req.session.email;
+    if (email != 'admin@admin')
+        return res.redirect('/');
+    try{
+        var id = req.params.id;
+        if (isNaN(id)) {
+            throw new Error('Invalid product Id: ' + id); //check id is number
+        }
+        var prices = await (util.promisify(dbprices.pricesOfUser))(id);
+        return res.render('adminPageDeletePrice.ejs',{
+            title: "Επεξεργασία προφίλ",
+            prices: prices,
+            login: req.session.login,
+            name: req.session.email,
+        });
+
+
+    }
+    catch(e){
+        return res.render("ErrorPage.ejs", {
+            login: req.session.login,
+            name: req.session.email,
+            title: 'Η Σελίδα δεν είναι διαθέσιμη',
+            ErrorMessage: e.toString()
+        })
+    }
+}
+
+adminDeletePricegetshop =  async function(req, res){
+    var email = req.session.email;
+    if (email != 'admin@admin')
+        return res.redirect('/');
+    try{
+        var id = req.params.id;
+        if (isNaN(id)) {
+            throw new Error('Invalid product Id: ' + id); //check id is number
+        }
+        var prices = await (util.promisify(dbprices.pricesOfShop))(id);
+        prices.checked = 1; // name of prices on that specific model is diferent, marked var to check on front end
+        return res.render('adminPageDeletePrice.ejs',{
+            title: "Επεξεργασία προφίλ",
+            prices: prices,
+            login: req.session.login,
+            name: req.session.email,
+        });
+
+
+    }
+    catch(e){
+        return res.render("ErrorPage.ejs", {
+            login: req.session.login,
+            name: req.session.email,
+            title: 'Η Σελίδα δεν είναι διαθέσιμη',
+            ErrorMessage: e.toString()
+        })
+    }
+}
+module.exports = {adminPage, adminDeleteUserget, adminDeleteUserpost, adminDeleteShopget, adminDeleteShoppost, adminDeleteProductget, adminDeleteProductpost, adminDeletePriceget, adminDeletePricepost, adminDeletePricegetuser, adminDeletePricegetshop}

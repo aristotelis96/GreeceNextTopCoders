@@ -9,28 +9,24 @@
                 <table class="table table-striped ">
                         <thead>
                           <tr>
-                            <th scope="col">Email</th>
                             <th scope="col">Όνομα</th>
-                            <th scope="col">Επώνυμο</th>
-                            <th scope="col">ID</th>
+                            <th scope="col">Κατηγορία</th>
+                            <th scope="col">Περιγραφή</th>
                             <th scope="col"></th>
                             <th scope="col"></th>
                           </tr>
                         </thead>
                         <tbody>
-                        <% users.forEach((user, index) => { %>
+                        <% products.forEach((product, index) => { %>
                             <tr>
-                                <th scope="row"><%= user.email %></th>
-                                <td><%= user.name %></td>
-                                <td><%= user.surname %></td>
-                                <td><%= user.id %></td>
-                                <td><a type="button" class="btn btn-primary btn-block" href='/adminPage/DeletePrice/user/<%= user.id %>'>Προσφορές του χρήστη</a></td>
-                                <td>
-                                <% if (user.email != 'admin@admin') { %>
-                                <form  action="/adminPage/DeleteUser/<%= user.id %>" method = "POST">
-                                    <button  type="submit" onclick="return confirm('Είσαι σίγουρος ότι θέλεις να διαγράψεις τον χρήστη: <%= user.email %> ?')" class='btn btn-danger btn-block'>Διαγραφή Χρήστη</button>
+                                <th scope="row"> <a href='/item/<%= product.id %>'><%= product.name %></a></th>
+                                <td><%= product.category %></td>
+                                <td><%= product.description %></td>
+                               <td><a type="button" class="btn btn-primary btn-block" href='/adminPage/DeletePrice/products/<%= product.id %>'>Προσφορές των προϊόντων</a></td>
+                                <td>                                
+                                <form  action="/adminPage/DeleteProduct/<%= product.id %>" method = "POST">
+                                    <button  type="submit" onclick="return confirm('Είσαι σίγουρος ότι θέλεις να διαγράψεις το προϊόν: <%= product.name %> ?')" class='btn btn-danger btn-block'>Διαγραφή Προϊόντος</button>
                                 </form>
-                                <% } %>
                             </td>
                             </tr>
                         <% }) %>
