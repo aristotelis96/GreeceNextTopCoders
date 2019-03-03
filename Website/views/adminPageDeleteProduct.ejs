@@ -1,41 +1,130 @@
-<% include ./partials/header.ejs %>
-<link rel="stylesheet" href="/css/userprofile.css">
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- Bootstrap 4 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.13.0/umd/popper.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <!-- Angular JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+    <title>
+        <%= title %>
+    </title>
+    <!-- Title icon -->
+    <link rel="shortcut icon" type="image/x-icon" href="/img/title.png">
+
+    <!-- Custom styles for this template-->
+    <link rel="stylesheet" href="/css/adminPage.css">
+
 </head>
 
-<body>
+<body id="page-top">
     <% include ./partials/navbar.ejs %>
-    <% if (name == 'admin@admin') { %> <!-- CHANGE_THIS -->
-        <div style="background: rgba(255, 255, 255, 0.322);" class="container mt-5 py-2">
-                <table class="table table-striped ">
-                        <thead>
-                          <tr>
-                            <th scope="col">Όνομα</th>
-                            <th scope="col">Κατηγορία</th>
-                            <th scope="col">Περιγραφή</th>
-                            <th scope="col"></th>
-                            <th scope="col"></th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                        <% products.forEach((product, index) => { %>
-                            <tr>
-                                <th scope="row"> <a href='/item/<%= product.id %>'><%= product.name %></a></th>
-                                <td><%= product.category %></td>
-                                <td><%= product.description %></td>
-                               <td><a type="button" class="btn btn-primary btn-block" href='/adminPage/DeletePrice/products/<%= product.id %>'>Προσφορές των προϊόντων</a></td>
-                                <td>                                
-                                <form  action="/adminPage/DeleteProduct/<%= product.id %>" method = "POST">
-                                    <button  type="submit" onclick="return confirm('Είσαι σίγουρος ότι θέλεις να διαγράψεις το προϊόν: <%= product.name %> ?')" class='btn btn-danger btn-block'>Διαγραφή Προϊόντος</button>
-                                </form>
-                            </td>
-                            </tr>
-                        <% }) %>
-                        </tbody>
-                    </table>    
-                        <a type="button" class="btn btn-primary btn-block" href='/adminPage'>Προφίλ</a>
-        </div>  
-    <% } else { %>
-        <div class=' text-center'>Η σελίδα δεν βρέθηκε, πάτα <a href='/'>εδώ</a> για να μεταφερθείς στην αρχική σελίδα</div>
-    <% } %> 
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <ul class="sidebar navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="/adminPage">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item dropdown active">
+                <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>Δεδομένα</span>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="pagesDropdown">
+                    <a class="dropdown-item" href="/adminPage/DeleteUser">Χρήστες</a>
+                    <a class="dropdown-item" href="/adminPage/DeleteShop">Καταστήματα</a>
+                    <a class="dropdown-item" href="/adminPage/DeleteProduct">Προϊόντα/Προσφορές</a>
+                </div>
+            </li>
+        </ul>
+
+        <div id="content-wrapper">
+
+            <div class="container-fluid">
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <i class="fas fa-table"></i>
+                        Χρήστες</div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Όνομα</th>
+                                        <th>Κατηγορία</th>
+                                        <th>Περιγραφή</th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th>Όνομα</th>
+                                        <th>Κατηγορία</th>
+                                        <th>Περιγραφή</th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </tfoot>
+                                <tbody>
+                                    <% products.forEach((product, index) => { %>
+                                    <tr>
+                                        <th> <a href='/item/<%= product.id %>'><%= product.name %></a></th>
+                                        <td><%= product.category %></td>
+                                        <td><%= product.description %></td>
+                                        <td><a type="button" class="btn btn-primary btn-block"
+                                                href='/adminPage/DeletePrice/products/<%= product.id %>'>Προσφορές των
+                                                προϊόντων</a></td>
+                                        <td>
+                                            <form action="/adminPage/DeleteProduct/<%= product.id %>" method="POST">
+                                                <button type="submit"
+                                                    onclick="return confirm('Είσαι σίγουρος ότι θέλεις να διαγράψεις το προϊόν: <%= product.name %> ?')"
+                                                    class='btn btn-danger btn-block'>Διαγραφή Προϊόντος</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+       <!-- Scroll to Top Button-->
+       <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>
+    
+        
+        <!-- Core plugin JavaScript-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"
+            integrity="sha256-H3cjtrm/ztDeuhCN9I4yh4iN2Ybx/y1RM7rMmAesA0k=" crossorigin="anonymous"></script>
+        <!-- Page level plugin JavaScript-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js"></script>
+    
+    
+        <!-- Custom scripts for all pages-->
+        <script src="/js/adminPage.js"></script>
+        <script src="/js/dataTable.js"></script>
 </body>
+
+</html>

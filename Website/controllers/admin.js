@@ -5,6 +5,7 @@ const db = require(appDir + '/models/users');
 const dbShops = require(appDir + '/models/shops');
 const dbprices = require(appDir + '/models/prices');
 const util = require('util');
+const dbStat = require(appDir + '/models/statistics.js');
 
 adminPage= async function (req, res) { 
     var email = req.session.email;
@@ -12,9 +13,13 @@ adminPage= async function (req, res) {
        return res.redirect('/');
     try{
         var user = (await (util.promisify(db.returnUser))(email))[0];
+        var users = await(util.promisify(db.getAllUsers))();
+        var stats = await(util.promisify(dbStat.getRowCounts))();
         return res.render('adminPage.ejs', {
             title: "Προφιλ διαχειριστή",
             user: user,
+            users: users,
+            statistics: stats, 
            login: req.session.login,
             name: req.session.email,
         }); 
@@ -86,7 +91,7 @@ adminDeleteShopget = async function(req, res){
             sort: { column: 'name', AscDesc: 'DESC' }
         });
         return res.render('adminPageDeleteShop.ejs',{
-            title: "Επεξεργασία προφίλ",
+            title: "Διαχείριση Καταστημάτων",
             shops: shops,
             login: req.session.login,
             name: req.session.email,
