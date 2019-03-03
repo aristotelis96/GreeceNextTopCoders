@@ -7,8 +7,12 @@ getOut = function (fields, callback) {
         query += " AND ("
         for (let i=0; i<fields.ccheck.length; i++){
             if (i!=0) 
-                query += " OR ";
+                query += " OR ";            
             query += "products.category = " + pool.escape(fields.ccheck[i]);
+        }
+        /* An exei epilexthei kai to "allo" prepei na fairoume kai osa proionta den anoikoun se kamia apo tis gnostes katigories */            
+        if (fields.ccheck.indexOf("Άλλο") != -1){
+            query += " OR products.category NOT IN (select * from categories)" 
         }
         query += ")";
     }

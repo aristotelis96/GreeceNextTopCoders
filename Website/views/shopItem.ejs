@@ -17,10 +17,14 @@
           <div style="background: rgba(255, 255, 255, 0.322);" class="col-lg-3">
             <h1 class="my-4"><%= product.name %></h1>
             <div class="list-group">
-              <a href="#" class="list-group-item active"><%= product.category %></a>
-              <% tags.forEach((tag, index) => { %>
-              <a href="#" class="list-group-item"><%= tag.name %></a>
-              <% }) %>
+              <a href="#" class="list-group-item active"><%= product.category %></a>            
+                <% tags.forEach((tag, index) => { %>
+                <form action="/search/output" method="POST">
+                  <input type="hidden" name="search" value="<%= tag.name %>">
+                  <button class="list-group-item btn-link flexbox" type="submit" value="tags" name="searchFor[]"
+                    value="<%=tag.name%>"><%=tag.name%></button>
+                </form>
+                <% }) %>
             </div>
           </div>
           <!-- /.col-lg-3 -->
@@ -51,7 +55,11 @@
               </div>
             </div>
             <!-- /.card -->
-    
+            <div class="row">
+              <!-- Map -->
+              <div class="col-md-12 my-3" id="map"></div>    
+            </div>
+
             <div style="background: rgba(255, 255, 255, 0.5);" class="card card-outline-secondary my-4">
               <div style="background:white;" class="card-header">
                 Που Μπορεί να το βρείς
@@ -91,4 +99,8 @@
       <!-- /.container -->
     <%}%>
     </body>
+    <script> var result = <%- JSON.stringify(result) %> ; </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCJaiM1gLI2nYRcZO_PukSgLAXS-E0OaoI"></script>
+    <script src="/js/shopItem.js"></script>
+
 </html>

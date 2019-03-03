@@ -160,7 +160,7 @@ returnProductById = function (id, callback) {
 }
 
 returnOfferById = function (id, callback){
-    let query = "SELECT shops.name as 'shopName', shops.id as 'shopId', products.id, products.name, products.description, prices.price, prices.dateFrom, prices.dateTo FROM shops, prices, products WHERE (products.id =" + pool.escape(id) + "AND shops.id = prices.shopID AND prices.productID = products.id)";
+    let query = "SELECT shops.name as 'shopName', shops.id as 'shopId', shops.lat as 'shopLat', shops.lng as 'shopLng', products.id, products.name, products.description, prices.price, prices.dateFrom, prices.dateTo FROM shops, prices, products WHERE (products.id =" + pool.escape(id) + "AND shops.id = prices.shopID AND prices.productID = products.id)";
     pool.query(query, (err, results)=>{
         if(err){
             return callback(err);

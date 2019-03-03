@@ -23,3 +23,16 @@
 .productCard:hover{
     box-shadow: 0 0 1em;
 }
+
+.btn-link{
+    cursor:pointer;
+    font-family:inherit;
+    font-size:inherit;
+    background:rgba(255, 255, 255, 1); 
+    width: 100%;    
+  }
+
+#map {
+    width: 30em;
+    height: 25em;
+}
