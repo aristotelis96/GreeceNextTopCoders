@@ -26,9 +26,11 @@ module.exports = {
             dbUser.returnUser(emailInput, function (error, results) {
                 if (error) {
                     console.error("error ocurred in database during Login", error);
-                    res.send({
-                        "code": 400,
-                        "failed": "error ocurred"
+                    return res.render("ErrorPage.ejs", {
+                        login: req.session.login,
+                        name: req.session.email,
+                        title: 'Η Σελίδα δεν είναι διαθέσιμη',
+                        ErrorMessage: e.toString()
                     })
                 } else {
                     if (results.length > 0) {
@@ -76,7 +78,12 @@ module.exports = {
             image_name = uploadedFile.name;
             // check type. should be png or jpeg
             if (!(uploadedFile.mimetype === 'image/png' || uploadedFile.mimetype === 'image/jpeg')) {
-                return res.send('wrong image type');
+                return res.render("ErrorPage.ejs", {
+                    login: req.session.login,
+                    name: req.session.email,
+                    title: 'Η Σελίδα δεν είναι διαθέσιμη',
+                    ErrorMessage: "Ο τύπος εικόνας δεν υποστηρίζεται!"
+                })
             }
             // how the file will be stored (png regardless)
             image_name = emailInput + '.png'; 
@@ -109,12 +116,14 @@ module.exports = {
             });
         }
         // check if email exists
-        dbUser.returnUser((emailInput), function (error, results, fields) {
-            if (error) {
-                return res.send({
-                    "code": 400,
-                    "failed": "error ocurred a@t database query"
-                });
+        dbUser.returnUser((emailInput), function (e, results, fields) {
+            if (e) {
+                res.render("ErrorPage.ejs", {
+                    login: req.session.login,
+                    name: req.session.email,
+                    title: 'Η Σελίδα δεν είναι διαθέσιμη',
+                    ErrorMessage: e.toString()
+                })
             } else {
                 // send error if exists
                 if (results.length > 0) {
@@ -133,9 +142,14 @@ module.exports = {
                         password: EncryptedPass,
                         name: name,
                         surname: surname
-                    }, (err, result) => {
-                        if (err) {
-                            return res.send(err);
+                    }, (e, result) => {
+                        if (e) {
+                            return res.render("ErrorPage.ejs", {
+                                login: req.session.login,
+                                name: req.session.email,
+                                title: 'Η Σελίδα δεν είναι διαθέσιμη',
+                                ErrorMessage: e.toString()
+                            })
                         } else {
                             // if no error, return to home page logged in
                             var sess = req.session;

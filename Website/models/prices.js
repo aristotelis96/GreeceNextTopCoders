@@ -43,7 +43,6 @@ getPrice = function (fields, callback){
     if(fields.dateTo != 'NULL' && fields.dateTo != '' && fields.dateTo != null){
         query += " AND dateTo=" + pool.escape(fields.dateTo);
     }    
-    console.log(query);
     pool.query(query, (err, result) => {
         if(err){
             return callback(err);

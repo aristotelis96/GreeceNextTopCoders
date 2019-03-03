@@ -86,7 +86,12 @@ router.post('/adminPage/DeleteShop/:id',adminDeleteShoppost)
 //router.get('/test', (req,res)=>{console.log(req.get('Referer'));res.redirect('back')});
 //error page if all fails. This should always be last
 router.get('*', function(req,res){
-    res.render("notfound.ejs");
+    res.render("ErrorPage.ejs",{
+        login: req.session.login,
+        name: req.session.email, 
+        title: 'Ουψ',
+        ErrorMessage: "Η σελίδα που ζήτησες δεν βρέθηκε!"
+    });
 });
 
 module.exports = router;

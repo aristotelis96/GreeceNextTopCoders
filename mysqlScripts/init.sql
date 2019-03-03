@@ -1,5 +1,5 @@
--- DROP DATABASE IF EXISTS website;
--- CREATE DATABASE `website` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+DROP DATABASE IF EXISTS website;
+CREATE DATABASE `website` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE website;
 
 CREATE TABLE categories (
@@ -84,4 +84,7 @@ CREATE TABLE prices (
     FOREIGN KEY (userID) REFERENCES users(id) ON DELETE SET NULL,
     PRIMARY KEY (`id`)
 );
+
+INSERT INTO `users` (`email`, `password`) VALUES ('admin@admin', '$2b$12$Yi5vnHw/5DXqF8LLCuLk..sXBNYQUoal4X7DhCK/v7B/.5JkSwe2K');
+/* password is encrypted for 'password'*/
 

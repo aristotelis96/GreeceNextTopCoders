@@ -42,7 +42,7 @@ addNewShopPOST = function (req, res) {
                 address: address
             });
             if (shop.length > 0) {
-                throw new Error('Shop already existing');
+                throw new Error('Το κατάστημα υπάρχει ήδη');
             }
             //check user
             let user = await (util.promisify(dbUser.returnUser))(emailInput);  
@@ -59,7 +59,12 @@ addNewShopPOST = function (req, res) {
             res.redirect('/addproduct');
         }
         catch (e) {
-            res.send(e.toString());
+            return res.render("ErrorPage.ejs", {
+                login: req.session.login,
+                name: req.session.email,
+                title: 'Η Σελίδα δεν είναι διαθέσιμη',
+                ErrorMessage: e.toString()
+            })
         }
     }
     checkAndInsert();

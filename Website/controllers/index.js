@@ -20,7 +20,12 @@ module.exports = {
             });
         }
         catch (e) {
-            return res.send(e.toString())
+            return res.render("ErrorPage.ejs", {
+                login: req.session.login,
+                name: req.session.email,
+                title: 'Η Σελίδα δεν είναι διαθέσιμη',
+                ErrorMessage: e.toString()
+            })
         }               
     }
 }

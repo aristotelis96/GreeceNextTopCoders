@@ -18,7 +18,12 @@ getItem = async function(req,res){
     }
     catch (e) {
         //in case of an error
-        return res.send(e.toString());
+        return res.render("ErrorPage.ejs", {
+            login: req.session.login,
+            name: req.session.email,
+            title: 'Η Σελίδα δεν είναι διαθέσιμη',
+            ErrorMessage: e.toString()
+        })
     }
     res.render('shopItem.ejs',{
         login: req.session.login,

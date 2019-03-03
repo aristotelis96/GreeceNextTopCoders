@@ -1,0 +1,17 @@
+<% include ./partials/header.ejs %>
+<link rel="stylesheet" href="/css/ErrorPage.css">
+</head>
+
+<body>
+    <% include partials/navbar.ejs %>
+    <div class="error-500" data-text="<%= ErrorMessage %>">
+        <spaguetti>
+            <fork></fork>
+            <meat></meat>
+            <pasta></pasta>
+            <plate></plate>
+        </spaguetti>
+    </div>
+</body>
+<script src="/js/ErrorPage.js"></script>
+</html>

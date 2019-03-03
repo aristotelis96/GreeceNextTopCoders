@@ -19,7 +19,12 @@ adminPage= async function (req, res) {
         }); 
     }
     catch(e){
-        return res.send(e.toString());
+        return res.render("ErrorPage.ejs", {
+            login: req.session.login,
+            name: req.session.email,
+            title: 'Η Σελίδα δεν είναι διαθέσιμη',
+            ErrorMessage: e.toString()
+        })
     }
 }
 
@@ -39,7 +44,12 @@ adminDeleteUserget = async function(req, res){
 
     }
     catch(e){
-        return res.send(e.toString());
+        return res.render("ErrorPage.ejs", {
+            login: req.session.login,
+            name: req.session.email,
+            title: 'Η Σελίδα δεν είναι διαθέσιμη',
+            ErrorMessage: e.toString()
+        })
     }
 }
 
@@ -56,7 +66,12 @@ adminDeleteUserpost = async function(req, res) {
         return res.redirect('/adminPage');
 
     }catch(e){
-        return res.send(e.toString());
+        return res.render("ErrorPage.ejs", {
+            login: req.session.login,
+            name: req.session.email,
+            title: 'Η Σελίδα δεν είναι διαθέσιμη',
+            ErrorMessage: e.toString()
+        })
     }
 }
 
@@ -79,7 +94,12 @@ adminDeleteShopget = async function(req, res){
 
     }
     catch(e){
-        return res.send(e.toString());
+        return res.render("ErrorPage.ejs", {
+            login: req.session.login,
+            name: req.session.email,
+            title: 'Η Σελίδα δεν είναι διαθέσιμη',
+            ErrorMessage: e.toString()
+        })
     }
 
 }
@@ -97,7 +117,12 @@ adminDeleteShoppost = async function(req, res) {
         return res.redirect('/adminPage');
 
     }catch(e){
-        return res.send(e.toString());
+        return res.render("ErrorPage.ejs", {
+            login: req.session.login,
+            name: req.session.email,
+            title: 'Η Σελίδα δεν είναι διαθέσιμη',
+            ErrorMessage: e.toString()
+        });
     }
 }
 

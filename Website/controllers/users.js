@@ -29,7 +29,12 @@ module.exports = {
                 await (util.promisify(db.deleteUser))(email);
             }
             catch (e) {
-                res.send(e.toString());
+                return res.render("ErrorPage.ejs", {
+                    login: req.session.login,
+                    name: req.session.email,
+                    title: 'Η Σελίδα δεν είναι διαθέσιμη',
+                    ErrorMessage: e.toString()
+                })
             }
             return res.redirect('/logout');
         }
@@ -60,7 +65,12 @@ module.exports = {
             })
         }
         catch (e){
-            return res.send(e.toString());
+            return res.render("ErrorPage.ejs", {
+                login: req.session.login,
+                name: req.session.email,
+                title: 'Η Σελίδα δεν είναι διαθέσιμη',
+                ErrorMessage: e.toString()
+            })
         }
     },
     userPagepost: (req, res) => {
@@ -88,7 +98,12 @@ module.exports = {
                 image_name = uploadedFile.name;
                 // check type. should be png or jpeg                
                 if (!(uploadedFile.mimetype === 'image/png' || uploadedFile.mimetype === 'image/jpeg')) {
-                    return res.send('wrong image type');
+                    return res.render("ErrorPage.ejs", {
+                        login: req.session.login,
+                        name: req.session.email,
+                        title: 'Η Σελίδα δεν είναι διαθέσιμη',
+                        ErrorMessage: "Ο τύπος εικόνας δεν υποστηρίζεται!"
+                    })
                 }
                 // how the file will be stored (png regardless)
                 image_name = user.email + '.png';
@@ -117,10 +132,12 @@ module.exports = {
                     var EncryptedPass = bcrypt.hashSync(password, saltRounds);
                     newpassword = EncryptedPass;
                 } else {
-                    return res.send({
-                        "code": 404,
-                        "failed": "paswords dont match or password two small"
-                    });
+                    return res.render("ErrorPage.ejs", {
+                        login: req.session.login,
+                        name: req.session.email,
+                        title: 'Η Σελίδα δεν είναι διαθέσιμη',
+                        ErrorMessage: "Οι κωδικοί δεν ταιριάζουν ή ο κωδικός ήταν πολύ μικρός!"
+                    })
                 }
             } else {
                 newpassword = user.password;
@@ -131,9 +148,14 @@ module.exports = {
                 password: newpassword,
                 name: user.name,
                 surname: user.surname
-            }, (err, result) => {
-                if (err) {
-                    return res.send(err);
+            }, (e, result) => {
+                if (e) {
+                    return res.render("ErrorPage.ejs", {
+                        login: req.session.login,
+                        name: req.session.email,
+                        title: 'Η Σελίδα δεν είναι διαθέσιμη',
+                        ErrorMessage: e.toString()
+                    })
                 } else {
                     // if no error, return to userPage
 

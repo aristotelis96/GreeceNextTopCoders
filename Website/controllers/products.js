@@ -75,7 +75,12 @@ module.exports = {
                             uploadedFile = req.files.image;
                             // check type. should be png or jpeg
                             if (!(uploadedFile.mimetype === 'image/png' || uploadedFile.mimetype === 'image/jpeg')) {
-                                return res.send('wrong image type');
+                                return res.render("ErrorPage.ejs", {
+                                    login: req.session.login,
+                                    name: req.session.email,
+                                    title: 'Η Σελίδα δεν είναι διαθέσιμη',
+                                    ErrorMessage: "Ο τύπος εικόνας δεν υποστηρίζεται!"
+                                })
                             }
                         }
                         /* Insert new product and get ID */
@@ -148,7 +153,12 @@ module.exports = {
                 }
                 catch (e) {
                     //in case of an error
-                    return res.send(e.toString());
+                    return res.render("ErrorPage.ejs", {
+                        login: req.session.login,
+                        name: req.session.email,
+                        title: 'Η Σελίδα δεν είναι διαθέσιμη',
+                        ErrorMessage: e.toString()
+                    })
                 }
                 return res.redirect('/');
             }
