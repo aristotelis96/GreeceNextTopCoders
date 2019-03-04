@@ -37,16 +37,16 @@ module.exports = {
             if (checkendInput == "on" && checkstartInput == "on") {
                 //do nothing ? 
             } else if (checkstartInput == "on") {
-                checkendInput = new Date(); 
-                checkendInput = (checkendInput.getFullYear()+1) + "-" + (checkendInput.getMonth()+1) + "-" + checkendInput.getDate();
+                enddateInput = new Date(); 
+                enddateInput = (enddateInput.getFullYear()+1) + "-" + (enddateInput.getMonth()+1) + "-" + enddateInput.getDate();
             } else if (checkendInput == "on") {
                 startdateInput = new Date(); 
                 startdateInput = (startdateInput.getFullYear()+1) + "-" + (startdateInput.getMonth()+1) + "-" + startdateInput.getDate();
             } else {
                 startdateInput = new Date(); 
-                startdateInput = (startdateInput.getFullYear()+1) + "-" + (startdateInput.getMonth()+1) + "-" + startdateInput.getDate();
-                checkendInput = new Date(); 
-                checkendInput = (checkendInput.getFullYear()+1) + "-" + (checkendInput.getMonth()+1) + "-" + checkendInput.getDate();
+                startdateInput = (startdateInput.getFullYear()) + "-" + (startdateInput.getMonth()+1) + "-" + startdateInput.getDate();
+                enddateInput = new Date(); 
+                enddateInput = (enddateInput.getFullYear()+1) + "-" + (enddateInput.getMonth()+1) + "-" + enddateInput.getDate();
             }
             
             /* Get company id */

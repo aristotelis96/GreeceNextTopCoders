@@ -20,7 +20,7 @@ adminPage= async function (req, res) {
             user: user,
             users: users,
             statistics: stats, 
-           login: req.session.login,
+            login: req.session.login,
             name: req.session.email,
         }); 
     }

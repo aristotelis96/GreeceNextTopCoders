@@ -44,6 +44,10 @@ getOut = function (fields, callback) {
     if (fields.positionLng != null && fields.positionLat != null && fields.distance != null){
         query += " AND acos(sin(radians(" + fields.positionLat + "))*sin(radians(lat)) + cos(radians(" + fields.positionLat + "))*cos(radians(lat))*cos(radians(lng)-radians(" + fields.positionLng + "))) * 6371 <" + fields.distance;        
     }    
+    /* Make sure results are not expired */
+    let today = new Date();
+    today = today.getFullYear() + "-" + ("0" + (today.getMonth()+1)).slice(-2) + "-" + ("0" + (today.getDate())).slice(-2);    
+    query += " AND (prices.dateTo > " + pool.escape(today) + " OR prices.dateTo='0000-00-00')";
     if (fields.limit!= null){
         query += " LIMIT " + fields.limit;
     }    

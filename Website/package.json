@@ -18,5 +18,13 @@
     "mysql": "^2.16.0",
     "node-cache": "^4.2.0",
     "req-flash": "0.0.3"
+  },
+  "scripts": {
+    "ClearDB": "echo DROP DATABASE IF EXISTS website | mysql -u root -p8elopass",
+    "CreateDB": "echo CREATE DATABASE website | mysql -u root -p8elopass",
+    "UseDB": "echo USE website; | mysql -u root -p8elopass",
+    "LoadStructureDB": "mysql -u root -p8elopass website < ./../mysqlScripts/init.sql",
+    "InitDB": "npm run ClearDB && npm run CreateDB && npm run UseDB && npm run LoadStructureDB",
+    "startClear": "npm run InitDB && npm start"
   }
 }
