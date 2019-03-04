@@ -18,7 +18,7 @@ module.exports = {
             var password = req.body.passwordInput;
             var url = req.body.url;
             
-            url = url.slice(17, url.length)
+            url = url.replace("https://" + req.headers['host'], '')
             
             if (url == '' || url == '/search/output')
             url ='/';
